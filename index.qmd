@@ -1,6 +1,6 @@
 ---
-title: "Title of your work"
-author: "Your Name"
+title: "Effects of monetary policy shocks on exchange rate: Evidence from Australia"
+author: "Yufei Wu"
 
 execute:
   echo: false

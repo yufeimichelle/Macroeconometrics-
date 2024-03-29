@@ -151,6 +151,22 @@ exchange_p + MB_p + SR_p + GDP_p  + CPI_p  + plot_layout(ncol = 2)
 ```
 
 
+```{r}
+#| echo: false
+#| message: false
+data_all = list(exchange_rate_usd, MB, Short_R, GDP, CPI)
+variable <- c('ERA', 'MB', 'Short_R','GDP', 'CPI')
+N <- rep(172, length(variable))
+mean <- sapply(data_all, mean)
+sd <- sapply(data_all, sd)
+Min <- sapply(data_all, min)
+Max <- sapply(data_all, max)
+table1 =data.frame(variable, N, mean,sd, Min, Max)
+
+
+knitr::kable(table1, caption = "Summary Statistics", digits = 2)
+```
+
 
 ## A Simple Example
 

@@ -17,6 +17,138 @@ bibliography: references.bib
 This is a template repository for the Research Report for **Macroeconometrics**. Learn more about about developing online reports with **quarto** at [quarto.org](https://quarto.org/).
 
 
+# Data
+
+```{r}
+#| label: load-packages
+#| include: false
+library(patchwork)
+library(readrba)
+library(xts)
+library(ggplot2)
+library(readabs)
+```
+
+```{r}
+#| echo: false
+#| message: false
+exchange_rate_usd <- read_rba(series_id = "FXRUSD") 
+
+exchange_rate_usd = xts(as.numeric(exchange_rate_usd$value), order.by = exchange_rate_usd$date) 
+exchange_rate_usd <- to.quarterly(exchange_rate_usd,OHLC = FALSE)
+
+exchange_rate_usd <- window(exchange_rate_usd,                   
+                    start = "1980 Q1",
+                    end = "2022 Q4")
+names(exchange_rate_usd) <- "ERA"
+
+exchange_p = autoplot(exchange_rate_usd) +
+  theme_classic()+
+  scale_x_yearqtr(format = "%Y")+
+  labs(title = "Exchange Rate (AUD/USD)")+
+  theme(axis.title.x = element_blank(),
+        plot.title = element_text(hjust = 0.5,
+                                  face = "bold"))
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+#MB Monetary base, seasonally adjusted (M1)
+MB <- read_rba(series_id = "DMAM1S") 
+MB = xts(MB$value, order.by = MB$date)   
+MB = to.quarterly(MB,OHLC = FALSE)
+MB <- window(MB,                   
+               start = "1980 Q1",
+               end = "2022 Q4")
+MB = log(MB)
+names(MB) <- "MB"
+MB_p = autoplot(MB) +
+  theme_classic()+
+  scale_x_yearqtr(format = "%Y")+
+  labs(title = "Monetary Base (M1)")+
+  theme(axis.title.x = element_blank(),
+        plot.title = element_text(hjust = 0.5,
+                                  face = "bold"))
+
+```
+
+
+```{r}
+#| echo: false
+#| message: false
+Short_R <- read_rba(series_id = "FIRMMBAB90") 
+Short_R = xts(Short_R$value, order.by = Short_R$date)    
+Short_R = to.quarterly(Short_R,OHLC = FALSE)
+Short_R <- window(Short_R,                   
+             start = "1980 Q1",
+             end = "2022 Q4")
+Short_R = log(Short_R)
+names(Short_R) <- "Short_R"
+SR_p = autoplot(Short_R) +
+  theme_classic()+
+  scale_x_yearqtr(format = "%Y")+
+  labs(title = "Short-Term Interest Rate")+
+  theme(axis.title.x = element_blank(),
+        plot.title = element_text(hjust = 0.5,
+                                  face = "bold"))
+
+```
+
+
+```{r}
+#| echo: false
+#| message: false
+#CPI Consumer price index, seasonally adjusted
+
+CPI = read_abs(series_id = 'A2325846C')
+CPI = xts(CPI$value, order.by = CPI$date)    
+CPI <- window(CPI,                   
+                  start = "1980-03-01",
+                  end = "2022-12-01")
+CPI = log(CPI)
+names(CPI) <- "CPI"
+CPI_p = autoplot(CPI) +
+  theme_classic()+
+  labs(title = "Consumer Price Index")+
+  theme(axis.title.x = element_blank(),
+        plot.title = element_text(hjust = 0.5,
+                                  face = "bold"))
+
+```
+
+
+```{r}
+#| echo: false
+#| message: false
+GDP = read_rba(series_id = "GGDPCVGDP")
+GDP = xts(GDP$value, order.by = GDP$date)    
+GDP <- window(GDP,                   
+              start = "1980-03-31",
+              end = "2022-12-31")
+GDP = log(GDP)
+names(GDP) <- "GDP"
+GDP_p = autoplot(GDP) +
+  theme_classic()+
+  labs(title = "Gross Domestic Product")+
+  theme(axis.title.x = element_blank(),
+        plot.title = element_text(hjust = 0.5,
+                                  face = "bold"))
+
+
+```
+
+
+```{r}
+#| echo: false
+#| message: false
+#| 
+#combining 
+
+
+exchange_p + MB_p + SR_p + GDP_p  + CPI_p  + plot_layout(ncol = 2)
+```
 
 
 

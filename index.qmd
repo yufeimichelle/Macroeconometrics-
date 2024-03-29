@@ -236,7 +236,17 @@ knitr::kable(adf1, caption = "ADF test of first difference", digits = 2)
 
 The `echo: false` option disables the printing of code (only output is displayed).
 
+## Model Specification
 
+
+
+\begin{align}
+Y_{t} =\mu_{0}  + \sum_{i=0}^{p} (A_{i}Y_{t-i} )+\epsilon_{t} 
+\end{align}
+
+\begin{align}
+\epsilon_{t}|Y_{t-1} \sim iid(0_{N},\Sigma )
+\end{align}
 
 ## A Simple Example
 

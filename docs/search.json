@@ -96,5 +96,12 @@
     "title": "research plan",
     "section": "ADF Test first difference",
     "text": "ADF Test first difference\n\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\n\n\nADF test\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-4.91\n5\n0.01\n\n\nMB\n-4.47\n5\n0.01\n\n\nShort_R\n-7.15\n5\n0.01\n\n\nGDP\n-5.90\n5\n0.01\n\n\nCPI\n-2.71\n5\n0.28\n\n\n\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
+  },
+  {
+    "objectID": "index.html#model-specification",
+    "href": "index.html#model-specification",
+    "title": "Effects of monetary policy shocks on exchange rate: Evidence from Australia",
+    "section": "Model Specification",
+    "text": "Model Specification\n\\[\\begin{align}\nY_{t} =\\mu_{0}  + \\sum_{i=0}^{p} (A_{i}Y_{t-i} )+\\epsilon_{t}\n\\end{align}\\]\n\\[\\begin{align}\n\\epsilon_{t}|Y_{t-1} \\sim iid(0_{N},\\Sigma )\n\\end{align}\\]"
   }
 ]

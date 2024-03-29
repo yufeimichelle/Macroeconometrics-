@@ -12,5 +12,89 @@
     "title": "Effects of monetary policy shocks on exchange rate: Evidence from Australia",
     "section": "A Simple Example",
     "text": "A Simple Example\n``` ## References {.unnumbered}"
+  },
+  {
+    "objectID": "tmp/research plan.html",
+    "href": "tmp/research plan.html",
+    "title": "research plan",
+    "section": "",
+    "text": "State the objective of your research project in one sentence.\n\nEffects of monetary policy shocks on exchange rate: Evidence from Australia\n\nState the question that you are going to answer in another sentence.\n\nThis research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 2010 to 2020 using the Bayesian Structural Vector Auto-regression (SVAR) model.\n\nKey words: Monetary policy, exchange rate, SVAR model, Delayed Overshooting"
+  },
+  {
+    "objectID": "tmp/research plan.html#topic",
+    "href": "tmp/research plan.html#topic",
+    "title": "research plan",
+    "section": "",
+    "text": "State the objective of your research project in one sentence.\n\nEffects of monetary policy shocks on exchange rate: Evidence from Australia\n\nState the question that you are going to answer in another sentence.\n\nThis research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 2010 to 2020 using the Bayesian Structural Vector Auto-regression (SVAR) model.\n\nKey words: Monetary policy, exchange rate, SVAR model, Delayed Overshooting"
+  },
+  {
+    "objectID": "tmp/research plan.html#introduction",
+    "href": "tmp/research plan.html#introduction",
+    "title": "research plan",
+    "section": "Introduction",
+    "text": "Introduction\n\nMotivate your objective and research question by explaining why it is important to investigate this problem in one brief paragraph."
+  },
+  {
+    "objectID": "tmp/research plan.html#data",
+    "href": "tmp/research plan.html#data",
+    "title": "research plan",
+    "section": "Data",
+    "text": "Data\n\nERA Monthly nominal average exchange rate AUD/USD –RBA\nFR Foreign exchange reserve,Official reserve assets,monthly (FX)–RBA\nCPI Consumer price index, seasonally adjusted(quarterly) –ABS\nPPI Producer Price Index (PPI, Quarter)–ABS\nMB Monetary base, seasonally adjusted (M1) –RBA\nR short-term interest rate,Bank Accepted Bills/Negotiable Certificates of Deposit-3 months; monthly average –RBA\nReal GDP (quarterly) Gross domestic product: Chain volume measures ;–RBA\n\nNotes:\n–3 monthly variable all take the last value in the quarter to change to quarterly data\n–data need to take Logarithm We take the logarithm of consumer price index, industrial production, foreign exchange reserves, monetary base, and exchange rates, and then multiply those series by 100.\n–summary statistics\n–testing autocorrelation, ADF test ???–all non-stationary??\n–need to be same order of stationary\n\nInvestigate its properties and argue on: why they are essential to answer your research question, how they inform or motivate your model equations.\n\n1~6 are endogenous variable, 3~6 are key monetary variables to identify monetary shocks, 1~2 are key variable for this study"
+  },
+  {
+    "objectID": "tmp/research plan.html#model-specification",
+    "href": "tmp/research plan.html#model-specification",
+    "title": "research plan",
+    "section": "Model specification",
+    "text": "Model specification\n–just copy the equation\n–specify Y is what matrix 1XN and so on…."
+  },
+  {
+    "objectID": "tmp/research plan.html#running-code",
+    "href": "tmp/research plan.html#running-code",
+    "title": "research plan",
+    "section": "Running Code",
+    "text": "Running Code\nWhen you click the Render button a document will be generated that includes both content and the output of embedded code. You can embed code like this:\n\nExchange rate\n\n\n\n\n\n\n\nMonetary base, seasonally adjusted (M1)\n\n\n\n\n\n\n\nshort-term interest rate\n\n\n\n\n\n\n\nCPI Consumer price index\n\n\n\n\n\n\n\nReal GDP"
+  },
+  {
+    "objectID": "tmp/research plan.html#combined-plots",
+    "href": "tmp/research plan.html#combined-plots",
+    "title": "research plan",
+    "section": "combined plots",
+    "text": "combined plots\n\n\n\n\n\n\n\n\nSummary Statistics\n\n\nvariable\nN\nmean\nsd\nMin\nMax\n\n\n\n\nERA\n172\n0.78\n0.14\n0.49\n1.18\n\n\nMB\n172\n5.03\n1.38\n2.74\n7.43\n\n\nShort_R\n172\n1.54\n1.26\n-4.61\n2.97\n\n\nGDP\n172\n12.69\n0.39\n12.03\n13.31\n\n\nCPI\n172\n4.26\n0.41\n3.23\n4.87"
+  },
+  {
+    "objectID": "tmp/index try.html#running-code",
+    "href": "tmp/index try.html#running-code",
+    "title": "website try",
+    "section": "Running Code",
+    "text": "Running Code\nWhen you click the Render button a document will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n\n\nSummary Statistics\n\n\nvariable\nN\nmean\nsd\nMin\nMax\n\n\n\n\nERA\n172\n-0.26\n0.18\n-0.72\n0.17\n\n\nMB\n172\n5.03\n1.38\n2.74\n7.43\n\n\nShort_R\n172\n1.54\n1.26\n-4.61\n2.97\n\n\nGDP\n172\n12.69\n0.39\n12.03\n13.31\n\n\nCPI\n172\n4.26\n0.41\n3.23\n4.87\n\n\n\n\n\nYou can add options to executable code like this\n\n#| echo: false\n#| message: false\npar(mfrow = c(3, 2))\nacf(exchange_rate_usd, lag.max = 10, plot = TRUE) \nacf(MB, lag.max = 10, plot = TRUE) \nacf(Short_R, lag.max = 10, plot = TRUE) \nacf(GDP, lag.max = 10, plot = TRUE) \nacf(CPI, lag.max = 10, plot = TRUE) \n\n\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
+  },
+  {
+    "objectID": "tmp/research plan.html#acf",
+    "href": "tmp/research plan.html#acf",
+    "title": "research plan",
+    "section": "ACF",
+    "text": "ACF"
+  },
+  {
+    "objectID": "tmp/research plan.html#pacf",
+    "href": "tmp/research plan.html#pacf",
+    "title": "research plan",
+    "section": "PACF",
+    "text": "PACF"
+  },
+  {
+    "objectID": "tmp/research plan.html#adf-test",
+    "href": "tmp/research plan.html#adf-test",
+    "title": "research plan",
+    "section": "ADF Test",
+    "text": "ADF Test\n\n\nWarning in adf.test(i): p-value smaller than printed p-value\n\nWarning in adf.test(i): p-value smaller than printed p-value\n\nWarning in adf.test(i): p-value smaller than printed p-value\n\n\n\nADF test\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-3.12\n5\n0.11\n\n\nMB\n-3.14\n5\n0.10\n\n\nShort_R\n-6.05\n5\n0.01\n\n\nGDP\n-1.99\n5\n0.58\n\n\nCPI\n-3.72\n5\n0.02"
+  },
+  {
+    "objectID": "tmp/research plan.html#adf-test-first-difference",
+    "href": "tmp/research plan.html#adf-test-first-difference",
+    "title": "research plan",
+    "section": "ADF Test first difference",
+    "text": "ADF Test first difference\n\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\n\n\nADF test\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-4.91\n5\n0.01\n\n\nMB\n-4.47\n5\n0.01\n\n\nShort_R\n-7.15\n5\n0.01\n\n\nGDP\n-5.90\n5\n0.01\n\n\nCPI\n-2.71\n5\n0.28\n\n\n\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
   }
 ]

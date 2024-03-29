@@ -194,6 +194,50 @@ pacf(GDP, lag.max = 10, plot = TRUE)
 pacf(CPI, lag.max = 10, plot = TRUE) 
 ```
 
+> **ADF Test.**
+
+```{r warning=FALSE}
+#| echo: false
+#| message: false
+library(tseries)
+adf <- as.data.frame(matrix(nrow=5,ncol=3,NA))
+rownames(adf) <- variable
+colnames(adf) <- c("Dickey-Fuller","Lag order", "p-value")
+
+for (i in data_all){
+  adf[colnames(i),1] = round(as.numeric(adf.test(i)[1]),2)
+  adf[colnames(i),2] = adf.test(i)[2]
+  adf[colnames(i),3] = round(as.numeric(adf.test(i)[4]),2)
+  
+}
+  
+knitr::kable(adf, caption = "ADF test", digits = 2)
+```
+
+
+
+```{r warning=FALSE}
+#| echo: false
+#| message: false
+#ADF test of first difference
+adf1 <- as.data.frame(matrix(nrow=5,ncol=3,NA))
+rownames(adf1) <- variable
+colnames(adf1) <- c("Dickey-Fuller","Lag order", "p-value")
+
+for (i in data_all){
+  adf1[colnames(i),1] = round(as.numeric(adf.test(na.omit(diff(i)))[1]),2)
+  adf1[colnames(i),2] = adf.test(na.omit(diff(i)))[2]
+  adf1[colnames(i),3] = round(as.numeric(adf.test(na.omit(diff(i)))[4]),2)
+  
+}
+
+knitr::kable(adf1, caption = "ADF test of first difference", digits = 2)
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+
+
 ## A Simple Example
 
 ```

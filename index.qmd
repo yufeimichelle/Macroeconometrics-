@@ -167,6 +167,32 @@ table1 =data.frame(variable, N, mean,sd, Min, Max)
 knitr::kable(table1, caption = "Summary Statistics", digits = 2)
 ```
 
+> **ACF plots.**
+
+```{r}
+
+#| echo: false
+#| message: false
+par(mfrow = c(3, 2))
+acf(exchange_rate_usd, lag.max = 10, plot = TRUE) 
+acf(MB, lag.max = 10, plot = TRUE) 
+acf(Short_R, lag.max = 10, plot = TRUE) 
+acf(GDP, lag.max = 10, plot = TRUE) 
+acf(CPI, lag.max = 10, plot = TRUE) 
+```
+
+> **PACF plots.**
+
+```{r}
+#| echo: false
+#| message: false
+par(mfrow = c(3, 2))
+pacf(exchange_rate_usd, lag.max = 10, plot = TRUE) 
+pacf(MB, lag.max = 10, plot = TRUE) 
+pacf(Short_R, lag.max = 10, plot = TRUE) 
+pacf(GDP, lag.max = 10, plot = TRUE) 
+pacf(CPI, lag.max = 10, plot = TRUE) 
+```
 
 ## A Simple Example
 

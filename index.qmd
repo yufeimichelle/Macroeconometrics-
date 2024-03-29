@@ -8,13 +8,17 @@ execute:
 bibliography: references.bib
 ---
 
-> **Abstract.** This is a suggested formatting for your abstract. This **quarto** document is a template for your report. It includes some basic ways of working with such documents. You are invited to learn more about developing online reports with this technology. 
+> **Abstract.** This research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 1980 to 2022 using the Bayesian Structural Vector Auto-regression (SVAR) model.
 >
-> **Keywords.** bsvars, impulse responses, quarto, R, tax shocks
+> **Keywords.**  R, Monetary policy, exchange rate, SVAR model
 
 # Introduction
 
 This is a template repository for the Research Report for **Macroeconometrics**. Learn more about about developing online reports with **quarto** at [quarto.org](https://quarto.org/).
+
+
+
+
 
 ## A Simple Example
 

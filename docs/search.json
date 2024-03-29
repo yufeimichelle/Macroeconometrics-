@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Effects of monetary policy shocks on exchange rate: Evidence from Australia",
     "section": "",
-    "text": "Abstract. This is a suggested formatting for your abstract. This quarto document is a template for your report. It includes some basic ways of working with such documents. You are invited to learn more about developing online reports with this technology.\nKeywords. bsvars, impulse responses, quarto, R, tax shocks"
+    "text": "Abstract. This research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 1980 to 2022 using the Bayesian Structural Vector Auto-regression (SVAR) model.\nKeywords. R, Monetary policy, exchange rate, SVAR model"
   },
   {
     "objectID": "index.html#a-simple-example",

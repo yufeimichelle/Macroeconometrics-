@@ -24,7 +24,7 @@ This paper aims to focus on investigate the effect of monetary shock in a small 
 
 The endogenous variables for the SVAR analysis included: Exchange rate of AUD/USD (ERA), Monetary base M1 (MB), the Bank Accepted Bills/Negotiable Certificates of Deposit-3 months Short–term interest rate (Short_R), Gross Domestic Product (GDP) and Consumer Price Index(CPI). The data are collected from the Reserve Bank of Australia (RBA) and Australian Bureau of Statistics (ABS), adjusted in quarterly frequency and from 1980 Q1 to 2022 Q4, including 172 observations.
 
-The first variable is the key variable in the analysis of the research, and the other 5 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in [Figure 1. Time-series plots] .
+The first variable is the key variable in the analysis of the research, and the other 5 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in [Figure 1. Time-series plots].
 
 ```{r}
 #| label: load-packages
@@ -154,6 +154,10 @@ exchange_p + MB_p + SR_p + GDP_p  + CPI_p  + plot_layout(ncol = 2)
 
 ###### Figure 1. Time-series plots
 
+Exchange rate changes are volatile overtime, exhibits peaks and troughs. Monetary base, GDP and CPI all illustrate increasing trend overtime, with some drops during the global financial crisis and during COVID-19 period. Short-term interest rate displays a downward trend since 2000. All time-series plots are restricted in the time period from 1980 Q1 to 2022 Q4.
+
+[Table 1. Summary statistics] provides statistics summary of all variables from 1980 Q1 to 2022 Q4.
+
 ```{r}
 #| echo: false
 #| message: false
@@ -167,12 +171,14 @@ Max <- sapply(data_all, max)
 table1 =data.frame(variable, N, mean,sd, Min, Max)
 
 
-knitr::kable(table1, caption = "Summary Statistics", digits = 2)
+knitr::kable(table1, caption = "Table1.Summary Statistics", digits = 2)
 
 
 ```
 
 ###### Table 1. Summary statistics
+
+## Preliminary Results
 
 > **ACF plots.**
 

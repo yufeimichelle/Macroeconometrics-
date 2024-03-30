@@ -14,9 +14,9 @@ bibliography: references.bib
 
 # Introduction
 
-How monetary policy shocks affect exchange rate? The most well-known study from Dornbusch's (1976) documented the overshooting model, which predicts that the monetary expansion would leads to an increase in domestic interest rate and persistene deprecision of exchange rate. However, more economists such as Eichenbaum and Evans (1995) utilized VAR model found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.
+How monetary policy shocks affect exchange rate? The most well-known study from @dornbusch1976 documented the overshooting model, which predicts that the monetary expansion would leads to an increase in domestic interest rate and persistene deprecision of exchange rate. However, more economists such as @eichenbaum1995 utilized VAR model found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.
 
-The recent study Kim and Lim(2018) further explored that relatively short delay in the effect of contractionary monetary shock to exchange rate appreciation for the UK, Australia, Sweden and Canada.
+The recent study @kim2018 further explored that relatively short delay in the effect of contractionary monetary shock to exchange rate appreciation for the UK, Australia, Sweden and Canada.
 
 This paper aims to focus on investigate the effect of monetary shock in a small open economy Australia, applying the Bayesian Structural Vector Auto-regression (SVAR) model. What is the role of monetary policy shock in exchange rate behavior in Australia? Are the effect similar to those large countries? Do we find similar puzzling responses?
 
@@ -257,7 +257,7 @@ knitr::kable(adf1, caption = "ADF test of First Difference", digits = 2)
 
 ###### Table 3: ADF test of First Difference
 
-## Model Specification
+## **Methodology**
 
 The **Structural Form (SF) model** of Structural VARs is:
 
@@ -286,5 +286,3 @@ Y_{t} =\mu_{0}  + \sum_{i=0}^{p} (A_{i}Y_{t-i} )+\epsilon_{t}
 \end{align}
 ```
 ## References
-
-\`\`\` \## References {.unnumbered}

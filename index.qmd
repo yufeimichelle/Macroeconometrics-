@@ -24,7 +24,7 @@ This paper aims to focus on investigate the effect of monetary shock in a small 
 
 The endogenous variables for the SVAR analysis included: Exchange rate of AUD/USD (ERA), Monetary base M1 (MB), the Bank Accepted Bills/Negotiable Certificates of Deposit-3 months Short–term interest rate (Short_R), Gross Domestic Product (GDP) and Consumer Price Index(CPI). The data are collected from the Reserve Bank of Australia (RBA) and Australian Bureau of Statistics (ABS), adjusted in quarterly frequency and from 1980 Q1 to 2022 Q4, including 172 observations.
 
-The first variable is the key variable in the analysis of the research, and the other 5 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in [Figure 1. Time-series plots].
+The first variable is the key variable in the analysis of the research, and the other 5 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in [Figure 1: Time-series plots].
 
 ```{r}
 #| label: load-packages
@@ -152,11 +152,11 @@ GDP_p = autoplot(GDP) +
 exchange_p + MB_p + SR_p + GDP_p  + CPI_p  + plot_layout(ncol = 2)
 ```
 
-###### Figure 1. Time-series plots
+###### Figure 1: Time-series plots
 
 Exchange rate changes are volatile overtime, exhibits peaks and troughs. Monetary base, GDP and CPI all illustrate increasing trend overtime, with some drops during the global financial crisis and during COVID-19 period. Short-term interest rate displays a downward trend since 2000. All time-series plots are restricted in the time period from 1980 Q1 to 2022 Q4.
 
-[Table 1. Summary statistics] provides statistics summary of all variables from 1980 Q1 to 2022 Q4.
+[Table 1: Summary statistics] provides statistics summary of all variables from 1980 Q1 to 2022 Q4.
 
 ```{r}
 #| echo: false
@@ -171,43 +171,51 @@ Max <- sapply(data_all, max)
 table1 =data.frame(variable, N, mean,sd, Min, Max)
 
 
-knitr::kable(table1, caption = "Table1.Summary Statistics", digits = 2)
+knitr::kable(table1, caption = "Summary Statistics", digits = 2)
 
 
 ```
 
-###### Table 1. Summary statistics
+###### Table 1: Summary statistics
 
 ## Preliminary Results
 
-> **ACF plots.**
+[Figure 2: ACF plots] shows that for GDP and CPI have non-zero auto correlations for at least 10 lags, for the ERA, MB, Short_R have non-zero auto correlations for at least 2.5 lags.
+
+[Figure 3: PACF plots] shows no statistically significant lags except short-term interest rate. Short-term interest rate has some spikes in lag 1 and 1.75 but not strong.
 
 ```{r}
 
 #| echo: false
 #| message: false
 par(mfrow = c(3, 2))
-acf(exchange_rate_usd, lag.max = 10, plot = TRUE) 
-acf(MB, lag.max = 10, plot = TRUE) 
-acf(Short_R, lag.max = 10, plot = TRUE) 
-acf(GDP, lag.max = 10, plot = TRUE) 
-acf(CPI, lag.max = 10, plot = TRUE) 
+acf(exchange_rate_usd, lag.max = 10, plot = TRUE, main = "Exchange Rate (AUD/USD) ACF")
+acf(MB, lag.max = 10, plot = TRUE , main = "Monetary Base (M1) ACF")
+acf(Short_R, lag.max = 10, plot = TRUE , main = "Short-Term Interest Rate ACF")
+acf(GDP, lag.max = 10, plot = TRUE , main = "Gross Domestic Product ACF")
+acf(CPI, lag.max = 10, plot = TRUE , main = "Consumer Price Index ACF")
 ```
 
-> **PACF plots.**
+###### Figure 2: ACF plots
 
 ```{r}
 #| echo: false
 #| message: false
 par(mfrow = c(3, 2))
-pacf(exchange_rate_usd, lag.max = 10, plot = TRUE) 
-pacf(MB, lag.max = 10, plot = TRUE) 
-pacf(Short_R, lag.max = 10, plot = TRUE) 
-pacf(GDP, lag.max = 10, plot = TRUE) 
-pacf(CPI, lag.max = 10, plot = TRUE) 
+pacf(exchange_rate_usd, lag.max = 10, plot = TRUE, main = "Exchange Rate (AUD/USD) ACF")
+pacf(MB, lag.max = 10, plot = TRUE, main = "Monetary Base (M1) ACF")
+pacf(Short_R, lag.max = 10, plot = TRUE , main = "Short-Term Interest Rate ACF")
+pacf(GDP, lag.max = 10, plot = TRUE , main = "Gross Domestic Product ACF")
+pacf(CPI, lag.max = 10, plot = TRUE , main = "Consumer Price Index ACF")
 ```
 
-> **ADF Test.**
+###### Figure 3: PACF plots
+
+Augmented Dickey-Fuller Test is performed to test for stationarity, the null hypothesis is unit-root non-stationary.
+
+[Table 2: ADF test] shows that for ERA, MB, GDP, we can not reject the null hypothesis at 5% significant level and considered as unit-root non-stationary. Short-term interest rate and CPI can reject the null at 5% significant level and considered as unit-root stationary.
+
+[Table 3: ADF test of First Difference] shows the first difference of all variables, ERA, MB, GDP can reject the null at 5% significant level and considered as unit-root stationary at first order condition, they are integrated of order 1.
 
 ```{r warning=FALSE}
 #| echo: false
@@ -227,6 +235,8 @@ for (i in data_all){
 knitr::kable(adf, caption = "ADF test", digits = 2)
 ```
 
+###### Table 2: ADF test
+
 ```{r warning=FALSE}
 #| echo: false
 #| message: false
@@ -242,10 +252,10 @@ for (i in data_all){
   
 }
 
-knitr::kable(adf1, caption = "ADF test of first difference", digits = 2)
+knitr::kable(adf1, caption = "ADF test of First Difference", digits = 2)
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+###### Table 3: ADF test of First Difference
 
 ## Model Specification
 

@@ -96,6 +96,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a>
   <ul class="collapse">
+  <li><a href="#preliminary-results" id="toc-preliminary-results" class="nav-link" data-scroll-target="#preliminary-results">Preliminary Results</a></li>
   <li><a href="#model-specification" id="toc-model-specification" class="nav-link" data-scroll-target="#model-specification">Model Specification</a></li>
   <li><a href="#a-simple-example" id="toc-a-simple-example" class="nav-link" data-scroll-target="#a-simple-example">A Simple Example</a></li>
   </ul></li>
@@ -141,7 +142,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="data" class="level1">
 <h1>Data</h1>
 <p>The endogenous variables for the SVAR analysis included: Exchange rate of AUD/USD (ERA), Monetary base M1 (MB), the Bank Accepted Bills/Negotiable Certificates of Deposit-3 months Short–term interest rate (Short_R), Gross Domestic Product (GDP) and Consumer Price Index(CPI). The data are collected from the Reserve Bank of Australia (RBA) and Australian Bureau of Statistics (ABS), adjusted in quarterly frequency and from 1980 Q1 to 2022 Q4, including 172 observations.</p>
-<p>The first variable is the key variable in the analysis of the research, and the other 5 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in <a href="#figure-1.-time-series-plots">Figure 1. Time-series plots</a> .</p>
+<p>The first variable is the key variable in the analysis of the research, and the other 5 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in <a href="#figure-1.-time-series-plots">Figure 1. Time-series plots</a>.</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
@@ -149,10 +150,12 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <section id="figure-1.-time-series-plots" class="level6">
 <h6 class="anchored" data-anchor-id="figure-1.-time-series-plots">Figure 1. Time-series plots</h6>
+<p>Exchange rate changes are volatile overtime, exhibits peaks and troughs. Monetary base, GDP and CPI all illustrate increasing trend overtime, with some drops during the global financial crisis and during COVID-19 period. Short-term interest rate displays a downward trend since 2000. All time-series plots are restricted in the time period from 1980 Q1 to 2022 Q4.</p>
+<p><a href="#table-1.-summary-statistics">Table 1. Summary statistics</a> provides statistics summary of all variables from 1980 Q1 to 2022 Q4.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
-<caption>Summary Statistics</caption>
+<caption>Table1.Summary Statistics</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">variable</th>
@@ -211,6 +214,9 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="table-1.-summary-statistics" class="level6">
 <h6 class="anchored" data-anchor-id="table-1.-summary-statistics">Table 1. Summary statistics</h6>
+</section>
+<section id="preliminary-results" class="level2">
+<h2 class="anchored" data-anchor-id="preliminary-results">Preliminary Results</h2>
 <blockquote class="blockquote">
 <p><strong>ACF plots.</strong></p>
 </blockquote>

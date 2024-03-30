@@ -103,5 +103,12 @@
     "title": "Effects of monetary policy shocks on exchange rate: Evidence from Australia",
     "section": "Model Specification",
     "text": "Model Specification\n\\[\\begin{align}\nY_{t} =\\mu_{0}  + \\sum_{i=0}^{p} (A_{i}Y_{t-i} )+\\epsilon_{t}\n\\end{align}\\]\n\\[\\begin{align}\n\\epsilon_{t}|Y_{t-1} \\sim iid(0_{N},\\Sigma )\n\\end{align}\\]"
+  },
+  {
+    "objectID": "index.html#preliminary-results",
+    "href": "index.html#preliminary-results",
+    "title": "Effects of monetary policy shocks on exchange rate: Evidence from Australia",
+    "section": "Preliminary Results",
+    "text": "Preliminary Results\n\nACF plots.\n\n\n\n\n\n\n\nPACF plots.\n\n\n\n\n\n\n\nADF Test.\n\n\n\n\nADF test\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-3.12\n5\n0.11\n\n\nMB\n-3.14\n5\n0.10\n\n\nShort_R\n-3.59\n5\n0.04\n\n\nGDP\n-1.99\n5\n0.58\n\n\nCPI\n-3.72\n5\n0.02\n\n\n\n\n\n\n\n\nADF test of first difference\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-4.91\n5\n0.01\n\n\nMB\n-4.47\n5\n0.01\n\n\nShort_R\n-6.48\n5\n0.01\n\n\nGDP\n-5.90\n5\n0.01\n\n\nCPI\n-2.71\n5\n0.28\n\n\n\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
   }
 ]

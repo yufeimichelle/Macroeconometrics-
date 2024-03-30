@@ -18,35 +18,35 @@
     "href": "tmp/research plan.html",
     "title": "research plan",
     "section": "",
-    "text": "State the objective of your research project in one sentence.\n\nEffects of monetary policy shocks on exchange rate: Evidence from Australia\n\nState the question that you are going to answer in another sentence.\n\nThis research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 2010 to 2020 using the Bayesian Structural Vector Auto-regression (SVAR) model.\n\nKey words: Monetary policy, exchange rate, SVAR model, Delayed Overshooting"
+    "text": "State the objective of your research project in one sentence.\n\nEffects of monetary policy shocks on exchange rate: Evidence from Australia\n\nState the question that you are going to answer in another sentence.\n\nThis research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 1980 to 2022 using the Bayesian Structural Vector Auto-regression (SVAR) model.\n\nKey words: Monetary policy, exchange rate, SVAR model, Delayed Overshooting"
   },
   {
     "objectID": "tmp/research plan.html#topic",
     "href": "tmp/research plan.html#topic",
     "title": "research plan",
     "section": "",
-    "text": "State the objective of your research project in one sentence.\n\nEffects of monetary policy shocks on exchange rate: Evidence from Australia\n\nState the question that you are going to answer in another sentence.\n\nThis research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 2010 to 2020 using the Bayesian Structural Vector Auto-regression (SVAR) model.\n\nKey words: Monetary policy, exchange rate, SVAR model, Delayed Overshooting"
+    "text": "State the objective of your research project in one sentence.\n\nEffects of monetary policy shocks on exchange rate: Evidence from Australia\n\nState the question that you are going to answer in another sentence.\n\nThis research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 1980 to 2022 using the Bayesian Structural Vector Auto-regression (SVAR) model.\n\nKey words: Monetary policy, exchange rate, SVAR model, Delayed Overshooting"
   },
   {
     "objectID": "tmp/research plan.html#introduction",
     "href": "tmp/research plan.html#introduction",
     "title": "research plan",
     "section": "Introduction",
-    "text": "Introduction\n\nMotivate your objective and research question by explaining why it is important to investigate this problem in one brief paragraph."
+    "text": "Introduction\n\nMotivate your objective and research question by explaining why it is important to investigate this problem in one brief paragraph.\n\nHow monetary policy shocks affect exchange rate? The most well-known study from Dornbusch’s (1976) documented the overshooting model, which predicts that the monetary expansion would leads to an increase in domestic interest rate and persistene deprecision of exchange rate. However, more economists such as Eichenbaum and Evans (1995) utilized VAR model found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.\nThe recent study Kim and Lim(2018) further explored that relatively short delay in the effect of contractionary monetary shock to exchange rate appreciation for the UK, Australia, Sweden and Canada.\nThis paper aims to focus on investigate the effect of monetary shock in a small open economy Australia, applying the Bayesian Structural Vector Auto-regression (SVAR) model. What is the role of monetary policy shock in exchange rate behavior in Australia? Are the effect similar to those large countries? Do we find similar puzzling responses?"
   },
   {
     "objectID": "tmp/research plan.html#data",
     "href": "tmp/research plan.html#data",
     "title": "research plan",
     "section": "Data",
-    "text": "Data\n\nERA Monthly nominal average exchange rate AUD/USD –RBA\nFR Foreign exchange reserve,Official reserve assets,monthly (FX)–RBA\nCPI Consumer price index, seasonally adjusted(quarterly) –ABS\nPPI Producer Price Index (PPI, Quarter)–ABS\nMB Monetary base, seasonally adjusted (M1) –RBA\nR short-term interest rate,Bank Accepted Bills/Negotiable Certificates of Deposit-3 months; monthly average –RBA\nReal GDP (quarterly) Gross domestic product: Chain volume measures ;–RBA\n\nNotes:\n–3 monthly variable all take the last value in the quarter to change to quarterly data\n–data need to take Logarithm We take the logarithm of consumer price index, industrial production, foreign exchange reserves, monetary base, and exchange rates, and then multiply those series by 100.\n–summary statistics\n–testing autocorrelation, ADF test ???–all non-stationary??\n–need to be same order of stationary\n\nInvestigate its properties and argue on: why they are essential to answer your research question, how they inform or motivate your model equations.\n\n1~6 are endogenous variable, 3~6 are key monetary variables to identify monetary shocks, 1~2 are key variable for this study"
+    "text": "Data\n\nERA Monthly nominal average exchange rate AUD/USD –RBA\nFR Foreign exchange reserve,Official reserve assets,monthly (FX)–RBA\nCPI Consumer price index, seasonally adjusted(quarterly) –ABS\nPPI Producer Price Index (PPI, Quarter)–ABS\nMB Monetary base, seasonally adjusted (M1) –RBA\nR short-term interest rate,Bank Accepted Bills/Negotiable Certificates of Deposit-3 months; monthly average –RBA\nReal GDP (quarterly) Gross domestic product: Chain volume measures ;–RBA\n\nNotes:\n–3 monthly variable all take the last value in the quarter to change to quarterly data\n–data need to take Logarithm We take the logarithm of consumer price index, industrial production, foreign exchange reserves, monetary base, and exchange rates\n–summary statistics, see summary statistics\n–testing autocorrelation, ADF test ???–all non-stationary?? see ADF Test and ADF Test first difference\n–need to be same order of stationary\n\nInvestigate its properties and argue on: why they are essential to answer your research question, how they inform or motivate your model equations.\n\nThe endogenous variables for the SVAR analysis included: Exchange rate of AUD/USD (ERA), Monetary base M1 (MB), the Bank Accepted Bills/Negotiable Certificates of Deposit-3 months Short–term interest rate (Short_R), Gross Domestic Product (GDP) and Consumer Price Index(CPI). The data are collected from the Reserve Bank of Australia (RBA) and Australian Bureau of Statistics (ABS), adjusted in quarterly frequency and from 1980 Q1 to 2022 Q4, including 172 observations.\nThe first variable is the key variable in the analysis of the research, and the other 5 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in combined plots.\nTime-series descriptions:\nExchange rate changes are volatile overtime, exhibits peaks and troughs. Monetary base, GDP and CPI all illustrate increasing trend overtime, with some drops during the global financial crisis and during COVID-19 period. Short-term interest rate displays a downward trend since 2000. All time-series plots are restricted in the time period from 1980 Q1 to 2022 Q4.\nsummary statistics provides statistics summary of all variables from 1980 Q1 to 2022 Q4."
   },
   {
     "objectID": "tmp/research plan.html#model-specification",
     "href": "tmp/research plan.html#model-specification",
     "title": "research plan",
     "section": "Model specification",
-    "text": "Model specification\n–just copy the equation\n–specify Y is what matrix 1XN and so on…."
+    "text": "Model specification\n–just copy the equation, see Equations\n–specify Y is what matrix 1XN and so on…."
   },
   {
     "objectID": "tmp/research plan.html#running-code",
@@ -60,42 +60,42 @@
     "href": "tmp/research plan.html#combined-plots",
     "title": "research plan",
     "section": "combined plots",
-    "text": "combined plots\n\n\n\n\n\n\n\n\nSummary Statistics\n\n\nvariable\nN\nmean\nsd\nMin\nMax\n\n\n\n\nERA\n172\n0.78\n0.14\n0.49\n1.18\n\n\nMB\n172\n5.03\n1.38\n2.74\n7.43\n\n\nShort_R\n172\n1.54\n1.26\n-4.61\n2.97\n\n\nGDP\n172\n12.69\n0.39\n12.03\n13.31\n\n\nCPI\n172\n4.26\n0.41\n3.23\n4.87"
+    "text": "combined plots"
   },
   {
     "objectID": "tmp/index try.html#running-code",
     "href": "tmp/index try.html#running-code",
     "title": "website try",
     "section": "Running Code",
-    "text": "Running Code\nWhen you click the Render button a document will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n\n\nSummary Statistics\n\n\nvariable\nN\nmean\nsd\nMin\nMax\n\n\n\n\nERA\n172\n-0.26\n0.18\n-0.72\n0.17\n\n\nMB\n172\n5.03\n1.38\n2.74\n7.43\n\n\nShort_R\n172\n1.54\n1.26\n-4.61\n2.97\n\n\nGDP\n172\n12.69\n0.39\n12.03\n13.31\n\n\nCPI\n172\n4.26\n0.41\n3.23\n4.87\n\n\n\n\n\nYou can add options to executable code like this\n\n#| echo: false\n#| message: false\npar(mfrow = c(3, 2))\nacf(exchange_rate_usd, lag.max = 10, plot = TRUE) \nacf(MB, lag.max = 10, plot = TRUE) \nacf(Short_R, lag.max = 10, plot = TRUE) \nacf(GDP, lag.max = 10, plot = TRUE) \nacf(CPI, lag.max = 10, plot = TRUE) \n\n\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
+    "text": "Running Code\nWhen you click the Render button a document will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n\n\nSummary Statistics\n\n\nvariable\nN\nmean\nsd\nMin\nMax\n\n\n\n\nERA\n172\n-0.26\n0.18\n-0.72\n0.17\n\n\nMB\n172\n5.03\n1.38\n2.74\n7.43\n\n\nShort_R\n172\n1.54\n1.26\n-4.61\n2.97\n\n\nGDP\n172\n12.69\n0.39\n12.03\n13.31\n\n\nCPI\n172\n4.26\n0.41\n3.23\n4.87\n\n\n\n\n\nYou can add options to executable code like this\n\n#| echo: false\n#| message: false\npar(mfrow = c(3, 2))\nplot(acf(exchange_rate_usd, lag.max = 10, plot = TRUE), main = \"Exchange Rate (AUD/USD) ACF\")\nplot(acf(MB, lag.max = 10, plot = TRUE) , main = \"Monetary Base (M1) ACF\")\nplot(acf(Short_R, lag.max = 10, plot = TRUE) , main = \"Short-Term Interest Rate ACF\")\n\n\n\nplot(acf(GDP, lag.max = 10, plot = TRUE) , main = \"Gross Domestic Product ACF\")\nplot(acf(CPI, lag.max = 10, plot = TRUE) , main = \"Consumer Price Index ACF\")\n\n\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
   },
   {
     "objectID": "tmp/research plan.html#acf",
     "href": "tmp/research plan.html#acf",
     "title": "research plan",
     "section": "ACF",
-    "text": "ACF"
+    "text": "ACF\npar(mfrow = c(3, 2))\nacf(exchange_rate_usd, lag.max = 10, plot = TRUE) \nacf(MB, lag.max = 10, plot = TRUE) \nacf(Short_R, lag.max = 10, plot = TRUE) \nacf(GDP, lag.max = 10, plot = TRUE) \nacf(CPI, lag.max = 10, plot = TRUE)"
   },
   {
     "objectID": "tmp/research plan.html#pacf",
     "href": "tmp/research plan.html#pacf",
     "title": "research plan",
     "section": "PACF",
-    "text": "PACF"
+    "text": "PACF\npar(mfrow = c(3, 2))\npacf(exchange_rate_usd, lag.max = 10, plot = TRUE) \npacf(MB, lag.max = 10, plot = TRUE) \npacf(Short_R, lag.max = 10, plot = TRUE) \npacf(GDP, lag.max = 10, plot = TRUE) \npacf(CPI, lag.max = 10, plot = TRUE)"
   },
   {
     "objectID": "tmp/research plan.html#adf-test",
     "href": "tmp/research plan.html#adf-test",
     "title": "research plan",
     "section": "ADF Test",
-    "text": "ADF Test\n\n\nWarning in adf.test(i): p-value smaller than printed p-value\n\nWarning in adf.test(i): p-value smaller than printed p-value\n\nWarning in adf.test(i): p-value smaller than printed p-value\n\n\n\nADF test\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-3.12\n5\n0.11\n\n\nMB\n-3.14\n5\n0.10\n\n\nShort_R\n-6.05\n5\n0.01\n\n\nGDP\n-1.99\n5\n0.58\n\n\nCPI\n-3.72\n5\n0.02"
+    "text": "ADF Test\n\n\n\nADF test\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-3.12\n5\n0.11\n\n\nMB\n-3.14\n5\n0.10\n\n\nShort_R\n-3.59\n5\n0.04\n\n\nGDP\n-1.99\n5\n0.58\n\n\nCPI\n-3.72\n5\n0.02"
   },
   {
     "objectID": "tmp/research plan.html#adf-test-first-difference",
     "href": "tmp/research plan.html#adf-test-first-difference",
     "title": "research plan",
     "section": "ADF Test first difference",
-    "text": "ADF Test first difference\n\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\nWarning in adf.test(na.omit(diff(i))): p-value smaller than printed p-value\n\n\n\nADF test\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-4.91\n5\n0.01\n\n\nMB\n-4.47\n5\n0.01\n\n\nShort_R\n-7.15\n5\n0.01\n\n\nGDP\n-5.90\n5\n0.01\n\n\nCPI\n-2.71\n5\n0.28\n\n\n\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
+    "text": "ADF Test first difference\n\n\n\nADF test\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-4.91\n5\n0.01\n\n\nMB\n-4.47\n5\n0.01\n\n\nShort_R\n-6.48\n5\n0.01\n\n\nGDP\n-5.90\n5\n0.01\n\n\nCPI\n-2.71\n5\n0.28\n\n\n\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
   },
   {
     "objectID": "index.html#model-specification",
@@ -109,6 +109,20 @@
     "href": "index.html#preliminary-results",
     "title": "Effects of monetary policy shocks on exchange rate: Evidence from Australia",
     "section": "Preliminary Results",
-    "text": "Preliminary Results\n\nACF plots.\n\n\n\n\n\n\n\nPACF plots.\n\n\n\n\n\n\n\nADF Test.\n\n\n\n\nADF test\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-3.12\n5\n0.11\n\n\nMB\n-3.14\n5\n0.10\n\n\nShort_R\n-3.59\n5\n0.04\n\n\nGDP\n-1.99\n5\n0.58\n\n\nCPI\n-3.72\n5\n0.02\n\n\n\n\n\n\n\n\nADF test of first difference\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-4.91\n5\n0.01\n\n\nMB\n-4.47\n5\n0.01\n\n\nShort_R\n-6.48\n5\n0.01\n\n\nGDP\n-5.90\n5\n0.01\n\n\nCPI\n-2.71\n5\n0.28\n\n\n\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
+    "text": "Preliminary Results\nFigure 2: ACF plots shows that for GDP and CPI have non-zero auto correlations for at least 10 lags, for the ERA, MB, Short_R have non-zero auto correlations for at least 2.5 lags.\nFigure 3: PACF plots shows no statistically significant lags except short-term interest rate. Short-term interest rate has some spikes in lag 1 and 1.75 but not strong.\n\n\n\n\n\n\nFigure 2: ACF plots\n\n\n\n\n\n\n\nFigure 3: PACF plots\nAugmented Dickey-Fuller Test is performed to test for stationarity, the null hypothesis is unit-root non-stationary.\nTable 2: ADF test shows that for ERA, MB, GDP, we can not reject the null hypothesis at 5% significant level and considered as unit-root non-stationary. Short-term interest rate and CPI can reject the null at 5% significant level and considered as unit-root stationary.\nTable 3: ADF test of First Difference shows the first difference of all variables, ERA, MB, GDP can reject the null at 5% significant level and considered as unit-root stationary at first order condition, they are integrated of order 1.\n\n\n\nADF test\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-3.12\n5\n0.11\n\n\nMB\n-3.14\n5\n0.10\n\n\nShort_R\n-3.59\n5\n0.04\n\n\nGDP\n-1.99\n5\n0.58\n\n\nCPI\n-3.72\n5\n0.02\n\n\n\n\n\n\n\nTable 2: ADF test\n\n\n\nADF test of First Difference\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-4.91\n5\n0.01\n\n\nMB\n-4.47\n5\n0.01\n\n\nShort_R\n-6.48\n5\n0.01\n\n\nGDP\n-5.90\n5\n0.01\n\n\nCPI\n-2.71\n5\n0.28\n\n\n\n\n\n\n\nTable 3: ADF test of First Difference"
+  },
+  {
+    "objectID": "tmp/research plan.html#summary-statistics",
+    "href": "tmp/research plan.html#summary-statistics",
+    "title": "research plan",
+    "section": "summary statistics",
+    "text": "summary statistics\n\n\n\nSummary Statistics\n\n\nvariable\nN\nmean\nsd\nMin\nMax\n\n\n\n\nERA\n172\n0.78\n0.14\n0.49\n1.18\n\n\nMB\n172\n5.03\n1.38\n2.74\n7.43\n\n\nShort_R\n172\n7.04\n5.02\n0.01\n19.56\n\n\nGDP\n172\n12.69\n0.39\n12.03\n13.31\n\n\nCPI\n172\n4.26\n0.41\n3.23\n4.87"
+  },
+  {
+    "objectID": "tmp/research plan.html#equations",
+    "href": "tmp/research plan.html#equations",
+    "title": "research plan",
+    "section": "Equations",
+    "text": "Equations\n\\[\\begin{align}\nY_{t} =\\mu_{0}  + \\sum_{i=0}^{p} (A_{i}Y_{t-i} )+\\epsilon_{t}\n\\end{align}\\]\n\\[\\begin{align}\n\\epsilon_{t}|Y_{t-1} \\sim iid(0_{N},\\Sigma )\n\\end{align}\\]"
   }
 ]

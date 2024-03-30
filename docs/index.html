@@ -142,20 +142,20 @@ ul.task-list li input[type="checkbox"] {
 <section id="data" class="level1">
 <h1>Data</h1>
 <p>The endogenous variables for the SVAR analysis included: Exchange rate of AUD/USD (ERA), Monetary base M1 (MB), the Bank Accepted Bills/Negotiable Certificates of Deposit-3 months Short–term interest rate (Short_R), Gross Domestic Product (GDP) and Consumer Price Index(CPI). The data are collected from the Reserve Bank of Australia (RBA) and Australian Bureau of Statistics (ABS), adjusted in quarterly frequency and from 1980 Q1 to 2022 Q4, including 172 observations.</p>
-<p>The first variable is the key variable in the analysis of the research, and the other 5 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in <a href="#figure-1.-time-series-plots">Figure 1. Time-series plots</a>.</p>
+<p>The first variable is the key variable in the analysis of the research, and the other 5 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in <a href="#figure-1-time-series-plots">Figure 1: Time-series plots</a>.</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<section id="figure-1.-time-series-plots" class="level6">
-<h6 class="anchored" data-anchor-id="figure-1.-time-series-plots">Figure 1. Time-series plots</h6>
+<section id="figure-1-time-series-plots" class="level6">
+<h6 class="anchored" data-anchor-id="figure-1-time-series-plots">Figure 1: Time-series plots</h6>
 <p>Exchange rate changes are volatile overtime, exhibits peaks and troughs. Monetary base, GDP and CPI all illustrate increasing trend overtime, with some drops during the global financial crisis and during COVID-19 period. Short-term interest rate displays a downward trend since 2000. All time-series plots are restricted in the time period from 1980 Q1 to 2022 Q4.</p>
-<p><a href="#table-1.-summary-statistics">Table 1. Summary statistics</a> provides statistics summary of all variables from 1980 Q1 to 2022 Q4.</p>
+<p><a href="#table-1-summary-statistics">Table 1: Summary statistics</a> provides statistics summary of all variables from 1980 Q1 to 2022 Q4.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
-<caption>Table1.Summary Statistics</caption>
+<caption>Summary Statistics</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">variable</th>
@@ -212,30 +212,31 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </section>
-<section id="table-1.-summary-statistics" class="level6">
-<h6 class="anchored" data-anchor-id="table-1.-summary-statistics">Table 1. Summary statistics</h6>
+<section id="table-1-summary-statistics" class="level6">
+<h6 class="anchored" data-anchor-id="table-1-summary-statistics">Table 1: Summary statistics</h6>
 </section>
 <section id="preliminary-results" class="level2">
 <h2 class="anchored" data-anchor-id="preliminary-results">Preliminary Results</h2>
-<blockquote class="blockquote">
-<p><strong>ACF plots.</strong></p>
-</blockquote>
+<p><a href="#figure-2-acf-plots">Figure 2: ACF plots</a> shows that for GDP and CPI have non-zero auto correlations for at least 10 lags, for the ERA, MB, Short_R have non-zero auto correlations for at least 2.5 lags.</p>
+<p><a href="#figure-3-pacf-plots">Figure 3: PACF plots</a> shows no statistically significant lags except short-term interest rate. Short-term interest rate has some spikes in lag 1 and 1.75 but not strong.</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<blockquote class="blockquote">
-<p><strong>PACF plots.</strong></p>
-</blockquote>
+<section id="figure-2-acf-plots" class="level6">
+<h6 class="anchored" data-anchor-id="figure-2-acf-plots">Figure 2: ACF plots</h6>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<blockquote class="blockquote">
-<p><strong>ADF Test.</strong></p>
-</blockquote>
+</section>
+<section id="figure-3-pacf-plots" class="level6">
+<h6 class="anchored" data-anchor-id="figure-3-pacf-plots">Figure 3: PACF plots</h6>
+<p>Augmented Dickey-Fuller Test is performed to test for stationarity, the null hypothesis is unit-root non-stationary.</p>
+<p><a href="#table-2-adf-test">Table 2: ADF test</a> shows that for ERA, MB, GDP, we can not reject the null hypothesis at 5% significant level and considered as unit-root non-stationary. Short-term interest rate and CPI can reject the null at 5% significant level and considered as unit-root stationary.</p>
+<p><a href="#table-3-adf-test-of-first-difference">Table 3: ADF test of First Difference</a> shows the first difference of all variables, ERA, MB, GDP can reject the null at 5% significant level and considered as unit-root stationary at first order condition, they are integrated of order 1.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
@@ -283,10 +284,13 @@ ul.task-list li input[type="checkbox"] {
 </table>
 </div>
 </div>
+</section>
+<section id="table-2-adf-test" class="level6">
+<h6 class="anchored" data-anchor-id="table-2-adf-test">Table 2: ADF test</h6>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
-<caption>ADF test of first difference</caption>
+<caption>ADF test of First Difference</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;"></th>
@@ -330,7 +334,10 @@ ul.task-list li input[type="checkbox"] {
 </table>
 </div>
 </div>
-<p>The <code>echo: false</code> option disables the printing of code (only output is displayed).</p>
+</section>
+<section id="table-3-adf-test-of-first-difference" class="level6">
+<h6 class="anchored" data-anchor-id="table-3-adf-test-of-first-difference">Table 3: ADF test of First Difference</h6>
+</section>
 </section>
 <section id="model-specification" class="level2">
 <h2 class="anchored" data-anchor-id="model-specification">Model Specification</h2>

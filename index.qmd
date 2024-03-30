@@ -180,9 +180,9 @@ knitr::kable(table1, caption = "Summary Statistics", digits = 2)
 
 ## Preliminary Results
 
-[Figure 2: ACF plots] shows that for GDP and CPI have non-zero auto correlations for at least 10 lags, for the ERA, MB, Short_R have non-zero auto correlations for at least 2.5 lags.
+[Figure 2: ACF plots] shows that for GDP and CPI have non-zero auto correlations for at least 10 lags, for the ERA, MB, Short_R have non-zero auto correlations for at least 10 lags (shown in 2.5 years).
 
-[Figure 3: PACF plots] shows no statistically significant lags except short-term interest rate. Short-term interest rate has some spikes in lag 1 and 1.75 but not strong.
+[Figure 3: PACF plots] shows no statistically significant lags except short-term interest rate. Short-term interest rate has some spikes in 4th lag and 5th lag, but not strong.
 
 ```{r}
 

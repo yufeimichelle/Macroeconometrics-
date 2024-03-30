@@ -10,19 +10,21 @@ bibliography: references.bib
 
 > **Abstract.** This research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 1980 to 2022 using the Bayesian Structural Vector Auto-regression (SVAR) model.
 >
-> **Keywords.**  R, Monetary policy, exchange rate, SVAR model
+> **Keywords.** R, Monetary policy, exchange rate, SVAR model
 
 # Introduction
 
-How monetary policy shocks affect exchange rate? The most well-known study from Dornbusch's (1976) documented the overshooting model, which predicts that the monetary expansion would leads to an increase in domestic interest rate and persistene deprecision of exchange rate. However, more economists such as Eichenbaum and Evans (1995) utilized VAR model  found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.
+How monetary policy shocks affect exchange rate? The most well-known study from Dornbusch's (1976) documented the overshooting model, which predicts that the monetary expansion would leads to an increase in domestic interest rate and persistene deprecision of exchange rate. However, more economists such as Eichenbaum and Evans (1995) utilized VAR model found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.
 
-The recent study Kim and Lim(2018) further explored that relatively short delay in the effect of contractionary monetary shock to exchange rate appreciation for the UK, Australia, Sweden and Canada. 
-
+The recent study Kim and Lim(2018) further explored that relatively short delay in the effect of contractionary monetary shock to exchange rate appreciation for the UK, Australia, Sweden and Canada.
 
 This paper aims to focus on investigate the effect of monetary shock in a small open economy Australia, applying the Bayesian Structural Vector Auto-regression (SVAR) model. What is the role of monetary policy shock in exchange rate behavior in Australia? Are the effect similar to those large countries? Do we find similar puzzling responses?
 
-
 # Data
+
+The endogenous variables for the SVAR analysis included: Exchange rate of AUD/USD (ERA), Monetary base M1 (MB), the Bank Accepted Bills/Negotiable Certificates of Deposit-3 months Short–term interest rate (Short_R), Gross Domestic Product (GDP) and Consumer Price Index(CPI). The data are collected from the Reserve Bank of Australia (RBA) and Australian Bureau of Statistics (ABS), adjusted in quarterly frequency and from 1980 Q1 to 2022 Q4, including 172 observations.
+
+The first variable is the key variable in the analysis of the research, and the other 5 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in [Figure 1. Time-series plots] .
 
 ```{r}
 #| label: load-packages
@@ -79,7 +81,6 @@ MB_p = autoplot(MB) +
 
 ```
 
-
 ```{r}
 #| echo: false
 #| message: false
@@ -89,7 +90,6 @@ Short_R = to.quarterly(Short_R,OHLC = FALSE)
 Short_R <- window(Short_R,                   
              start = "1980 Q1",
              end = "2022 Q4")
-Short_R = log(Short_R)
 names(Short_R) <- "Short_R"
 SR_p = autoplot(Short_R) +
   theme_classic()+
@@ -100,7 +100,6 @@ SR_p = autoplot(Short_R) +
                                   face = "bold"))
 
 ```
-
 
 ```{r}
 #| echo: false
@@ -123,7 +122,6 @@ CPI_p = autoplot(CPI) +
 
 ```
 
-
 ```{r}
 #| echo: false
 #| message: false
@@ -144,7 +142,6 @@ GDP_p = autoplot(GDP) +
 
 ```
 
-
 ```{r}
 #| echo: false
 #| message: false
@@ -155,6 +152,7 @@ GDP_p = autoplot(GDP) +
 exchange_p + MB_p + SR_p + GDP_p  + CPI_p  + plot_layout(ncol = 2)
 ```
 
+###### Figure 1. Time-series plots
 
 ```{r}
 #| echo: false
@@ -170,7 +168,11 @@ table1 =data.frame(variable, N, mean,sd, Min, Max)
 
 
 knitr::kable(table1, caption = "Summary Statistics", digits = 2)
+
+
 ```
+
+###### Table 1. Summary statistics
 
 > **ACF plots.**
 
@@ -219,8 +221,6 @@ for (i in data_all){
 knitr::kable(adf, caption = "ADF test", digits = 2)
 ```
 
-
-
 ```{r warning=FALSE}
 #| echo: false
 #| message: false
@@ -243,17 +243,16 @@ The `echo: false` option disables the printing of code (only output is displayed
 
 ## Model Specification
 
-
-
+```{=tex}
 \begin{align}
 Y_{t} =\mu_{0}  + \sum_{i=0}^{p} (A_{i}Y_{t-i} )+\epsilon_{t} 
 \end{align}
-
+```
+```{=tex}
 \begin{align}
 \epsilon_{t}|Y_{t-1} \sim iid(0_{N},\Sigma )
 \end{align}
-
+```
 ## A Simple Example
 
-```
-## References {.unnumbered}
+\`\`\` \## References {.unnumbered}

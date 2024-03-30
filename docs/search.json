@@ -102,7 +102,7 @@
     "href": "index.html#model-specification",
     "title": "Effects of monetary policy shocks on exchange rate: Evidence from Australia",
     "section": "Model Specification",
-    "text": "Model Specification\n\\[\\begin{align}\nY_{t} =\\mu_{0}  + \\sum_{i=0}^{p} (A_{i}Y_{t-i} )+\\epsilon_{t}\n\\end{align}\\]\n\\[\\begin{align}\n\\epsilon_{t}|Y_{t-1} \\sim iid(0_{N},\\Sigma )\n\\end{align}\\]"
+    "text": "Model Specification\nThe Structural Form (SF) model of Structural VARs is:\n\\[\\begin{align}\nB_{0} Y_{t} =b_{0}  + \\sum_{i=0}^{p} (B_{i}Y_{t-i} )+u_{t}\n\\end{align}\\]\n\\[\\begin{align}\nu_{t}|Y_{t-1} \\sim iid(0_{N},I_{N}  )\n\\end{align}\\]\n\\(Y_{t}\\) is \\(N \\times 1\\) matrix of endogenous variable, \\(B_{0}\\) is \\(N \\times N\\) matrix of contemporaneous relationships, \\(u_{t}\\) is a \\(N \\times 1\\) vector of conditionally on\\(Y_{t-1}\\)orthogonal or independent structural shocks.\nThe Reduced Form (RF) representation is:\n\\[\\begin{align}\nY_{t} =\\mu_{0}  + \\sum_{i=0}^{p} (A_{i}Y_{t-i} )+\\epsilon_{t}\n\\end{align}\\]\n\\[\\begin{align}\n\\epsilon_{t}|Y_{t-1} \\sim iid(0_{N},\\Sigma )\n\\end{align}\\]"
   },
   {
     "objectID": "index.html#preliminary-results",
@@ -124,5 +124,12 @@
     "title": "research plan",
     "section": "Equations",
     "text": "Equations\n\\[\\begin{align}\nY_{t} =\\mu_{0}  + \\sum_{i=0}^{p} (A_{i}Y_{t-i} )+\\epsilon_{t}\n\\end{align}\\]\n\\[\\begin{align}\n\\epsilon_{t}|Y_{t-1} \\sim iid(0_{N},\\Sigma )\n\\end{align}\\]"
+  },
+  {
+    "objectID": "index.html#references",
+    "href": "index.html#references",
+    "title": "Effects of monetary policy shocks on exchange rate: Evidence from Australia",
+    "section": "References",
+    "text": "References\n``` ## References {.unnumbered}"
   }
 ]

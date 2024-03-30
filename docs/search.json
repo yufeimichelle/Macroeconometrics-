@@ -32,7 +32,7 @@
     "href": "tmp/research plan.html#introduction",
     "title": "research plan",
     "section": "Introduction",
-    "text": "Introduction\n\nMotivate your objective and research question by explaining why it is important to investigate this problem in one brief paragraph.\n\nHow monetary policy shocks affect exchange rate? The most well-known study from Dornbusch’s (1976) documented the overshooting model, which predicts that the monetary expansion would leads to an increase in domestic interest rate and persistene deprecision of exchange rate. However, more economists such as Eichenbaum and Evans (1995) utilized VAR model found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.\nThe recent study Kim and Lim(2018) further explored that relatively short delay in the effect of contractionary monetary shock to exchange rate appreciation for the UK, Australia, Sweden and Canada.\nThis paper aims to focus on investigate the effect of monetary shock in a small open economy Australia, applying the Bayesian Structural Vector Auto-regression (SVAR) model. What is the role of monetary policy shock in exchange rate behavior in Australia? Are the effect similar to those large countries? Do we find similar puzzling responses?"
+    "text": "Introduction\n\nMotivate your objective and research question by explaining why it is important to investigate this problem in one brief paragraph.\n\nHow monetary policy shocks affect exchange rate? The most well-known study from Dornbusch’s (1976) documented the overshooting model, which predicts that the monetary expansion would leads to an increase in domestic interest rate and persistene deprecision of exchange rate. However, more economists such as Eichenbaum and Evans (1995) utilized VAR model found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.\nThe recent study Kim and LimKim and Lim (2018a) further explored that relatively short delay in the effect of contractionary monetary shock to exchange rate appreciation for the UK, Australia, Sweden and Canada.\nThis paper aims to focus on investigate the effect of monetary shock in a small open economy Australia, applying the Bayesian Structural Vector Auto-regression (SVAR) model. What is the role of monetary policy shock in exchange rate behavior in Australia? Are the effect similar to those large countries? Do we find similar puzzling responses?"
   },
   {
     "objectID": "tmp/research plan.html#data",
@@ -67,21 +67,21 @@
     "href": "tmp/index try.html#running-code",
     "title": "website try",
     "section": "Running Code",
-    "text": "Running Code\nWhen you click the Render button a document will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n\n\nSummary Statistics\n\n\nvariable\nN\nmean\nsd\nMin\nMax\n\n\n\n\nERA\n172\n-0.26\n0.18\n-0.72\n0.17\n\n\nMB\n172\n5.03\n1.38\n2.74\n7.43\n\n\nShort_R\n172\n1.54\n1.26\n-4.61\n2.97\n\n\nGDP\n172\n12.69\n0.39\n12.03\n13.31\n\n\nCPI\n172\n4.26\n0.41\n3.23\n4.87\n\n\n\n\n\nYou can add options to executable code like this\n\n#| echo: false\n#| message: false\npar(mfrow = c(3, 2))\nplot(acf(exchange_rate_usd, lag.max = 10, plot = TRUE), main = \"Exchange Rate (AUD/USD) ACF\")\nplot(acf(MB, lag.max = 10, plot = TRUE) , main = \"Monetary Base (M1) ACF\")\nplot(acf(Short_R, lag.max = 10, plot = TRUE) , main = \"Short-Term Interest Rate ACF\")\n\n\n\nplot(acf(GDP, lag.max = 10, plot = TRUE) , main = \"Gross Domestic Product ACF\")\nplot(acf(CPI, lag.max = 10, plot = TRUE) , main = \"Consumer Price Index ACF\")\n\n\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
+    "text": "Running Code\nWhen you click the Render button a document will be generated that includes both content and the output of embedded code. Kim and Lim (2018) You can embed code like this:\n\n\n\nSummary Statistics\n\n\nvariable\nN\nmean\nsd\nMin\nMax\n\n\n\n\nERA\n172\n-0.26\n0.18\n-0.72\n0.17\n\n\nMB\n172\n5.03\n1.38\n2.74\n7.43\n\n\nShort_R\n172\n1.54\n1.26\n-4.61\n2.97\n\n\nGDP\n172\n12.69\n0.39\n12.03\n13.31\n\n\nCPI\n172\n4.26\n0.41\n3.23\n4.87\n\n\n\n\n\nYou can add options to executable code like this\n\n#| echo: false\n#| message: false\npar(mfrow = c(3, 2))\nplot(acf(exchange_rate_usd, lag.max = 10, plot = TRUE), main = \"Exchange Rate (AUD/USD) ACF\")\nplot(acf(MB, lag.max = 10, plot = TRUE) , main = \"Monetary Base (M1) ACF\")\nplot(acf(Short_R, lag.max = 10, plot = TRUE) , main = \"Short-Term Interest Rate ACF\")\n\n\n\nplot(acf(GDP, lag.max = 10, plot = TRUE) , main = \"Gross Domestic Product ACF\")\nplot(acf(CPI, lag.max = 10, plot = TRUE) , main = \"Consumer Price Index ACF\")\n\n\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
   },
   {
     "objectID": "tmp/research plan.html#acf",
     "href": "tmp/research plan.html#acf",
     "title": "research plan",
     "section": "ACF",
-    "text": "ACF\npar(mfrow = c(3, 2))\nacf(exchange_rate_usd, lag.max = 10, plot = TRUE) \nacf(MB, lag.max = 10, plot = TRUE) \nacf(Short_R, lag.max = 10, plot = TRUE) \nacf(GDP, lag.max = 10, plot = TRUE) \nacf(CPI, lag.max = 10, plot = TRUE)"
+    "text": "ACF\npar(mfrow = c(3, 2))\nacf(exchange_rate_usd, lag.max = 10, plot = TRUE, main = \"Exchange Rate (AUD/USD) ACF\")\nacf(MB, lag.max = 10, plot = TRUE , main = \"Monetary Base (M1) ACF\")\nacf(Short_R, lag.max = 10, plot = TRUE , main = \"Short-Term Interest Rate ACF\")\nacf(GDP, lag.max = 10, plot = TRUE , main = \"Gross Domestic Product ACF\")\nacf(CPI, lag.max = 10, plot = TRUE , main = \"Consumer Price Index ACF\")"
   },
   {
     "objectID": "tmp/research plan.html#pacf",
     "href": "tmp/research plan.html#pacf",
     "title": "research plan",
     "section": "PACF",
-    "text": "PACF\npar(mfrow = c(3, 2))\npacf(exchange_rate_usd, lag.max = 10, plot = TRUE) \npacf(MB, lag.max = 10, plot = TRUE) \npacf(Short_R, lag.max = 10, plot = TRUE) \npacf(GDP, lag.max = 10, plot = TRUE) \npacf(CPI, lag.max = 10, plot = TRUE)"
+    "text": "PACF\npar(mfrow = c(3, 2))\npacf(exchange_rate_usd, lag.max = 10, plot = TRUE, main = \"Exchange Rate (AUD/USD) ACF\")\npacf(MB, lag.max = 10, plot = TRUE, main = \"Monetary Base (M1) ACF\")\npacf(Short_R, lag.max = 10, plot = TRUE , main = \"Short-Term Interest Rate ACF\")\npacf(GDP, lag.max = 10, plot = TRUE , main = \"Gross Domestic Product ACF\")\npacf(CPI, lag.max = 10, plot = TRUE , main = \"Consumer Price Index ACF\")"
   },
   {
     "objectID": "tmp/research plan.html#adf-test",
@@ -123,7 +123,7 @@
     "href": "tmp/research plan.html#equations",
     "title": "research plan",
     "section": "Equations",
-    "text": "Equations\n\\[\\begin{align}\nY_{t} =\\mu_{0}  + \\sum_{i=0}^{p} (A_{i}Y_{t-i} )+\\epsilon_{t}\n\\end{align}\\]\n\\[\\begin{align}\n\\epsilon_{t}|Y_{t-1} \\sim iid(0_{N},\\Sigma )\n\\end{align}\\]"
+    "text": "Equations\nThe Structural Form (SF) model of Structural VARs is:\n\\[\\begin{align}\nB_{0} Y_{t} =b_{0}  + \\sum_{i=0}^{p} (B_{i}Y_{t-i} )+u_{t}\n\\end{align}\\]\n\\[\\begin{align}\nu_{t}|Y_{t-1} \\sim iid(0_{N},I_{N}  )\n\\end{align}\\]\n\\(Y_{t}\\) is \\(N \\times 1\\) matrix of endogenous variable, \\(B_{0}\\) is \\(N \\times N\\) matrix of contemporaneous relationships, \\(u_{t}\\) is a \\(N \\times 1\\) vector of conditionally on\\(Y_{t-1}\\)orthogonal or independent structural shocks.\nThe Reduced Form (RF) representation is:\n\\[\\begin{align}\nY_{t} =\\mu_{0}  + \\sum_{i=0}^{p} (A_{i}Y_{t-i} )+\\epsilon_{t}\n\\end{align}\\]\n\\[\\begin{align}\n\\epsilon_{t}|Y_{t-1} \\sim iid(0_{N},\\Sigma )\n\\end{align}\\]\n(Kim and Lim 2018b)"
   },
   {
     "objectID": "index.html#references",
@@ -131,5 +131,12 @@
     "title": "Effects of monetary policy shocks on exchange rate: Evidence from Australia",
     "section": "References",
     "text": "References\n``` ## References {.unnumbered}"
+  },
+  {
+    "objectID": "index.html#methodology",
+    "href": "index.html#methodology",
+    "title": "Effects of monetary policy shocks on exchange rate: Evidence from Australia",
+    "section": "Methodology",
+    "text": "Methodology\nThe Structural Form (SF) model of Structural VARs is:\n\\[\\begin{align}\nB_{0} Y_{t} =b_{0}  + \\sum_{i=0}^{p} (B_{i}Y_{t-i} )+u_{t}\n\\end{align}\\]\n\\[\\begin{align}\nu_{t}|Y_{t-1} \\sim iid(0_{N},I_{N}  )\n\\end{align}\\]\n\\(Y_{t}\\) is \\(N \\times 1\\) matrix of endogenous variable, \\(B_{0}\\) is \\(N \\times N\\) matrix of contemporaneous relationships, \\(u_{t}\\) is a \\(N \\times 1\\) vector of conditionally on\\(Y_{t-1}\\)orthogonal or independent structural shocks.\nThe Reduced Form (RF) representation is:\n\\[\\begin{align}\nY_{t} =\\mu_{0}  + \\sum_{i=0}^{p} (A_{i}Y_{t-i} )+\\epsilon_{t}\n\\end{align}\\]\n\\[\\begin{align}\n\\epsilon_{t}|Y_{t-1} \\sim iid(0_{N},\\Sigma )\n\\end{align}\\]"
   }
 ]

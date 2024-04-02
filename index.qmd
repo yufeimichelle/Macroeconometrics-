@@ -22,7 +22,19 @@ This paper aims to focus on investigate the effect of monetary shock in a small 
 
 # Data
 
-The endogenous variables for the SVAR analysis included: Exchange rate of AUD/USD (ERA), Monetary base M1 (MB), the Bank Accepted Bills/Negotiable Certificates of Deposit-3 months Short–term interest rate (Short_R), Gross Domestic Product (GDP) and Consumer Price Index(CPI). The data are collected from the Reserve Bank of Australia (RBA) and Australian Bureau of Statistics (ABS), adjusted in quarterly frequency and from 1980 Q1 to 2022 Q4, including 172 observations.
+The endogenous variables for the SVAR analysis included:
+
+-   **Exchange rate of AUD/USD (ERA):** nominal average exchange rate AUD/USD (from RBA)
+
+-   **Monetary base M1 (MB):** Monetary base, seasonally adjusted (M1) (from RBA)
+
+-   **Short–term interest rate (Short_R) :** the Bank Accepted Bills/Negotiable Certificates of Deposit-3 months (from RBA)
+
+-   **Gross Domestic Product (GDP):** Real GDP (quarterly) Gross domestic product, Chain volume measures (from RBA)
+
+-   **Consumer Price Index(CPI):** Consumer price index, seasonally adjusted quarterly (from ABS)
+
+The data are collected from the Reserve Bank of Australia (RBA) and Australian Bureau of Statistics (ABS), adjusted in quarterly frequency and from 1980 Q1 to 2022 Q4, including 172 observations.
 
 The first variable is the key variable in the analysis of the research, and the other 5 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in [Figure 1: Time-series plots].
 
@@ -34,6 +46,8 @@ library(readrba)
 library(xts)
 library(ggplot2)
 library(readabs)
+library(dplyr)
+library(zoo)
 ```
 
 ```{r}
@@ -126,6 +140,7 @@ CPI_p = autoplot(CPI) +
 #| echo: false
 #| message: false
 GDP = read_rba(series_id = "GGDPCVGDP")
+
 GDP = xts(GDP$value, order.by = GDP$date)    
 GDP <- window(GDP,                   
               start = "1980-03-31",

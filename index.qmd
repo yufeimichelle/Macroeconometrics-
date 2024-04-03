@@ -217,11 +217,11 @@ acf(CPI, lag.max = 10, plot = TRUE , main = "Consumer Price Index ACF")
 #| echo: false
 #| message: false
 par(mfrow = c(3, 2))
-pacf(exchange_rate_usd, lag.max = 10, plot = TRUE, main = "Exchange Rate (AUD/USD) ACF")
-pacf(MB, lag.max = 10, plot = TRUE, main = "Monetary Base (M1) ACF")
-pacf(Short_R, lag.max = 10, plot = TRUE , main = "Short-Term Interest Rate ACF")
-pacf(GDP, lag.max = 10, plot = TRUE , main = "Gross Domestic Product ACF")
-pacf(CPI, lag.max = 10, plot = TRUE , main = "Consumer Price Index ACF")
+pacf(exchange_rate_usd, lag.max = 10, plot = TRUE, main = "Exchange Rate (AUD/USD) PACF")
+pacf(MB, lag.max = 10, plot = TRUE, main = "Monetary Base (M1) PACF")
+pacf(Short_R, lag.max = 10, plot = TRUE , main = "Short-Term Interest Rate PACF")
+pacf(GDP, lag.max = 10, plot = TRUE , main = "Gross Domestic Product PACF")
+pacf(CPI, lag.max = 10, plot = TRUE , main = "Consumer Price Index PACF")
 ```
 
 ###### Figure 3: PACF plots

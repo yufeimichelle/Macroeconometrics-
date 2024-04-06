@@ -1,5 +1,5 @@
 ---
-title: "Effects of monetary policy shocks on exchange rate: Evidence from Australia"
+title: "Effects of Monetary Policy Shocks on Exchange Rate: Evidence from Australia"
 author: "Yufei Wu"
 
 execute:

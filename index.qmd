@@ -36,7 +36,7 @@ The endogenous variables for the SVAR analysis included:
 
 The data are collected from the Reserve Bank of Australia (RBA) and Australian Bureau of Statistics (ABS), adjusted in quarterly frequency and from 1980 Q1 to 2022 Q4, including 172 observations.
 
-The first variable is the key variable in the analysis of the research, and the other 5 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in [Figure 1: Time-series plots].
+The first variable is the key variable in the analysis of the research, and the other 4 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in [Figure 1: Time-series plots].
 
 ```{r}
 #| label: load-packages
@@ -171,7 +171,7 @@ exchange_p + MB_p + SR_p + GDP_p  + CPI_p  + plot_layout(ncol = 2)
 
 Exchange rate changes are volatile overtime, exhibits peaks and troughs. Monetary base, GDP and CPI all illustrate increasing trend overtime, with some drops during the global financial crisis and during COVID-19 period. Short-term interest rate displays a downward trend since 2000. All time-series plots are restricted in the time period from 1980 Q1 to 2022 Q4.
 
-[Table 1: Summary statistics] provides statistics summary of all variables from 1980 Q1 to 2022 Q4.
+[Table 1: Summary Statistics] provides statistics summary of all variables from 1980 Q1 to 2022 Q4.
 
 ```{r}
 #| echo: false
@@ -181,9 +181,9 @@ variable <- c('ERA', 'MB', 'Short_R','GDP', 'CPI')
 N <- rep(172, length(variable))
 mean <- sapply(data_all, mean)
 sd <- sapply(data_all, sd)
-Min <- sapply(data_all, min)
-Max <- sapply(data_all, max)
-table1 =data.frame(variable, N, mean,sd, Min, Max)
+min <- sapply(data_all, min)
+max <- sapply(data_all, max)
+table1 =data.frame(variable, N, mean,sd, min, max)
 
 
 knitr::kable(table1, caption = "Summary Statistics", digits = 2)

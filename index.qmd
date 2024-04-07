@@ -236,6 +236,7 @@ Augmented Dickey-Fuller Test is performed to test for stationarity, the null hyp
 #| echo: false
 #| message: false
 library(tseries)
+
 adf <- as.data.frame(matrix(nrow=5,ncol=3,NA))
 rownames(adf) <- variable
 colnames(adf) <- c("Dickey-Fuller","Lag order", "p-value")

@@ -195,9 +195,9 @@ knitr::kable(table1, caption = "Summary Statistics", digits = 2)
 
 ## Preliminary Results
 
-[Figure 2: ACF plots] shows that for GDP and CPI have non-zero auto correlations for at least 10 lags, for the ERA, MB, Short_R have non-zero auto correlations for at least 10 lags (shown in 2.5 years).
+[Figure 2: ACF plots] shows that for GDP and CPI have non-zero auto correlations for at least 10 lags, for the ERA, MB, Short_R have non-zero auto correlations for at least 10 lags (shown in 2.5 years).This implies that all series are not white noise and may be non- stationary.We can take a first difference to remove the autocorrelation and ensure stationary for the series and check using ADF test.
 
-[Figure 3: PACF plots] shows no statistically significant lags except short-term interest rate. Short-term interest rate has some spikes in 4th lag and 5th lag, but not strong.
+[Figure 3: PACF plots] shows no statistically significant lags except short-term interest rate. Short-term interest rate has some spikes in 4th lag and 5th lag, but not strong.This may suggest that except short-term interest rate, other series are stationary in order 1. 
 
 ```{r}
 
@@ -226,11 +226,11 @@ pacf(CPI, lag.max = 10, plot = TRUE , main = "Consumer Price Index PACF")
 
 ###### Figure 3: PACF plots
 
-Augmented Dickey-Fuller Test is performed to test for stationarity, the null hypothesis is unit-root non-stationary.
+Augmented Dickey-Fuller Test is performed to test for stationarity, the null hypothesis is unit-root non-stationary.A p-value less than 5% implies the null hypothesis is rejected.
 
 [Table 2: ADF test] shows that for ERA, MB, GDP, we can not reject the null hypothesis at 5% significant level and considered as unit-root non-stationary. Short-term interest rate and CPI can reject the null at 5% significant level and considered as unit-root stationary.
 
-[Table 3: ADF test of First Difference] shows the first difference of all variables, ERA, MB, GDP can reject the null at 5% significant level and considered as unit-root stationary at first order condition, they are integrated of order 1.
+[Table 3: ADF test of First Difference] shows the first difference of all variables, ERA, MB, GDP can reject the null at 5% significant level and considered as unit-root stationary at first difference condition, they are integrated of order 1.
 
 ```{r warning=FALSE}
 #| echo: false

@@ -2,7 +2,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Effects of monetary policy shocks on exchange rate: Evidence from Australia",
+    "title": "Effects of Monetary Policy Shocks on Exchange Rate: Evidence from Australia",
     "section": "",
     "text": "Abstract. This research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 1980 to 2022 using the Bayesian Structural Vector Auto-regression (SVAR) model.\nKeywords. R, Monetary policy, exchange rate, SVAR model"
   },
@@ -107,9 +107,9 @@
   {
     "objectID": "index.html#preliminary-results",
     "href": "index.html#preliminary-results",
-    "title": "Effects of monetary policy shocks on exchange rate: Evidence from Australia",
+    "title": "Effects of Monetary Policy Shocks on Exchange Rate: Evidence from Australia",
     "section": "Preliminary Results",
-    "text": "Preliminary Results\nFigure 2: ACF plots shows that for GDP and CPI have non-zero auto correlations for at least 10 lags, for the ERA, MB, Short_R have non-zero auto correlations for at least 10 lags (shown in 2.5 years).\nFigure 3: PACF plots shows no statistically significant lags except short-term interest rate. Short-term interest rate has some spikes in 4th lag and 5th lag, but not strong.\n\n\n\n\n\n\nFigure 2: ACF plots\n\n\n\n\n\n\n\nFigure 3: PACF plots\nAugmented Dickey-Fuller Test is performed to test for stationarity, the null hypothesis is unit-root non-stationary.\nTable 2: ADF test shows that for ERA, MB, GDP, we can not reject the null hypothesis at 5% significant level and considered as unit-root non-stationary. Short-term interest rate and CPI can reject the null at 5% significant level and considered as unit-root stationary.\nTable 3: ADF test of First Difference shows the first difference of all variables, ERA, MB, GDP can reject the null at 5% significant level and considered as unit-root stationary at first order condition, they are integrated of order 1.\n\n\n\nADF test\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-3.12\n5\n0.11\n\n\nMB\n-3.14\n5\n0.10\n\n\nShort_R\n-3.59\n5\n0.04\n\n\nGDP\n-1.99\n5\n0.58\n\n\nCPI\n-3.72\n5\n0.02\n\n\n\n\n\n\n\nTable 2: ADF test\n\n\n\nADF test of First Difference\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-4.91\n5\n0.01\n\n\nMB\n-4.47\n5\n0.01\n\n\nShort_R\n-6.48\n5\n0.01\n\n\nGDP\n-5.90\n5\n0.01\n\n\nCPI\n-2.71\n5\n0.28\n\n\n\n\n\n\n\nTable 3: ADF test of First Difference"
+    "text": "Preliminary Results\nFigure 2: ACF plots shows that for GDP and CPI have non-zero auto correlations for at least 10 lags, for the ERA, MB, Short_R have non-zero auto correlations for at least 10 lags (shown in 2.5 years).This implies that all series are not white noise and may be non- stationary.We can take a first difference to remove the autocorrelation and ensure stationary for the series and check using ADF test.\nFigure 3: PACF plots shows no statistically significant lags except short-term interest rate. Short-term interest rate has some spikes in 4th lag and 5th lag, but not strong.This may suggest that except short-term interest rate, other series are stationary in order 1.\n\n\n\n\n\n\nFigure 2: ACF plots\n\n\n\n\n\n\n\nFigure 3: PACF plots\nAugmented Dickey-Fuller Test is performed to test for stationarity, the null hypothesis is unit-root non-stationary.A p-value less than 5% implies the null hypothesis is rejected.\nTable 2: ADF test shows that for ERA, MB, GDP, we can not reject the null hypothesis at 5% significant level and considered as unit-root non-stationary. Short-term interest rate and CPI can reject the null at 5% significant level and considered as unit-root stationary.\nTable 3: ADF test of First Difference shows the first difference of all variables, ERA, MB, GDP can reject the null at 5% significant level and considered as unit-root stationary at first difference condition, they are integrated of order 1.\n\n\n\nADF test\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-3.12\n5\n0.11\n\n\nMB\n-3.14\n5\n0.10\n\n\nShort_R\n-3.59\n5\n0.04\n\n\nGDP\n-1.99\n5\n0.58\n\n\nCPI\n-3.72\n5\n0.02\n\n\n\n\n\n\n\nTable 2: ADF test\n\n\n\nADF test of First Difference\n\n\n\nDickey-Fuller\nLag order\np-value\n\n\n\n\nERA\n-4.91\n5\n0.01\n\n\nMB\n-4.47\n5\n0.01\n\n\nShort_R\n-6.48\n5\n0.01\n\n\nGDP\n-5.90\n5\n0.01\n\n\nCPI\n-2.71\n5\n0.28\n\n\n\n\n\n\n\nTable 3: ADF test of First Difference"
   },
   {
     "objectID": "tmp/research plan.html#summary-statistics",
@@ -135,7 +135,7 @@
   {
     "objectID": "index.html#methodology",
     "href": "index.html#methodology",
-    "title": "Effects of monetary policy shocks on exchange rate: Evidence from Australia",
+    "title": "Effects of Monetary Policy Shocks on Exchange Rate: Evidence from Australia",
     "section": "Methodology",
     "text": "Methodology\nThe Structural Form (SF) model of Structural VARs is:\n\\[\\begin{align}\nB_{0} Y_{t} =b_{0}  + \\sum_{i=0}^{p} (B_{i}Y_{t-i} )+u_{t}\n\\end{align}\\]\n\\[\\begin{align}\nu_{t}|Y_{t-1} \\sim iid(0_{N},I_{N}  )\n\\end{align}\\]\n\\(Y_{t}\\) is \\(N \\times 1\\) matrix of endogenous variable, \\(B_{0}\\) is \\(N \\times N\\) matrix of contemporaneous relationships, \\(u_{t}\\) is a \\(N \\times 1\\) vector of conditionally on\\(Y_{t-1}\\)orthogonal or independent structural shocks.\nThe Reduced Form (RF) representation is:\n\\[\\begin{align}\nY_{t} =\\mu_{0}  + \\sum_{i=0}^{p} (A_{i}Y_{t-i} )+\\epsilon_{t}\n\\end{align}\\]\n\\[\\begin{align}\n\\epsilon_{t}|Y_{t-1} \\sim iid(0_{N},\\Sigma )\n\\end{align}\\]"
   }

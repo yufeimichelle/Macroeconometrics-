@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.475">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Yufei Wu">
 
-<title>Macroeconometrics Research Report - Effects of Monetary Policy Shocks on Exchange Rate: Evidence from Australia</title>
+<title>Macroeconometrics Research Report - Effects of monetary policy shocks on exchange rate: Evidence from Australia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -18,14 +18,15 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
 }
-.hanging div.csl-entry {
+.hanging-indent div.csl-entry {
   margin-left:2em;
   text-indent:-2em;
 }
@@ -39,8 +40,7 @@ div.csl-right-inline {
 }
 div.csl-indent {
   margin-left: 2em;
-}
-</style>
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -75,10 +75,12 @@ div.csl-indent {
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
@@ -95,6 +97,8 @@ div.csl-indent {
     <span class="navbar-title">Macroeconometrics Research Report</span>
     </a>
   </div>
+        <div class="quarto-navbar-tools ms-auto">
+</div>
           <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -123,7 +127,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Effects of Monetary Policy Shocks on Exchange Rate: Evidence from Australia</h1>
+<h1 class="title">Effects of monetary policy shocks on exchange rate: Evidence from Australia</h1>
 </div>
 
 
@@ -165,22 +169,7 @@ div.csl-indent {
 <li><p><strong>Consumer Price Index(CPI):</strong> Consumer price index, seasonally adjusted quarterly (from ABS)</p></li>
 </ul>
 <p>The data are collected from the Reserve Bank of Australia (RBA) and Australian Bureau of Statistics (ABS), adjusted in quarterly frequency and from 1980 Q1 to 2022 Q4, including 172 observations.</p>
-<p>The first variable is the key variable in the analysis of the research, and the other 4 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in <a href="#figure-1-time-series-plots">Figure 1: Time-series plots</a>.</p>
-<div class="cell">
-
-</div>
-<div class="cell">
-
-</div>
-<div class="cell">
-
-</div>
-<div class="cell">
-
-</div>
-<div class="cell">
-
-</div>
+<p>The first variable is the key variable in the analysis of the research, and the other 5 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in <a href="#figure-1-time-series-plots">Figure 1: Time-series plots</a>.</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
@@ -189,10 +178,10 @@ div.csl-indent {
 <section id="figure-1-time-series-plots" class="level6">
 <h6 class="anchored" data-anchor-id="figure-1-time-series-plots">Figure 1: Time-series plots</h6>
 <p>Exchange rate changes are volatile overtime, exhibits peaks and troughs. Monetary base, GDP and CPI all illustrate increasing trend overtime, with some drops during the global financial crisis and during COVID-19 period. Short-term interest rate displays a downward trend since 2000. All time-series plots are restricted in the time period from 1980 Q1 to 2022 Q4.</p>
-<p><a href="#table-1-summary-statistics">Table 1: Summary Statistics</a> provides statistics summary of all variables from 1980 Q1 to 2022 Q4.</p>
+<p><a href="#table-1-summary-statistics">Table 1: Summary statistics</a> provides statistics summary of all variables from 1980 Q1 to 2022 Q4.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped">
+<table class="table table-sm table-striped small">
 <caption>Summary Statistics</caption>
 <thead>
 <tr class="header">
@@ -200,8 +189,8 @@ div.csl-indent {
 <th style="text-align: right;">N</th>
 <th style="text-align: right;">mean</th>
 <th style="text-align: right;">sd</th>
-<th style="text-align: right;">min</th>
-<th style="text-align: right;">max</th>
+<th style="text-align: right;">Min</th>
+<th style="text-align: right;">Max</th>
 </tr>
 </thead>
 <tbody>
@@ -255,8 +244,8 @@ div.csl-indent {
 </section>
 <section id="preliminary-results" class="level2">
 <h2 class="anchored" data-anchor-id="preliminary-results">Preliminary Results</h2>
-<p><a href="#figure-2-acf-plots">Figure 2: ACF plots</a> shows that for GDP and CPI have non-zero auto correlations for at least 10 lags, for the ERA, MB, Short_R have non-zero auto correlations for at least 10 lags (shown in 2.5 years).This implies that all series are not white noise and may be non- stationary.We can take a first difference to remove the autocorrelation and ensure stationary for the series and check using ADF test.</p>
-<p><a href="#figure-3-pacf-plots">Figure 3: PACF plots</a> shows no statistically significant lags except short-term interest rate. Short-term interest rate has some spikes in 4th lag and 5th lag, but not strong.This may suggest that except short-term interest rate, other series are stationary in order 1.</p>
+<p><a href="#figure-2-acf-plots">Figure 2: ACF plots</a> shows that for GDP and CPI have non-zero auto correlations for at least 10 lags, for the ERA, MB, Short_R have non-zero auto correlations for at least 10 lags (shown in 2.5 years).</p>
+<p><a href="#figure-3-pacf-plots">Figure 3: PACF plots</a> shows no statistically significant lags except short-term interest rate. Short-term interest rate has some spikes in 4th lag and 5th lag, but not strong.</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
@@ -272,12 +261,12 @@ div.csl-indent {
 </section>
 <section id="figure-3-pacf-plots" class="level6">
 <h6 class="anchored" data-anchor-id="figure-3-pacf-plots">Figure 3: PACF plots</h6>
-<p>Augmented Dickey-Fuller Test is performed to test for stationarity, the null hypothesis is unit-root non-stationary.A p-value less than 5% implies the null hypothesis is rejected.</p>
+<p>Augmented Dickey-Fuller Test is performed to test for stationarity, the null hypothesis is unit-root non-stationary.</p>
 <p><a href="#table-2-adf-test">Table 2: ADF test</a> shows that for ERA, MB, GDP, we can not reject the null hypothesis at 5% significant level and considered as unit-root non-stationary. Short-term interest rate and CPI can reject the null at 5% significant level and considered as unit-root stationary.</p>
-<p><a href="#table-3-adf-test-of-first-difference">Table 3: ADF test of First Difference</a> shows the first difference of all variables, ERA, MB, GDP can reject the null at 5% significant level and considered as unit-root stationary at first difference condition, they are integrated of order 1.</p>
+<p><a href="#table-3-adf-test-of-first-difference">Table 3: ADF test of First Difference</a> shows the first difference of all variables, ERA, MB, GDP can reject the null at 5% significant level and considered as unit-root stationary at first order condition, they are integrated of order 1.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped">
+<table class="table table-sm table-striped small">
 <caption>ADF test</caption>
 <thead>
 <tr class="header">
@@ -327,7 +316,7 @@ div.csl-indent {
 <h6 class="anchored" data-anchor-id="table-2-adf-test">Table 2: ADF test</h6>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped">
+<table class="table table-sm table-striped small">
 <caption>ADF test of First Difference</caption>
 <thead>
 <tr class="header">
@@ -403,14 +392,14 @@ Y_{t} =\mu_{0}  + \sum_{i=0}^{p} (A_{i}Y_{t-i} )+\epsilon_{t}
 </section>
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
-<div id="ref-dornbusch1976" class="csl-entry" role="doc-biblioentry">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-dornbusch1976" class="csl-entry" role="listitem">
 Dornbusch, Rudiger. 1976. <span>“Expectations and Exchange Rate Dynamics.”</span> <em>Journal of Political Economy</em> 84 (6): 1161–76. <a href="https://doi.org/10.1086/260506">https://doi.org/10.1086/260506</a>.
 </div>
-<div id="ref-eichenbaum1995" class="csl-entry" role="doc-biblioentry">
+<div id="ref-eichenbaum1995" class="csl-entry" role="listitem">
 Eichenbaum, M., and C. L. Evans. 1995. <span>“Some Empirical Evidence on the Effects of Shocks to Monetary Policy on Exchange Rates.”</span> <em>The Quarterly Journal of Economics</em> 110 (4): 975–1009. <a href="https://doi.org/10.2307/2946646">https://doi.org/10.2307/2946646</a>.
 </div>
-<div id="ref-kim2018" class="csl-entry" role="doc-biblioentry">
+<div id="ref-kim2018" class="csl-entry" role="listitem">
 Kim, Soyoung, and Kuntae Lim. 2018. <span>“Effects of Monetary Policy Shocks on Exchange Rate in Small Open Economies.”</span> <em>Journal of Macroeconomics</em> 56 (June): 324–39. <a href="https://doi.org/10.1016/j.jmacro.2018.04.008">https://doi.org/10.1016/j.jmacro.2018.04.008</a>.
 </div>
 </div></section></div></main> <!-- /main -->
@@ -441,9 +430,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -508,6 +511,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {

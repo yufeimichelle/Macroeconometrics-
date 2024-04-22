@@ -8,7 +8,7 @@ execute:
 bibliography: references.bib
 ---
 
-> **Abstract.** This research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 1980 to 2022 using the Bayesian Structural Vector Auto-regression (SVAR) model.
+> **Abstract.** This research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 1980 to 2024 using the Bayesian Structural Vector Auto-regression (SVAR) model.
 >
 > **Keywords.** R, Monetary policy, exchange rate, SVAR model
 

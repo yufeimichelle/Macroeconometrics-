@@ -8,7 +8,7 @@ execute:
 bibliography: references.bib
 ---
 
-> **Abstract.** This research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 1980 to 2022 using the Bayesian Structural Vector Auto-regression (SVAR) model.
+> **Abstract.** This research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 1980 to 2024 using the Bayesian Structural Vector Auto-regression (SVAR) model.
 >
 > **Keywords.** R, Monetary policy, exchange rate, SVAR model
 
@@ -193,7 +193,7 @@ knitr::kable(table1, caption = "Summary Statistics", digits = 2)
 
 ###### Table 1: Summary statistics
 
-## Preliminary Results
+## Preliminary Data Analysis
 
 [Figure 2: ACF plots] shows that for GDP and CPI have non-zero auto correlations for at least 10 lags, for the ERA, MB, Short_R have non-zero auto correlations for at least 10 lags (shown in 2.5 years).This implies that all series are not white noise and may be non- stationary.We can take a first difference to remove the autocorrelation and ensure stationary for the series and check using ADF test.
 

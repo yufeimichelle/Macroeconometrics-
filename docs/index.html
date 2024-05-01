@@ -21,6 +21,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
@@ -111,8 +174,22 @@ div.csl-indent {
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a>
   <ul class="collapse">
-  <li><a href="#preliminary-results" id="toc-preliminary-results" class="nav-link" data-scroll-target="#preliminary-results">Preliminary Results</a></li>
+  <li><a href="#preliminary-data-analysis" id="toc-preliminary-data-analysis" class="nav-link" data-scroll-target="#preliminary-data-analysis">Preliminary Data Analysis</a></li>
   <li><a href="#methodology" id="toc-methodology" class="nav-link" data-scroll-target="#methodology"><strong>Methodology</strong></a></li>
+  <li><a href="#sign-restriction-identification" id="toc-sign-restriction-identification" class="nav-link" data-scroll-target="#sign-restriction-identification"><strong>Sign Restriction Identification</strong></a></li>
+  <li><a href="#estimation-framework" id="toc-estimation-framework" class="nav-link" data-scroll-target="#estimation-framework">Estimation Framework</a></li>
+  <li><a href="#model-specification" id="toc-model-specification" class="nav-link" data-scroll-target="#model-specification"><strong>Model specification</strong></a></li>
+  <li><a href="#baseline-model" id="toc-baseline-model" class="nav-link" data-scroll-target="#baseline-model"><strong>Baseline Model</strong></a>
+  <ul class="collapse">
+  <li><a href="#estimation-procedure" id="toc-estimation-procedure" class="nav-link" data-scroll-target="#estimation-procedure"><strong>Estimation Procedure</strong></a></li>
+  <li><a href="#estimation-algorithm" id="toc-estimation-algorithm" class="nav-link" data-scroll-target="#estimation-algorithm"><strong>Estimation Algorithm</strong></a></li>
+  <li><a href="#simulation-result" id="toc-simulation-result" class="nav-link" data-scroll-target="#simulation-result"><strong>Simulation Result</strong></a></li>
+  </ul></li>
+  <li><a href="#extension-model" id="toc-extension-model" class="nav-link" data-scroll-target="#extension-model"><strong>Extension Model</strong></a>
+  <ul class="collapse">
+  <li><a href="#estimation-algorithm-1" id="toc-estimation-algorithm-1" class="nav-link" data-scroll-target="#estimation-algorithm-1"><strong>Estimation Algorithm</strong></a></li>
+  <li><a href="#simulation-result-1" id="toc-simulation-result-1" class="nav-link" data-scroll-target="#simulation-result-1"><strong>Simulation Result</strong></a></li>
+  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
@@ -145,13 +222,13 @@ div.csl-indent {
 </header>
 
 <blockquote class="blockquote">
-<p><strong>Abstract.</strong> This research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 1980 to 2022 using the Bayesian Structural Vector Auto-regression (SVAR) model.</p>
+<p><strong>Abstract.</strong> This research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 1980 to 2024 using the Bayesian Structural Vector Auto-regression (SVAR) model.</p>
 <p><strong>Keywords.</strong> R, Monetary policy, exchange rate, SVAR model</p>
 </blockquote>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>How monetary policy shocks affect exchange rate? The most well-known study from <span class="citation" data-cites="dornbusch1976">Dornbusch (<a href="#ref-dornbusch1976" role="doc-biblioref">1976</a>)</span> documented the overshooting model, which predicts that the monetary expansion would leads to an increase in domestic interest rate and persistence depreciation of exchange rate. However, more economists such as <span class="citation" data-cites="eichenbaum1995">Eichenbaum and Evans (<a href="#ref-eichenbaum1995" role="doc-biblioref">1995</a>)</span> utilized VAR model found that contradictory monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.</p>
-<p>The recent study <span class="citation" data-cites="kim2018">Kim and Lim (<a href="#ref-kim2018" role="doc-biblioref">2018</a>)</span> further explored that relatively short delay in the effect of contradictory monetary shock to exchange rate appreciation for the UK, Australia, Sweden and Canada.</p>
+<p>How monetary policy shocks affect exchange rate? The most well-known study from <span class="citation" data-cites="dornbusch1976">Dornbusch (<a href="#ref-dornbusch1976" role="doc-biblioref">1976</a>)</span> documented the overshooting model, which predicts that the monetary expansion would leads to an increase in domestic interest rate and persistence depreciation of exchange rate. However, more economists such as <span class="citation" data-cites="eichenbaum1995">Eichenbaum and Evans (<a href="#ref-eichenbaum1995" role="doc-biblioref">1995</a>)</span> utilized VAR model found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.</p>
+<p>The recent study <span class="citation" data-cites="kim2018">Kim and Lim (<a href="#ref-kim2018" role="doc-biblioref">2018</a>)</span> further explored that relatively short delay in the effect of contractionary monetary shock to exchange rate appreciation for the UK, Australia, Sweden and Canada.</p>
 <p>This paper aims to focus on investigate the effect of monetary shock in a small open economy Australia, applying the Bayesian Structural Vector Auto-regression (SVAR) model. What is the role of monetary policy shock in exchange rate behavior in Australia? Are the effect similar to those large countries? Do we find similar puzzling responses?</p>
 </section>
 <section id="data" class="level1">
@@ -253,8 +330,8 @@ div.csl-indent {
 <section id="table-1-summary-statistics" class="level6">
 <h6 class="anchored" data-anchor-id="table-1-summary-statistics">Table 1: Summary statistics</h6>
 </section>
-<section id="preliminary-results" class="level2">
-<h2 class="anchored" data-anchor-id="preliminary-results">Preliminary Results</h2>
+<section id="preliminary-data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="preliminary-data-analysis">Preliminary Data Analysis</h2>
 <p><a href="#figure-2-acf-plots">Figure 2: ACF plots</a> shows that for GDP and CPI have non-zero auto correlations for at least 10 lags, for the ERA, MB, Short_R have non-zero auto correlations for at least 10 lags (shown in 2.5 years).This implies that all series are not white noise and may be non- stationary.We can take a first difference to remove the autocorrelation and ensure stationary for the series and check using ADF test.</p>
 <p><a href="#figure-3-pacf-plots">Figure 3: PACF plots</a> shows no statistically significant lags except short-term interest rate. Short-term interest rate has some spikes in 4th lag and 5th lag, but not strong.This may suggest that except short-term interest rate, other series are stationary in order 1.</p>
 <div class="cell">
@@ -394,6 +471,371 @@ Y_{t} =\mu_{0}  + \sum_{i=0}^{p} (A_{i}Y_{t-i} )+\epsilon_{t}
 <span class="math display">\[\begin{align}
 \epsilon_{t}|Y_{t-1} \sim iid(0_{N},\Sigma )
 \end{align}\]</span>
+</section>
+<section id="sign-restriction-identification" class="level2">
+<h2 class="anchored" data-anchor-id="sign-restriction-identification"><strong>Sign Restriction Identification</strong></h2>
+</section>
+<section id="estimation-framework" class="level2">
+<h2 class="anchored" data-anchor-id="estimation-framework">Estimation Framework</h2>
+</section>
+<section id="model-specification" class="level2">
+<h2 class="anchored" data-anchor-id="model-specification"><strong>Model specification</strong></h2>
+<p>The <strong>matrix representation</strong> is:</p>
+<span class="math display">\[\begin{align}
+Y = XA+E
+\end{align}\]</span>
+<span class="math display">\[\begin{align}
+E|X\sim MN_{T\times N} (0_{T\times N} ,\Sigma ,I_{T})
+\end{align}\]</span>
+<p><span class="math display">\[
+Y =\begin{bmatrix}
+                        y_{1'}  \\y_{2'}  \\. \\. \\. \\y_{T'} \end{bmatrix}
+A =\begin{bmatrix}\mu_{0'} \\A_{1'} \\.\\.\\.\\A_{p'} \end{bmatrix}
+x_{t}  =\begin{bmatrix}\ 1 \\y_{t-1} \\.\\.\\.\\y_{t-p} \end{bmatrix}
+X  =\begin{bmatrix}\ x_{1'}  \\x_{2'} \\.\\.\\.\\x_{T'} \end{bmatrix}
+E  =\begin{bmatrix}\ \epsilon _{1'}  \\\epsilon _{2'} \\.\\.\\.\\\epsilon _{T'} \end{bmatrix}
+\]</span></p>
+<p>The <strong>covariance matrix</strong> of <span class="math inline">\(\epsilon_{t}\)</span> can be written as:</p>
+<span class="math display">\[\begin{align}
+\Sigma  = B_{0} ^{-1} B_{0} ^{-1'}
+\end{align}\]</span>
+<p>The <strong>Likelihood function</strong> would be:</p>
+<p><span class="math display">\[
+L(A,\Sigma |Y,X) \propto det(\Sigma)^{-T/2}\exp\left \{{-\frac{1}{2}tr[\Sigma ^{-1}(Y-XA)'(Y-XA)]}   \right \}   
+\]</span></p>
+<p>The <strong>Maximum Likelihood Estimation</strong> is:</p>
+<p><span class="math display">\[
+\hat{A} =  (X'X)^{-1}(X'Y)
+\]</span></p>
+<p><span class="math display">\[
+\hat{\Sigma } =  \frac{1}{T} (Y-X\hat{A} )'(Y-X\hat{A} )
+\]</span></p>
+<p>The <strong>Likelihood function</strong> can be written as a Normal-Inverse Wishart Distribution:</p>
+<p><span class="math display">\[
+L(A,\Sigma |Y,X) = NIW_{K\times N} (\hat{A},(X'X)^{-1},(Y-X\hat{A} )'(Y-X\hat{A} ),T-N-K-1)
+\]</span></p>
+<p>he Natural-Conjugate Prior for the SVARs model is also considered as a <strong>Minnesota prior</strong>. The Natural-Conjugate Prior Distribution is:</p>
+<p><span class="math display">\[
+P(A,\Sigma) = P(A|\Sigma) p(\Sigma)
+\]</span></p>
+<p><span class="math display">\[
+\\
+A|\Sigma \sim MN_{K\times N} (\underline{A}, \Sigma,\underline{V})
+\]</span></p>
+<p><span class="math display">\[
+\\
+\Sigma\sim IW_{N}( (\underline{S},  \underline{v})
+\]</span></p>
+<p><strong>Minnesota prior</strong> has two main properties:</p>
+<p>1.Macroeconomic variables are unit-root non-stationary and are well-characterised by a multivariate random walk process. Thus the prior mean of A is:</p>
+<p><span class="math display">\[
+\underline{A} = \left [ \mathbf{0}_{N\times1 }\;\; \;I_{N} \;\; \;\mathbf{0}_{N\times(p-1)N } \right ]'
+\]</span></p>
+<p>2.The Prior Shrinkage is the dispersion of prior distribution around prior mean <span class="math inline">\(\underline{A}\)</span> is determined by the diagonal element <span class="math inline">\(\underline{V}\)</span> , thus the prior covariance matrix and diagonal element are:</p>
+<p><span class="math display">\[Var[vec(A)] = \Sigma  \otimes V\]</span> <span class="math display">\[\underline{V}=diag\left ( \left [ k_{2} \; \; \;k_{1}(\mathbf{p} ^{-2}\otimes \imath '_{N}    \right ]  \right )   \]</span></p>
+<p>for <span class="math inline">\(\mathbf{p}=[1,2...p]\)</span> and <span class="math inline">\(\imath =rep(1,N)\)</span></p>
+</section>
+<section id="baseline-model" class="level2">
+<h2 class="anchored" data-anchor-id="baseline-model"><strong>Baseline Model</strong></h2>
+<p>Overall, the <strong>Full Conditional Posterior</strong> can be derived as:</p>
+<p><span class="math display">\[
+p(A,\Sigma |Y,X) \propto  L(A,\Sigma|Y,X)p(A,\Sigma)
+\]</span></p>
+<p><span class="math display">\[p(A,\Sigma |Y,X) = p(A|Y,X,\Sigma)p(\Sigma|Y,X)\]</span></p>
+<p><span class="math display">\[
+p(A|Y,X,\Sigma) =  MN_{K\times N } (\overline{A}, \Sigma,\overline{V})
+\]</span></p>
+<p><span class="math display">\[
+p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
+\]</span></p>
+<p>The main parameters are:</p>
+<p><span class="math display">\[
+\left\{\begin{matrix}\overline{V}=(X'X+\underline{V}^{-1} )^{-1} \\\overline{A}=\overline{V}(X'Y+\underline{V}^{-1} \underline{A}) \\\overline{v}=T+\underline{v} \\\overline{S}=\underline{S}+Y'Y+\underline{A}'\underline{V}^{-1}\underline{A}-\overline{A}'\overline{V}^{-1}\overline{A}\end{matrix}\right.
+\]</span></p>
+<section id="estimation-procedure" class="level3">
+<h3 class="anchored" data-anchor-id="estimation-procedure"><strong>Estimation Procedure</strong></h3>
+<p><strong>Step1:</strong> Simulate 300 samples of Y with 2 columns indicating 2 policy effect(N=2) using bi-variate Gaussian random walk processes, that is p=1. Thus, K = 1+Np =3. Using sample Y can also generate sample X.</p>
+<p><strong>Step2:</strong> Use the sample Y and X to compute the estimated posterior parameters <span class="math inline">\(\overline{V},\overline{A},\overline{v},\overline{S}\)</span> as shown above.</p>
+<p><strong>Step3:</strong> Draw samples of sample <span class="math inline">\(\Sigma ^{(s)}\)</span> and <span class="math inline">\(A ^{(s)}\)</span> using posterior parameters observed in step 2 and iterations S = 1000.</p>
+<p>At each iteration <span class="math inline">\(s\)</span>:</p>
+<ol type="1">
+<li><p>Draw <span class="math inline">\(\Sigma^{(s)}\)</span> from <span class="math inline">\(\mathcal{IW}_{N}(\overline{S}, \overline{v})\)</span>, and take <span class="math inline">\(\Sigma^{(s)}\)</span> as known</p></li>
+<li><p>Draw <span class="math inline">\(A^{(s)}\)</span> from <span class="math inline">\(\mathcal{MN}_{K\times N}(\overline{A}, \Sigma,\overline{V} )\)</span> by insert <span class="math inline">\(\Sigma^{(s)}\)</span></p></li>
+</ol>
+<p>Output is the sample draws from the joint posterior distribution <span class="math inline">\(\left\{ {A^{(s)}, \Sigma^{(s)}} \right\}^{S}_{s=1}\)</span>.</p>
+<p><strong>Step4</strong>: Compute the initial value of SF parameters using the covariance matrix which implies: <span class="math inline">\(\tilde{B_{0}} = chol(\Sigma^{(s)-1})\)</span> and <span class="math inline">\(\tilde{B_{+}} = \tilde{B_{0}} A^{(s)}\)</span></p>
+<p><strong>Step5</strong>: Define the restriction matrix R, which is a diagonal matrix that identify the restrictions.</p>
+<p>Draw an independent standard normal <span class="math inline">\(N\times N\)</span> matrix Z and let Z = QR be the QR decomposition of Z with the diagonal of R normalized to be positive, return sample <span class="math inline">\(Q^{(D)}\)</span> Sample Q from Harr distribution.</p>
+<p><strong>Step6</strong>:Use matrix <span class="math inline">\(Q^{(D)}\)</span> to compute parameters <span class="math inline">\(B_{0} = Q\tilde{B_{0}}\)</span> and <span class="math inline">\(B_{+} = Q\tilde{B_{+}}\)</span> and the corresponding impulse responses <span class="math inline">\(\Theta\)</span> that subject to sign restrictions.</p>
+<p>To check that <span class="math inline">\(Rf(B_{+},B_{0})e_{n}&gt;0_{R\times 1}\)</span> for n = 1,...,N.</p>
+<p>If these parameters do not satisfy the sign restrictions defined in step5, then return to step5.</p>
+<p><strong>Step7:</strong> After iterations, if these parameters do satisfy the sign restrictions, return the parameters <span class="math inline">\((B_{+} ,B_{0} )\)</span></p>
+<div class="cell">
+
+</div>
+</section>
+<section id="estimation-algorithm" class="level3">
+<h3 class="anchored" data-anchor-id="estimation-algorithm"><strong>Estimation Algorithm</strong></h3>
+<div class="cell">
+
+</div>
+<p>Function below is the <code>posterior.draws</code> for step 3 to 4:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw samples of A and sigma</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>posterior.draws <span class="ot">=</span> <span class="cf">function</span>(S, posterior_pram){</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  A.bar  <span class="ot">&lt;-</span> posterior_pram<span class="sc">$</span>A_bar</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  V.bar  <span class="ot">&lt;-</span> posterior_pram<span class="sc">$</span>V_bar</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  S.bar  <span class="ot">&lt;-</span> posterior_pram<span class="sc">$</span>S_bar</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  nu.bar <span class="ot">&lt;-</span> posterior_pram<span class="sc">$</span>nu_bar</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  B0.tilde <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA</span>,<span class="fu">c</span>(N,N,S))</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  B1.tilde <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA</span>,<span class="fu">c</span>(N,K,S))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  L        <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">chol</span>(V.bar)) </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  Sigma.posterior   <span class="ot">&lt;-</span> <span class="fu">rWishart</span>(S, <span class="at">df=</span>nu.bar, <span class="at">Sigma=</span><span class="fu">solve</span>(S.bar))  </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  Sigma.posterior   <span class="ot">&lt;-</span> <span class="fu">apply</span>(Sigma.posterior,<span class="dv">3</span>,solve)            </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  Sigma.posterior   <span class="ot">&lt;-</span> <span class="fu">array</span>(Sigma.posterior,<span class="fu">c</span>(N,N,S))   </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  A.posterior       <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="fu">rnorm</span>(<span class="fu">prod</span>(<span class="fu">c</span>(<span class="fu">dim</span>(A.bar),S))),<span class="fu">c</span>(<span class="fu">dim</span>(A.bar),S))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Compute the initial value of SF parameters</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>S){</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    cholSigma.s      <span class="ot">&lt;-</span> <span class="fu">chol</span>(Sigma.posterior[,,s])</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    B0.tilde[,,s] <span class="ot">&lt;-</span> <span class="fu">solve</span>(<span class="fu">t</span>(cholSigma.s)) </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    A.posterior[,,s] <span class="ot">&lt;-</span> A.bar <span class="sc">+</span> L<span class="sc">%*%</span>A.posterior[,,s]<span class="sc">%*%</span>cholSigma.s </span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    B1.tilde[,,s]  <span class="ot">&lt;-</span> B0.tilde[,,s]<span class="sc">%*%</span><span class="fu">t</span>(A.posterior[,,s])</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a> <span class="co"># Sample draws from the joint posterior distribution </span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">A.posterior     =</span> A.posterior,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>              <span class="at">B0.tilde        =</span> B0.tilde,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>              <span class="at">B1.tilde        =</span> B1.tilde,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>              <span class="at">Sigma.posterior =</span> Sigma.posterior))</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+
+</div>
+<p>Function below is the <code>ImposeSignRestriction</code> for step 5 to 7:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ImposeSignRestriction <span class="ot">&lt;-</span> <span class="cf">function</span> (restrictions,N,p,S,posterior.draws){</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>B0.draws      <span class="ot">=</span> <span class="fu">array</span>(<span class="cn">NA</span>,<span class="fu">c</span>(N,N,S))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>B1.draws      <span class="ot">=</span> <span class="fu">array</span>(<span class="cn">NA</span>,<span class="fu">c</span>(N,(<span class="dv">1</span><span class="sc">+</span>N<span class="sc">*</span>p),S))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>B0.tilde <span class="ot">=</span> posterior.draws<span class="sc">$</span>B0.tilde</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>B1.tilde <span class="ot">=</span> posterior.draws<span class="sc">$</span>B1.tilde</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>R1 <span class="ot">=</span> restrictions</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>i.vec <span class="ot">=</span> <span class="fu">c</span>()</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>S <span class="ot">=</span> <span class="dv">1000</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>S){</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  B0.t    <span class="ot">=</span> B0.tilde[,,s]</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  B1.t    <span class="ot">=</span> B1.tilde[,,s]</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  sign.restrictions.do.not.hold <span class="ot">=</span> <span class="cn">TRUE</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  i<span class="ot">=</span><span class="dv">1</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (sign.restrictions.do.not.hold){</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  Z           <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">4</span>),<span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  QR          <span class="ot">=</span> <span class="fu">qr</span>(Z, <span class="at">tol =</span> <span class="fl">1e-10</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  Q           <span class="ot">=</span> <span class="fu">qr.Q</span>(QR,<span class="at">complete=</span><span class="cn">TRUE</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  R           <span class="ot">=</span> <span class="fu">qr.R</span>(QR,<span class="at">complete=</span><span class="cn">TRUE</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  Q           <span class="ot">=</span> <span class="fu">t</span>(Q <span class="sc">%*%</span> <span class="fu">diag</span>(<span class="fu">sign</span>(<span class="fu">diag</span>(R))))</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  B0          <span class="ot">=</span> Q<span class="sc">%*%</span>B0.t</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  B1          <span class="ot">=</span> Q<span class="sc">%*%</span>B1.t</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  B0.inv      <span class="ot">=</span> <span class="fu">solve</span>(B0)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  check       <span class="ot">=</span> <span class="fu">prod</span>(R1 <span class="sc">%*%</span> B0 <span class="sc">%*%</span> <span class="fu">diag</span>(N)[,<span class="dv">1</span>]  <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (check<span class="sc">==</span><span class="dv">1</span>){sign.restrictions.do.not.hold<span class="ot">=</span><span class="cn">FALSE</span>}</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  i<span class="ot">=</span>i<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  i.vec <span class="ot">=</span> <span class="fu">c</span>(i.vec,i) </span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  B0.draws[,,s] <span class="ot">=</span> B0</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  B1.draws[,,s] <span class="ot">=</span> B1</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span> (<span class="fu">list</span>(<span class="at">B0.draws =</span> B0.draws,</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>             <span class="at">B1.draws =</span> B1.draws,</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>             <span class="at">i =</span> i.vec))</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+
+</div>
+</section>
+<section id="simulation-result" class="level3">
+<h3 class="anchored" data-anchor-id="simulation-result"><strong>Simulation Result</strong></h3>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>posterior mean of A</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">A</th>
+<th style="text-align: right;">simulation_1</th>
+<th style="text-align: right;">simulation_2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">constant term</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">0.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">lag-1</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">-0.01</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lag-2</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.97</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>posterior mean of Sigma</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Sigma</th>
+<th style="text-align: right;">simulation_1s</th>
+<th style="text-align: right;">simulation_2s</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">y1</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">-0.07</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y2</td>
+<td style="text-align: right;">-0.07</td>
+<td style="text-align: right;">0.94</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="extension-model" class="level2">
+<h2 class="anchored" data-anchor-id="extension-model"><strong>Extension Model</strong></h2>
+<p>Considering the extension on the <span class="math inline">\(\Sigma\)</span> , assume the hyper parameter <span class="math inline">\(\underline{S}\)</span> of the prior distribution for <span class="math inline">\(\Sigma\)</span> is now adjust as <span class="math inline">\(\lambda I_{N}\)</span>, where the parameter <span class="math inline">\(\lambda\)</span> following gamma prior distribution, using a hierarchical model.</p>
+<p><span class="math display">\[
+p(A,\Sigma |Y,X) \propto  L(A,\Sigma|Y,X)p(A,\Sigma)
+\]</span></p>
+<p><span class="math display">\[p(A,\Sigma |Y,X) = p(A|Y,X,\Sigma)p(\Sigma|Y,X,\lambda)\]</span></p>
+<p><span class="math display">\[
+\Sigma |\lambda \sim IW(\lambda I_{N}, \underline{\upsilon } )
+\]</span></p>
+<p><span class="math display">\[\lambda \sim \mathcal{Gamma}(\underline{s},\underline{a}  )\]</span></p>
+<p>The <strong>Full Conditional Posterior</strong> of <span class="math inline">\(\lambda\)</span> given <span class="math inline">\(\Sigma\)</span> can be derived as:</p>
+<p><span class="math display">\[
+p(\lambda |Y,X,\Sigma ) \propto L(Y,X|A,\Sigma)p(\Sigma,A, \lambda)\\
+\propto L(Y,X|A,\Sigma)p(\Sigma|A, \lambda)p(\Sigma)p(\lambda)\\
+\propto p(\Sigma|, A,\lambda)p(\lambda)
+\]</span></p>
+<p><span class="math display">\[
+p(\lambda |Y,X,\Sigma )\propto p(\Sigma|, A,\lambda)p(\lambda) \\
+\propto det(\lambda I_{N})^{\frac{\underline{\upsilon} }{2}} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]\right \}\lambda^{\underline{a}-1}e^{-\frac{\lambda}{\underline{s}} }  \\
+\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]-\frac{\lambda}{\underline{s}}\right \} \\
+\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\lambda(\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}})\right \}
+\]</span></p>
+<p>As we can show the kernel follows Gamma Distribution as the kernel Gamma distribution is:<span class="math display">\[p(x|s,a) \propto x^{a-1}exp \left\{\frac{-(x)}{s} \right\}\]</span></p>
+<p>Hence, the full-conditional posterior distribution of <span class="math inline">\(\lambda\)</span> follows a Gamma Distribution.</p>
+<p><span class="math display">\[
+\lambda|Y,X,\Sigma \sim \mathcal{Gamma}(\overline{a},\overline{s})
+\]</span></p>
+<p>The main parameters are:</p>
+<p><span class="math display">\[
+\left\{\begin{matrix} \overline{s}=[\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}}] \\\overline{a}=\frac{\underline{\upsilon}N }{2}+\underline{a}\end{matrix}\right.
+\]</span></p>
+<section id="gibb-sampler-using-extension-models" class="level4">
+<h4 class="anchored" data-anchor-id="gibb-sampler-using-extension-models">Gibb Sampler using extension models</h4>
+<p>Draw samples of sample <span class="math inline">\(\Sigma ^{(s)}\)</span> , <span class="math inline">\(\lambda ^{(s)}\)</span> and <span class="math inline">\(A ^{(s)}\)</span> using posterior parameters.</p>
+<p>Initialized <span class="math inline">\(\lambda ^{(s)}\)</span> as <span class="math inline">\(\lambda ^{(0)}\)</span> = 2</p>
+<p>At each iteration <span class="math inline">\(s\)</span>:</p>
+<ol type="1">
+<li><p>Draw <span class="math inline">\(\Sigma^{(s)}\)</span> from <span class="math inline">\(\mathcal{IW}_{N}(\overline{S}, \overline{v})\)</span>, and using the initialized <span class="math inline">\(\lambda ^{(0)}\)</span></p></li>
+<li><p>Draw <span class="math inline">\(\lambda ^{(s)}\)</span> from <span class="math inline">\(\lambda ^{(s)}\)</span>, by insert <span class="math inline">\(\Sigma^{(s)}\)</span></p></li>
+<li><p>Draw <span class="math inline">\(A^{(s)}\)</span> from <span class="math inline">\(\mathcal{MN}_{K\times N}(\overline{A}, \Sigma,\overline{V} )\)</span> by insert <span class="math inline">\(\Sigma^{(s)}\)</span></p></li>
+</ol>
+<p>Repeat 1 and 2 <span class="math inline">\(S_{1}+S_{2}\)</span>times.</p>
+<p>Discard the first <span class="math inline">\(S_{1}\)</span> draws that allows the algorithm to converge to the stationary posterior distribution.</p>
+<p>Output is the sample draws from the joint posterior distribution <span class="math inline">\(\left\{ {A^{(s)}, \Sigma^{(s)}} ,\lambda ^{(s)}\right\}^{S_{1}+S_{2}}_{s=S_{1}+1}\)</span>.</p>
+</section>
+<section id="estimation-algorithm-1" class="level3">
+<h3 class="anchored" data-anchor-id="estimation-algorithm-1"><strong>Estimation Algorithm</strong></h3>
+<p>Function below is the <code>posterior.draws.exten</code> for Gibb Sampler:</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#posterior parameters</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  posterior.draws.exten <span class="ot">=</span> <span class="cf">function</span>(S1,S2,X,Y,A,V,nu){</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    i_N <span class="ot">&lt;-</span> <span class="fu">diag</span>(N)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">#posterior</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    V_bar.inv <span class="ot">&lt;-</span> <span class="fu">t</span>(X)<span class="sc">%*%</span>X <span class="sc">+</span> <span class="fu">solve</span>(V)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    V_bar <span class="ot">&lt;-</span> <span class="fu">solve</span>(V_bar.inv)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    A_bar <span class="ot">&lt;-</span> V_bar<span class="sc">%*%</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>Y <span class="sc">+</span> <span class="fu">solve</span>(V)<span class="sc">%*%</span>A)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    nu_bar <span class="ot">&lt;-</span> <span class="fu">nrow</span>(Y) <span class="sc">+</span> nu</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    S_total <span class="ot">=</span> S1<span class="sc">+</span>S2</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    A.posterior <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="fu">rnorm</span>(<span class="fu">prod</span>(<span class="fu">c</span>(<span class="fu">dim</span>(A_bar),S_total))),<span class="fu">c</span>(<span class="fu">dim</span>(A_bar),S_total))</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    B0.tilde <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA</span>,<span class="fu">c</span>(N,N,S_total))</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    B1.tilde <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA</span>,<span class="fu">c</span>(N,K,S_total))</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    L        <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">chol</span>(V_bar)) </span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    Sigma.posterior <span class="ot">&lt;-</span><span class="fu">array</span>(<span class="cn">NA</span>,<span class="fu">c</span>(N,N,S_total))</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    lambda.posterior  <span class="ot">=</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, S_total, <span class="dv">1</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    lambda.posterior[<span class="dv">1</span>] <span class="ot">=</span> <span class="dv">2</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>S_total){</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    S_bar_ext   <span class="ot">&lt;-</span> lambda.posterior[s]<span class="sc">*</span>i_N <span class="sc">+</span> <span class="fu">t</span>(Y)<span class="sc">%*%</span>Y<span class="sc">+</span> <span class="fu">t</span>(A)<span class="sc">%*%</span><span class="fu">solve</span>(V)<span class="sc">%*%</span>A<span class="sc">-</span> <span class="fu">t</span>(A_bar)<span class="sc">%*%</span>V_bar.inv<span class="sc">%*%</span>A_bar</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    Sigma.posterior_d      <span class="ot">&lt;-</span> <span class="fu">rWishart</span>(<span class="at">n=</span><span class="dv">1</span>, <span class="at">df=</span>nu_bar, <span class="at">Sigma=</span><span class="fu">solve</span>(S_bar_ext))  </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    Sigma.posterior_draw   <span class="ot">&lt;-</span> <span class="fu">apply</span>(Sigma.posterior_d ,<span class="dv">3</span>,solve)            </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    Sigma.posterior[,,s]   <span class="ot">&lt;-</span> Sigma.posterior_draw </span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    s.posterior <span class="ot">&lt;-</span> <span class="fu">solve</span>(<span class="fl">0.5</span><span class="sc">*</span><span class="fu">sum</span>(<span class="fu">diag</span>(<span class="fu">solve</span>(Sigma.posterior[,,s])))<span class="sc">+</span><span class="dv">1</span><span class="sc">/</span>s_prior)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    a.posterior <span class="ot">&lt;-</span> a_prior<span class="sc">+</span>(nu_bar<span class="sc">*</span>N)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (s<span class="sc">!=</span>S_total){</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>      lambda.posterior[s<span class="sc">+</span><span class="dv">1</span>] <span class="ot">=</span> <span class="fu">rgamma</span>(<span class="at">n=</span><span class="dv">1</span>, <span class="at">shape =</span> s.posterior,  <span class="at">scale =</span> a.posterior)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>      cholSigma.s      <span class="ot">&lt;-</span> <span class="fu">chol</span>(Sigma.posterior[,,s])</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>      B0.tilde[,,s] <span class="ot">&lt;-</span> <span class="fu">solve</span>(<span class="fu">t</span>(cholSigma.s)) </span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>      A.posterior[,,s] <span class="ot">&lt;-</span> A_bar <span class="sc">+</span> L<span class="sc">%*%</span>A.posterior[,,s]<span class="sc">%*%</span>cholSigma.s </span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>      B1.tilde[,,s]  <span class="ot">&lt;-</span> B0.tilde[,,s]<span class="sc">%*%</span><span class="fu">t</span>(A.posterior[,,s])</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">A.posterior     =</span> A.posterior[,,(S1<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>S_total],</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>                <span class="at">B0.tilde        =</span> B0.tilde[,,(S1<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>S_total],</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>                <span class="at">B1.tilde        =</span> B1.tilde[,,(S1<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>S_total],</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>                <span class="at">Sigma.posterior =</span> Sigma.posterior[,,(S1<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>S_total]</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>                  ))</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+
+</div>
+</section>
+<section id="simulation-result-1" class="level3">
+<h3 class="anchored" data-anchor-id="simulation-result-1"><strong>Simulation Result</strong></h3>
+</section>
 </section>
 <section id="references" class="level2">
 

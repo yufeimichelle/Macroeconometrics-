@@ -301,4 +301,572 @@ Y_{t} =\mu_{0}  + \sum_{i=0}^{p} (A_{i}Y_{t-i} )+\epsilon_{t}
 \epsilon_{t}|Y_{t-1} \sim iid(0_{N},\Sigma )
 \end{align}
 ```
+## **Sign Restriction Identification**
+
+## Estimation Framework
+
+## **Model specification**
+
+The **matrix representation** is:
+
+```{=tex}
+\begin{align}
+Y = XA+E
+\end{align}
+```
+```{=tex}
+\begin{align}
+E|X\sim MN_{T\times N} (0_{T\times N} ,\Sigma ,I_{T})
+\end{align}
+```
+$$
+Y =\begin{bmatrix}
+                        y_{1'}  \\y_{2'}  \\. \\. \\. \\y_{T'} \end{bmatrix} 
+A =\begin{bmatrix}\mu_{0'} \\A_{1'} \\.\\.\\.\\A_{p'} \end{bmatrix}
+x_{t}  =\begin{bmatrix}\ 1 \\y_{t-1} \\.\\.\\.\\y_{t-p} \end{bmatrix}
+X  =\begin{bmatrix}\ x_{1'}  \\x_{2'} \\.\\.\\.\\x_{T'} \end{bmatrix}
+E  =\begin{bmatrix}\ \epsilon _{1'}  \\\epsilon _{2'} \\.\\.\\.\\\epsilon _{T'} \end{bmatrix}
+$$
+
+The **covariance matrix** of $\epsilon_{t}$ can be written as:
+
+```{=tex}
+\begin{align}
+\Sigma  = B_{0} ^{-1} B_{0} ^{-1'} 
+\end{align}
+```
+The **Likelihood function** would be:
+
+$$
+L(A,\Sigma |Y,X) \propto det(\Sigma)^{-T/2}\exp\left \{{-\frac{1}{2}tr[\Sigma ^{-1}(Y-XA)'(Y-XA)]}   \right \}   
+$$
+
+The **Maximum Likelihood Estimation** is:
+
+$$
+\hat{A} =  (X'X)^{-1}(X'Y)
+$$
+
+$$
+\hat{\Sigma } =  \frac{1}{T} (Y-X\hat{A} )'(Y-X\hat{A} )
+$$
+
+The **Likelihood function** can be written as a Normal-Inverse Wishart Distribution:
+
+$$
+L(A,\Sigma |Y,X) = NIW_{K\times N} (\hat{A},(X'X)^{-1},(Y-X\hat{A} )'(Y-X\hat{A} ),T-N-K-1) 
+$$
+
+he Natural-Conjugate Prior for the SVARs model is also considered as a **Minnesota prior**. The Natural-Conjugate Prior Distribution is:
+
+$$
+P(A,\Sigma) = P(A|\Sigma) p(\Sigma) 
+$$
+
+$$
+\\
+A|\Sigma \sim MN_{K\times N} (\underline{A}, \Sigma,\underline{V})
+$$
+
+$$
+\\
+\Sigma\sim IW_{N}( (\underline{S},  \underline{v})
+$$
+
+**Minnesota prior** has two main properties:
+
+1.Macroeconomic variables are unit-root non-stationary and are well-characterised by a multivariate random walk process. Thus the prior mean of A is:
+
+$$
+\underline{A} = \left [ \mathbf{0}_{N\times1 }\;\; \;I_{N} \;\; \;\mathbf{0}_{N\times(p-1)N } \right ]' 
+$$
+
+2.The Prior Shrinkage is the dispersion of prior distribution around prior mean $\underline{A}$ is determined by the diagonal element $\underline{V}$ , thus the prior covariance matrix and diagonal element are:
+
+$$Var[vec(A)] = \Sigma  \otimes V$$ $$\underline{V}=diag\left ( \left [ k_{2} \; \; \;k_{1}(\mathbf{p} ^{-2}\otimes \imath '_{N}    \right ]  \right )   $$
+
+for $\mathbf{p}=[1,2...p]$ and $\imath =rep(1,N)$
+
+## **Baseline Model**
+
+Overall, the **Full Conditional Posterior** can be derived as:
+
+$$
+p(A,\Sigma |Y,X) \propto  L(A,\Sigma|Y,X)p(A,\Sigma) 
+$$
+
+$$p(A,\Sigma |Y,X) = p(A|Y,X,\Sigma)p(\Sigma|Y,X)$$
+
+$$
+p(A|Y,X,\Sigma) =  MN_{K\times N } (\overline{A}, \Sigma,\overline{V})
+$$
+
+$$
+p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
+$$
+
+The main parameters are:
+
+$$
+\left\{\begin{matrix}\overline{V}=(X'X+\underline{V}^{-1} )^{-1} \\\overline{A}=\overline{V}(X'Y+\underline{V}^{-1} \underline{A}) \\\overline{v}=T+\underline{v} \\\overline{S}=\underline{S}+Y'Y+\underline{A}'\underline{V}^{-1}\underline{A}-\overline{A}'\overline{V}^{-1}\overline{A}\end{matrix}\right.
+$$
+
+### **Estimation Procedure**
+
+**Step1:** Simulate 300 samples of Y with 2 columns indicating 2 policy effect(N=2) using bi-variate Gaussian random walk processes, that is p=1. Thus, K = 1+Np =3. Using sample Y can also generate sample X.
+
+**Step2:** Use the sample Y and X to compute the estimated posterior parameters $\overline{V},\overline{A},\overline{v},\overline{S}$ as shown above.
+
+**Step3:** Draw samples of sample $\Sigma ^{(s)}$ and $A ^{(s)}$ using posterior parameters observed in step 2 and iterations S = 1000.
+
+At each iteration $s$:
+
+1.  Draw $\Sigma^{(s)}$ from $\mathcal{IW}_{N}(\overline{S}, \overline{v})$, and take $\Sigma^{(s)}$ as known
+
+2.  Draw $A^{(s)}$ from $\mathcal{MN}_{K\times N}(\overline{A}, \Sigma,\overline{V} )$ by insert $\Sigma^{(s)}$
+
+Output is the sample draws from the joint posterior distribution $\left\{ {A^{(s)}, \Sigma^{(s)}} \right\}^{S}_{s=1}$.
+
+**Step4**: Compute the initial value of SF parameters using the covariance matrix which implies: $\tilde{B_{0}} = chol(\Sigma^{(s)-1})$ and $\tilde{B_{+}} = \tilde{B_{0}} A^{(s)}$
+
+**Step5**: Define the restriction matrix R, which is a diagonal matrix that identify the restrictions.
+
+Draw an independent standard normal $N\times N$ matrix Z and let Z = QR be the QR decomposition of Z with the diagonal of R normalized to be positive, return sample $Q^{(D)}$ Sample Q from Harr distribution.
+
+**Step6**:Use matrix $Q^{(D)}$ to compute parameters $B_{0} = Q\tilde{B_{0}}$ and $B_{+} = Q\tilde{B_{+}}$ and the corresponding impulse responses $\Theta$ that subject to sign restrictions.
+
+To check that $Rf(B_{+},B_{0})e_{n}>0_{R\times 1}$ for n = 1,\...,N.
+
+If these parameters do not satisfy the sign restrictions defined in step5, then return to step5.
+
+**Step7:** After iterations, if these parameters do satisfy the sign restrictions, return the parameters $(B_{+} ,B_{0} )$
+
+```{r}
+#| echo: false
+#| message: false
+
+#step1 
+set.seed(2024)
+
+#simulate 2 samples of Y from random walk 
+RW1 <- arima.sim(model= list(order = c(0, 1, 0)), n=300, mean=0, sd=1)
+#plot.ts(RW1,main="Random Walk 1", col=4,xlab="")
+#plot.ts(diff(RW1),main="First difference of Random Walk 1", col=4,xlab="")
+
+RW2 <- arima.sim(model= list(order = c(0, 1, 0)), n=300, mean=0, sd=1)
+#plot.ts(RW2,main="Random Walk 2", col=4,xlab="")
+#plot.ts(diff(RW2),main="First difference of Random Walk 2", col=4,xlab="")
+
+RW  <- cbind(RW1,RW2)
+
+Y            = RW[2:nrow(RW),]             #simulate sample Y
+X            = matrix(1,nrow(Y),1)          #simulate sample X
+X            = cbind(X,RW[2: nrow(RW)-1,]) 
+S            =1000                          # number of iterations 
+N            = ncol(Y)                      # number of variables
+p            = 1                            # number of lags
+K            = N*p + 1                      # K = 1 + pN
+
+#step2
+
+# generate MLE of A and Sigma 
+A.hat        = solve(t(X)%*%X)%*%t(X)%*%Y                
+Sigma.hat    = t(Y-X%*%A.hat)%*%(Y-X%*%A.hat)/nrow(Y)   
+
+# Get the Minnesota prior 
+GetPrior.parameters <- function (N,p,Sigma.hat) {
+  
+  kappa.1 <- 0.02 # assume kappa1 is 0.02
+  kappa.2 <- 100  # assume kappa2 is 100
+  
+  K = 1 + N*p 
+  
+  A_prior = matrix(0,K,N)
+  A_prior[2:(N+1),] = diag(N) 
+  V_prior = diag(c(kappa.2,kappa.1*((1:p)^(-2))%x%rep(1,N)))
+  S_prior = diag(diag(Sigma.hat))
+  nu_prior = N+1
+  
+  return (list(A_prior=A_prior,
+               V_prior = V_prior,
+               S_prior = S_prior,
+               nu_prior = nu_prior))
+}
+
+# find the prior for the sample
+Prior = GetPrior.parameters(N=N,p=p,Sigma.hat=Sigma.hat)
+
+
+
+```
+
+### **Estimation Algorithm**
+
+```{r warning=FALSE}
+#| echo: false
+#| message: false
+
+#step 3
+
+# Get the posterior parameters 
+Posterior_parameters <- function (X,Y,A,V,S,nu) {
+  
+  V_bar.inv <- t(X)%*%X + solve(V)
+  V_bar <- solve(V_bar.inv)
+  A_bar <- V_bar%*%(t(X)%*%Y + solve(V)%*%A)
+  nu_bar <- nrow(Y) + nu
+  S_bar <- S + t(Y)%*%Y + t(A)%*%solve(V)%*%A - t(A_bar)%*%V_bar.inv%*%A_bar
+  
+  
+  return (list(V_bar = V_bar,
+               A_bar = A_bar,
+               nu_bar = nu_bar,
+               S_bar = S_bar))
+}
+
+# Get the posterior parameters for the simulated sample
+posterior_pram = Posterior_parameters(X=X,Y=Y,A=Prior$A_prior,V=Prior$V_prior,
+                                      S=Prior$S_prior,nu=Prior$nu_prior)
+
+
+```
+
+Function below is the `posterior.draws` for step 3 to 4:
+
+```{r echo=TRUE}
+
+# Draw samples of A and sigma
+
+posterior.draws = function(S, posterior_pram){
+  
+  A.bar  <- posterior_pram$A_bar
+  V.bar  <- posterior_pram$V_bar
+  S.bar  <- posterior_pram$S_bar
+  nu.bar <- posterior_pram$nu_bar
+  
+  B0.tilde <- array(NA,c(N,N,S))
+  B1.tilde <- array(NA,c(N,K,S))
+  L        <- t(chol(V.bar)) 
+  
+  Sigma.posterior   <- rWishart(S, df=nu.bar, Sigma=solve(S.bar))  
+  Sigma.posterior   <- apply(Sigma.posterior,3,solve)            
+  Sigma.posterior   <- array(Sigma.posterior,c(N,N,S))   
+  A.posterior       <- array(rnorm(prod(c(dim(A.bar),S))),c(dim(A.bar),S))
+  
+  # Compute the initial value of SF parameters
+  for (s in 1:S){
+    cholSigma.s      <- chol(Sigma.posterior[,,s])
+    B0.tilde[,,s] <- solve(t(cholSigma.s)) 
+    A.posterior[,,s] <- A.bar + L%*%A.posterior[,,s]%*%cholSigma.s 
+    B1.tilde[,,s]  <- B0.tilde[,,s]%*%t(A.posterior[,,s])
+  }
+  
+ # Sample draws from the joint posterior distribution 
+  return(list(A.posterior     = A.posterior,
+              B0.tilde        = B0.tilde,
+              B1.tilde        = B1.tilde,
+              Sigma.posterior = Sigma.posterior))
+}
+
+```
+
+```{r warning=FALSE}
+#| echo: false
+#| message: false
+
+# Draw samples of A, sigma and SF parameters
+draws = posterior.draws(S = 1000, posterior_pram = posterior_pram)
+```
+
+Function below is the `ImposeSignRestriction` for step 5 to 7:
+
+```{r echo=TRUE}
+
+
+ImposeSignRestriction <- function (restrictions,N,p,S,posterior.draws){
+
+B0.draws      = array(NA,c(N,N,S))
+B1.draws      = array(NA,c(N,(1+N*p),S))
+
+B0.tilde = posterior.draws$B0.tilde
+B1.tilde = posterior.draws$B1.tilde
+R1 = restrictions
+
+i.vec = c()
+S = 1000
+for (s in 1:S){
+  B0.t    = B0.tilde[,,s]
+  B1.t    = B1.tilde[,,s]
+  sign.restrictions.do.not.hold = TRUE
+  i=1
+  while (sign.restrictions.do.not.hold){
+  Z           = matrix(rnorm(4),2,2)
+  QR          = qr(Z, tol = 1e-10)
+  Q           = qr.Q(QR,complete=TRUE)
+  R           = qr.R(QR,complete=TRUE)
+  Q           = t(Q %*% diag(sign(diag(R))))
+  B0          = Q%*%B0.t
+  B1          = Q%*%B1.t
+  B0.inv      = solve(B0)
+  check       = prod(R1 %*% B0 %*% diag(N)[,1]  >= 0)
+  if (check==1){sign.restrictions.do.not.hold=FALSE}
+  i=i+1
+  }
+  i.vec = c(i.vec,i) 
+  B0.draws[,,s] = B0
+  B1.draws[,,s] = B1
+}
+return (list(B0.draws = B0.draws,
+             B1.draws = B1.draws,
+             i = i.vec))
+}
+
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+#step 5
+sign.restrictions = c(1,1)
+R1            = diag(sign.restrictions)
+
+
+A.check <- array(NA,c(N+1,N,S))
+S.check <- array(NA,c(N,N,S))
+
+Restriction_output = ImposeSignRestriction(restrictions = R1,N=N,p=p,S=S,posterior.draws=draws )
+
+B0.draws1 = Restriction_output$B0.draws
+B1.draws1 = Restriction_output$B1.draws
+
+for (s in 1:S){
+  # convert B0 into Sigma 
+  S.check[,,s] <- solve(B0.draws1[,,s]) %*% t(solve(B0.draws1[,,s]))
+  A.check[,,s] <- t(solve(B0.draws1[,,s] )%*% B1.draws1[,,s])
+ 
+}
+
+d1 <- round(apply(A.check,1:2,mean),4)
+d2 <- round(apply(S.check,1:2,mean),4)
+
+# B0 and B1 has positive diagonal 
+# similar number in diagonal 
+d3 <-round(apply(B0.draws1,1:2,mean),4)
+d4 <-round(apply(B1.draws1,1:2,mean),4)
+
+```
+
+### **Simulation Result**
+
+```{r}
+#| echo: false
+#| message: false
+#| 
+A <- c('constant term', 'lag-1','lag-2')
+simulation_1 = d1[,1]
+simulation_2 = d1[,2]
+table1 =data.frame(A,simulation_1,simulation_2 )
+
+knitr::kable(table1, caption = "posterior mean of A", digits = 2)
+```
+
+```{r}
+#| echo: false
+#| message: false
+Sigma <- c('y1','y2')
+simulation_1s = d2[,1]
+simulation_2s = d2[,2]
+table1 =data.frame(Sigma,simulation_1s,simulation_2s )
+
+knitr::kable(table1, caption = "posterior mean of Sigma", digits = 2)
+```
+
+## **Extension Model**
+
+Considering the extension on the $\Sigma$ , assume the hyper parameter $\underline{S}$ of the prior distribution for $\Sigma$ is now adjust as $\lambda I_{N}$, where the parameter $\lambda$ following gamma prior distribution, using a hierarchical model.
+
+$$
+p(A,\Sigma |Y,X) \propto  L(A,\Sigma|Y,X)p(A,\Sigma) 
+$$
+
+$$p(A,\Sigma |Y,X) = p(A|Y,X,\Sigma)p(\Sigma|Y,X,\lambda)$$
+
+$$
+\Sigma |\lambda \sim IW(\lambda I_{N}, \underline{\upsilon } )
+$$
+
+$$\lambda \sim \mathcal{Gamma}(\underline{s},\underline{a}  )$$
+
+The **Full Conditional Posterior** of $\lambda$ given $\Sigma$ can be derived as:
+
+$$
+p(\lambda |Y,X,\Sigma ) \propto L(Y,X|A,\Sigma)p(\Sigma,A, \lambda)\\
+\propto L(Y,X|A,\Sigma)p(\Sigma|A, \lambda)p(\Sigma)p(\lambda)\\
+\propto p(\Sigma|, A,\lambda)p(\lambda)
+$$
+
+$$
+p(\lambda |Y,X,\Sigma )\propto p(\Sigma|, A,\lambda)p(\lambda) \\
+\propto det(\lambda I_{N})^{\frac{\underline{\upsilon} }{2}} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]\right \}\lambda^{\underline{a}-1}e^{-\frac{\lambda}{\underline{s}} }  \\
+\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]-\frac{\lambda}{\underline{s}}\right \} \\
+\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\lambda(\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}})\right \} 
+$$
+
+As we can show the kernel follows Gamma Distribution as the kernel Gamma distribution is:$$p(x|s,a) \propto x^{a-1}exp \left\{\frac{-(x)}{s} \right\}$$
+
+Hence, the full-conditional posterior distribution of $\lambda$ follows a Gamma Distribution.
+
+$$
+\lambda|Y,X,\Sigma \sim \mathcal{Gamma}(\overline{a},\overline{s})
+$$
+
+The main parameters are:
+
+$$
+\left\{\begin{matrix} \overline{s}=[\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}}] \\\overline{a}=\frac{\underline{\upsilon}N }{2}+\underline{a}\end{matrix}\right.
+$$
+
+#### Gibb Sampler using extension models 
+
+Draw samples of sample $\Sigma ^{(s)}$ , $\lambda ^{(s)}$ and $A ^{(s)}$ using posterior parameters.
+
+Initialized $\lambda ^{(s)}$ as $\lambda ^{(0)}$ = 2
+
+At each iteration $s$:
+
+1.  Draw $\Sigma^{(s)}$ from $\mathcal{IW}_{N}(\overline{S}, \overline{v})$, and using the initialized $\lambda ^{(0)}$
+
+2.  Draw $\lambda ^{(s)}$ from $\lambda ^{(s)}$, by insert $\Sigma^{(s)}$
+
+3.  Draw $A^{(s)}$ from $\mathcal{MN}_{K\times N}(\overline{A}, \Sigma,\overline{V} )$ by insert $\Sigma^{(s)}$
+
+Repeat 1 and 2 $S_{1}+S_{2}$times.
+
+Discard the first $S_{1}$ draws that allows the algorithm to converge to the stationary posterior distribution.
+
+Output is the sample draws from the joint posterior distribution $\left\{ {A^{(s)}, \Sigma^{(s)}} ,\lambda ^{(s)}\right\}^{S_{1}+S_{2}}_{s=S_{1}+1}$.
+
+### **Estimation Algorithm**
+
+Function below is the `posterior.draws.exten` for Gibb Sampler:
+
+```{r}
+#| echo: false
+#| message: false
+#gamma distribution of S
+#prior parameters
+a_prior = 2
+s_prior = 0.5
+
+```
+
+```{r echo=TRUE}
+
+#posterior parameters
+  
+  posterior.draws.exten = function(S1,S2,X,Y,A,V,nu){
+    
+    i_N <- diag(N)
+    #posterior
+    V_bar.inv <- t(X)%*%X + solve(V)
+    V_bar <- solve(V_bar.inv)
+    A_bar <- V_bar%*%(t(X)%*%Y + solve(V)%*%A)
+    nu_bar <- nrow(Y) + nu
+    S_total = S1+S2
+   
+    
+    A.posterior <- array(rnorm(prod(c(dim(A_bar),S_total))),c(dim(A_bar),S_total))
+    
+    
+    B0.tilde <- array(NA,c(N,N,S_total))
+    B1.tilde <- array(NA,c(N,K,S_total))
+    L        <- t(chol(V_bar)) 
+    Sigma.posterior <-array(NA,c(N,N,S_total))
+    lambda.posterior  = matrix(NA, S_total, 1)
+    lambda.posterior[1] = 2
+    
+    for (s in 1:S_total){
+   
+    S_bar_ext   <- lambda.posterior[s]*i_N + t(Y)%*%Y+ t(A)%*%solve(V)%*%A- t(A_bar)%*%V_bar.inv%*%A_bar
+      
+    Sigma.posterior_d      <- rWishart(n=1, df=nu_bar, Sigma=solve(S_bar_ext))  
+    Sigma.posterior_draw   <- apply(Sigma.posterior_d ,3,solve)            
+    Sigma.posterior[,,s]   <- Sigma.posterior_draw 
+   
+    s.posterior <- solve(0.5*sum(diag(solve(Sigma.posterior[,,s])))+1/s_prior)
+    a.posterior <- a_prior+(nu_bar*N)/2
+
+    
+    if (s!=S_total){
+      lambda.posterior[s+1] = rgamma(n=1, shape = s.posterior,  scale = a.posterior)
+    }
+    
+
+      cholSigma.s      <- chol(Sigma.posterior[,,s])
+      B0.tilde[,,s] <- solve(t(cholSigma.s)) 
+      A.posterior[,,s] <- A_bar + L%*%A.posterior[,,s]%*%cholSigma.s 
+      B1.tilde[,,s]  <- B0.tilde[,,s]%*%t(A.posterior[,,s])
+    
+    }
+    
+    return(list(A.posterior     = A.posterior[,,(S1+1):S_total],
+                B0.tilde        = B0.tilde[,,(S1+1):S_total],
+                B1.tilde        = B1.tilde[,,(S1+1):S_total],
+                Sigma.posterior = Sigma.posterior[,,(S1+1):S_total]
+                  ))
+}
+
+
+
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+
+draws_ext = posterior.draws.exten(S1 = 1000, S2 = 1000,X=X,Y=Y,A=Prior$A_prior,V=Prior$V_prior,nu=Prior$nu_prior)
+
+
+
+#step 5
+
+
+sign.restrictions = c(1,1)
+R1            = diag(sign.restrictions)
+
+
+Restriction_output_ext= ImposeSignRestriction(restrictions = R1,N=N,p=p,S=S,posterior.draws=draws_ext)
+
+
+
+
+
+A.check_ext <- array(NA,c(N+1,N,S))
+S.check_ext <- array(NA,c(N,N,S))
+
+B0.draws_ext  = Restriction_output_ext $B0.draws
+B1.draws_ext  = Restriction_output_ext $B1.draws
+
+for (s in 1:S){
+  # convert B0 into Sigma 
+  S.check_ext [,,s] <- solve(B0.draws_ext [,,s]) %*% t(solve(B0.draws_ext [,,s]))
+  #S.check_ext [,,s] <- B0.draws_ext[,,s] %*% t(B0.draws_ext[,,s])
+  A.check_ext [,,s] <- t(solve(B0.draws_ext [,,s] )%*% B1.draws_ext [,,s])
+}
+
+d1_ext <- round(apply(A.check_ext ,1:2,mean),4)
+d2_ext <- round(apply(S.check_ext ,1:2,mean),4)
+
+# B0 and B1 has positive diagonal 
+# similar number in diagonal 
+d3_ext <-round(apply(B0.draws_ext,1:2,mean),4)
+d4_ext <-round(apply(B1.draws_ext,1:2,mean),4)
+
+
+```
+
+### **Simulation Result**
+
 ## References

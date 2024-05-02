@@ -661,6 +661,7 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 <div class="cell">
 
 </div>
+<p>After drawing posterior parameters, we impose sign restrictions to identify the model. Use the orthogonal matrix Q, to identity such that <span class="math inline">\(B_{0} = Q\tilde{B_{0}}\)</span> and <span class="math inline">\(B_{+} = Q\tilde{B_{+}}\)</span> satisfy the sign restrictions, as the the algorithm implemented in <span class="citation" data-cites="fry2011">Fry and Pagan (<a href="#ref-fry2011" role="doc-biblioref">2011</a>)</span>.</p>
 <p>Function below is the <code>ImposeSignRestriction</code> for step 5 to 7:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ImposeSignRestriction <span class="ot">&lt;-</span> <span class="cf">function</span> (restrictions,N,p,S,posterior.draws){</span>
@@ -707,6 +708,8 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 </section>
 <section id="simulation-result" class="level3">
 <h3 class="anchored" data-anchor-id="simulation-result"><strong>Simulation Result</strong></h3>
+<p><a href="#table-4-posterior-mean-of-a">Table 4: posterior mean of A</a> show the matrix of A suggesting the baseline model estimation using artificial data of 1 lag and constant term is showing zero posterior mean.</p>
+<p><a href="#table-5-posterior-mean-of-sigma">Table 5 posterior mean of Sigma</a> shows that covariance matrices <span class="math inline">\(\Sigma\)</span> are close to an identity matrix.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
@@ -738,6 +741,8 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 </table>
 </div>
 </div>
+<section id="table-4-posterior-mean-of-a" class="level6">
+<h6 class="anchored" data-anchor-id="table-4-posterior-mean-of-a">Table 4: posterior mean of A</h6>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
@@ -764,6 +769,12 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 </table>
 </div>
 </div>
+</section>
+<section id="table-5-posterior-mean-of-sigma" class="level6">
+<h6 class="anchored" data-anchor-id="table-5-posterior-mean-of-sigma">Table 5 posterior mean of Sigma</h6>
+<p>The simulated result of <span class="math inline">\(B_{0}\)</span> and <span class="math inline">\(B_{+}\)</span> are shown in the table below:</p>
+<p>As the restrictions is positive diagonal, the result of <span class="math inline">\(B_{0}\)</span> satisfy the sign restrictions with a positive diagonal as shown in <a href="#table-6-posterior-mean-of-b0">Table 6: posterior mean of B0</a>.</p>
+<p>The lag 1 <span class="math inline">\(B_{1}\)</span> are shown in <a href="#table-7-posterior-mean-of-b1">Table 7: posterior mean of B1</a>, with similar result in y1 and y2 as <span class="math inline">\(B_{0}\)</span> , also with a positive diagonal, indicating it also satisfy the sign restrictions.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
@@ -790,6 +801,9 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 </table>
 </div>
 </div>
+</section>
+<section id="table-6-posterior-mean-of-b0" class="level6">
+<h6 class="anchored" data-anchor-id="table-6-posterior-mean-of-b0">Table 6: posterior mean of B0</h6>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
@@ -797,28 +811,34 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 <thead>
 <tr class="header">
 <th style="text-align: left;">B1</th>
-<th style="text-align: right;">constant</th>
 <th style="text-align: right;">simulation_1b1</th>
 <th style="text-align: right;">simulation_2b1</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">y1</td>
+<td style="text-align: left;">constant</td>
 <td style="text-align: right;">-0.01</td>
-<td style="text-align: right;">0.64</td>
-<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">-0.01</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">y2</td>
-<td style="text-align: right;">-0.01</td>
+<td style="text-align: left;">y1</td>
+<td style="text-align: right;">0.64</td>
 <td style="text-align: right;">0.66</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y2</td>
+<td style="text-align: right;">0.04</td>
 <td style="text-align: right;">0.07</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+</section>
+<section id="table-7-posterior-mean-of-b1" class="level6">
+<h6 class="anchored" data-anchor-id="table-7-posterior-mean-of-b1">Table 7: posterior mean of B1</h6>
+</section>
 </section>
 </section>
 <section id="extension-model" class="level2">
@@ -1060,6 +1080,9 @@ Dornbusch, Rudiger. 1976. <span>“Expectations and Exchange Rate Dynamics.”</
 </div>
 <div id="ref-eichenbaum1995" class="csl-entry" role="doc-biblioentry">
 Eichenbaum, M., and C. L. Evans. 1995. <span>“Some Empirical Evidence on the Effects of Shocks to Monetary Policy on Exchange Rates.”</span> <em>The Quarterly Journal of Economics</em> 110 (4): 975–1009. <a href="https://doi.org/10.2307/2946646">https://doi.org/10.2307/2946646</a>.
+</div>
+<div id="ref-fry2011" class="csl-entry" role="doc-biblioentry">
+Fry, Renée, and Adrian Pagan. 2011. <span>“Sign Restrictions in Structural Vector Autoregressions: A Critical Review.”</span> <em>Journal of Economic Literature</em> 49 (4): 938–60. <a href="https://doi.org/10.1257/jel.49.4.938">https://doi.org/10.1257/jel.49.4.938</a>.
 </div>
 <div id="ref-kim2018" class="csl-entry" role="doc-biblioentry">
 Kim, Soyoung, and Kuntae Lim. 2018. <span>“Effects of Monetary Policy Shocks on Exchange Rate in Small Open Economies.”</span> <em>Journal of Macroeconomics</em> 56 (June): 324–39. <a href="https://doi.org/10.1016/j.jmacro.2018.04.008">https://doi.org/10.1016/j.jmacro.2018.04.008</a>.

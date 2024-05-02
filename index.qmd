@@ -303,6 +303,28 @@ Y_{t} =\mu_{0}  + \sum_{i=0}^{p} (A_{i}Y_{t-i} )+\epsilon_{t}
 ```
 ### **Sign Restriction Identification**
 
+For the model in this research report, $Y_{t}$ contains 5 variables as:
+
+$$
+Y_{t}=\begin{pmatrix}ERA_{t} \\MB_{t} \\{ShortR}_{t} \\GDP_{t} \\CPI_{t}\end{pmatrix}
+$$
+
+Following the arguments developed in @scholl2008a , that restrictions should be concerning on the shape but not the size of the exchange rate response,thus sign restriction should be imposed. Adapting the methodology specified in @kim2018, the following sign restrictions are imposed on the impulse response to identify the Monetary policy shock.
+
+```{r}
+#| echo: false
+#| message: false
+variable <- c('ERA', 'MB', 'Short_R','GDP', 'CPI')
+res <- c('unrestricted','- negative','+ positive','unrestricted','- negative')
+
+table1 =data.frame(variable, res)
+
+
+knitr::kable(table1, caption = "Sign Restrictions")
+```
+
+		
+
 ## Estimation Framework
 
 ### **Model specification**
@@ -370,7 +392,7 @@ $$
 
 $$
 \\
-\Sigma\sim IW_{N}( (\underline{S},  \underline{v})
+\Sigma\sim IW_{N}( \underline{S},  \underline{v})
 $$
 
 **Minnesota prior** has two main properties:

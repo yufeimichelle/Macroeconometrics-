@@ -301,11 +301,11 @@ Y_{t} =\mu_{0}  + \sum_{i=0}^{p} (A_{i}Y_{t-i} )+\epsilon_{t}
 \epsilon_{t}|Y_{t-1} \sim iid(0_{N},\Sigma )
 \end{align}
 ```
-## **Sign Restriction Identification**
+### **Sign Restriction Identification**
 
 ## Estimation Framework
 
-## **Model specification**
+### **Model specification**
 
 The **matrix representation** is:
 
@@ -677,9 +677,32 @@ knitr::kable(table1, caption = "posterior mean of A", digits = 2)
 Sigma <- c('y1','y2')
 simulation_1s = d2[,1]
 simulation_2s = d2[,2]
-table1 =data.frame(Sigma,simulation_1s,simulation_2s )
+table2 =data.frame(Sigma,simulation_1s,simulation_2s )
 
-knitr::kable(table1, caption = "posterior mean of Sigma", digits = 2)
+knitr::kable(table2, caption = "posterior mean of Sigma", digits = 2)
+```
+
+```{r}
+#| echo: false
+#| message: false
+B0 <- c('y1','y2')
+simulation_1b = d3[,1]
+simulation_2b = d3[,2]
+table3 =data.frame(B0,simulation_1b,simulation_2b )
+
+knitr::kable(table3, caption = "posterior mean of B0", digits = 2)
+```
+
+```{r}
+#| echo: false
+#| message: false
+B1 <- c('y1','y2')
+constant = d4[,1]
+simulation_1b1 = d4[,2]
+simulation_2b1 = d4[,3]
+table4 =data.frame(B1,constant,simulation_1b1, simulation_2b1)
+
+knitr::kable(table4, caption = "posterior mean of B1", digits = 2)
 ```
 
 ## **Extension Model**
@@ -868,5 +891,48 @@ d4_ext <-round(apply(B1.draws_ext,1:2,mean),4)
 ```
 
 ### **Simulation Result**
+
+```{r}
+#| echo: false
+#| message: false
+A <- c('constant term', 'lag-1','lag-2')
+simulation_1ext = d1_ext[,1]
+simulation_2ext = d1_ext[,2]
+table1_ext =data.frame(A,simulation_1ext,simulation_2ext )
+
+knitr::kable(table1_ext, caption = "posterior mean of A", digits = 2)
+```
+
+```{r}
+#| echo: false
+#| message: false
+Sigma <- c('y1','y2')
+simulation_1s_ext = d2_ext[,1]
+simulation_2s_ext = d2_ext[,2]
+table2_ext =data.frame(Sigma,simulation_1s_ext,simulation_2s_ext )
+
+knitr::kable(table2_ext, caption = "posterior mean of Sigma", digits = 2)
+
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+B0 <- c('y1','y2')
+simulation_1b_ext = d3_ext[,1]
+simulation_2b_ext = d3_ext[,2]
+table3_ext =data.frame(B0,simulation_1b_ext,simulation_2b_ext )
+
+knitr::kable(table3_ext, caption = "posterior mean of B0", digits = 2)
+
+B1 <- c('y1','y2')
+constant_ext = d4_ext[,1]
+simulation_1b1_ext = d4_ext[,2]
+simulation_2b1_ext = d4[,3]
+table4_ext =data.frame(B1,constant_ext,simulation_1b1_ext, simulation_2b1_ext)
+
+knitr::kable(table4_ext, caption = "posterior mean of B1", digits = 2)
+```
 
 ## References

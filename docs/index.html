@@ -477,6 +477,46 @@ Y_{t} =\mu_{0}  + \sum_{i=0}^{p} (A_{i}Y_{t-i} )+\epsilon_{t}
 \end{align}\]</span>
 <section id="sign-restriction-identification" class="level3">
 <h3 class="anchored" data-anchor-id="sign-restriction-identification"><strong>Sign Restriction Identification</strong></h3>
+<p>For the model in this research report, <span class="math inline">\(Y_{t}\)</span> contains 5 variables as:</p>
+<p><span class="math display">\[
+Y_{t}=\begin{pmatrix}ERA_{t} \\MB_{t} \\{ShortR}_{t} \\GDP_{t} \\CPI_{t}\end{pmatrix}
+\]</span></p>
+<p>Following the arguments developed in <span class="citation" data-cites="scholl2008a">Scholl and Uhlig (<a href="#ref-scholl2008a" role="doc-biblioref">2008</a>)</span> , that restrictions should be concerning on the shape but not the size of the exchange rate response,thus sign restriction should be imposed. Adapting the methodology specified in <span class="citation" data-cites="kim2018">Kim and Lim (<a href="#ref-kim2018" role="doc-biblioref">2018</a>)</span>, the following sign restrictions are imposed on the impulse response to identify the Monetary policy shock.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Sign Restrictions</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">variable</th>
+<th style="text-align: left;">res</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ERA</td>
+<td style="text-align: left;">unrestricted</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MB</td>
+<td style="text-align: left;">- negative</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Short_R</td>
+<td style="text-align: left;">+ positive</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GDP</td>
+<td style="text-align: left;">unrestricted</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CPI</td>
+<td style="text-align: left;">- negative</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
 </section>
 <section id="estimation-framework" class="level2">
@@ -527,7 +567,7 @@ A|\Sigma \sim MN_{K\times N} (\underline{A}, \Sigma,\underline{V})
 \]</span></p>
 <p><span class="math display">\[
 \\
-\Sigma\sim IW_{N}( (\underline{S},  \underline{v})
+\Sigma\sim IW_{N}( \underline{S},  \underline{v})
 \]</span></p>
 <p><strong>Minnesota prior</strong> has two main properties:</p>
 <p>1.Macroeconomic variables are unit-root non-stationary and are well-characterised by a multivariate random walk process. Thus the prior mean of A is:</p>
@@ -1023,6 +1063,9 @@ Eichenbaum, M., and C. L. Evans. 1995. <span>“Some Empirical Evidence on the E
 </div>
 <div id="ref-kim2018" class="csl-entry" role="doc-biblioentry">
 Kim, Soyoung, and Kuntae Lim. 2018. <span>“Effects of Monetary Policy Shocks on Exchange Rate in Small Open Economies.”</span> <em>Journal of Macroeconomics</em> 56 (June): 324–39. <a href="https://doi.org/10.1016/j.jmacro.2018.04.008">https://doi.org/10.1016/j.jmacro.2018.04.008</a>.
+</div>
+<div id="ref-scholl2008a" class="csl-entry" role="doc-biblioentry">
+Scholl, Almuth, and Harald Uhlig. 2008. <span>“New Evidence on the Puzzles: Results from Agnostic Identification on Monetary Policy and Exchange Rates.”</span> <em>Journal of International Economics</em> 76 (1): 1–13. <a href="https://doi.org/10.1016/j.jinteco.2008.02.005">https://doi.org/10.1016/j.jinteco.2008.02.005</a>.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

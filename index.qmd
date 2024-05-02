@@ -323,8 +323,6 @@ table1 =data.frame(variable, res)
 knitr::kable(table1, caption = "Sign Restrictions")
 ```
 
-		
-
 ## Estimation Framework
 
 ### **Model specification**
@@ -600,6 +598,8 @@ posterior.draws = function(S, posterior_pram){
 draws = posterior.draws(S = 1000, posterior_pram = posterior_pram)
 ```
 
+After drawing posterior parameters, we impose sign restrictions to identify the model. Use the orthogonal matrix Q, to identity such that $B_{0} = Q\tilde{B_{0}}$ and $B_{+} = Q\tilde{B_{+}}$ satisfy the sign restrictions, as the the algorithm implemented in @fry2011.
+
 Function below is the `ImposeSignRestriction` for step 5 to 7:
 
 ```{r echo=TRUE}
@@ -681,6 +681,10 @@ d4 <-round(apply(B1.draws1,1:2,mean),4)
 
 ### **Simulation Result**
 
+[Table 4: posterior mean of A] show the matrix of A suggesting the baseline model estimation using artificial data of 1 lag and constant term is showing zero posterior mean.
+
+[Table 5 posterior mean of Sigma] shows that covariance matrices $\Sigma$ are close to an identity matrix.
+
 ```{r}
 #| echo: false
 #| message: false
@@ -693,6 +697,8 @@ table1 =data.frame(A,simulation_1,simulation_2 )
 knitr::kable(table1, caption = "posterior mean of A", digits = 2)
 ```
 
+###### Table 4: posterior mean of A
+
 ```{r}
 #| echo: false
 #| message: false
@@ -703,6 +709,14 @@ table2 =data.frame(Sigma,simulation_1s,simulation_2s )
 
 knitr::kable(table2, caption = "posterior mean of Sigma", digits = 2)
 ```
+
+###### Table 5 posterior mean of Sigma
+
+The simulated result of $B_{0}$ and $B_{+}$ are shown in the table below:
+
+As the restrictions is positive diagonal, the result of $B_{0}$ satisfy the sign restrictions with a positive diagonal as shown in [Table 6: posterior mean of B0].
+
+The lag 1 $B_{1}$ are shown in [Table 7: posterior mean of B1], with similar result in y1 and y2 as $B_{0}$ , also with a positive diagonal, indicating it also satisfy the sign restrictions.
 
 ```{r}
 #| echo: false
@@ -715,17 +729,21 @@ table3 =data.frame(B0,simulation_1b,simulation_2b )
 knitr::kable(table3, caption = "posterior mean of B0", digits = 2)
 ```
 
+###### Table 6: posterior mean of B0
+
 ```{r}
 #| echo: false
 #| message: false
-B1 <- c('y1','y2')
-constant = d4[,1]
-simulation_1b1 = d4[,2]
-simulation_2b1 = d4[,3]
-table4 =data.frame(B1,constant,simulation_1b1, simulation_2b1)
+B1 <- c('constant','y1','y2')
+
+simulation_1b1 = t(d4)[,1]
+simulation_2b1 = t(d4)[,2]
+table4 =data.frame(B1,simulation_1b1, simulation_2b1)
 
 knitr::kable(table4, caption = "posterior mean of B1", digits = 2)
 ```
+
+###### Table 7: posterior mean of B1
 
 ## **Extension Model**
 
@@ -772,7 +790,7 @@ $$
 \left\{\begin{matrix} \overline{s}=[\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}}] \\\overline{a}=\frac{\underline{\upsilon}N }{2}+\underline{a}\end{matrix}\right.
 $$
 
-#### Gibb Sampler using extension models 
+#### Gibb Sampler using extension models
 
 Draw samples of sample $\Sigma ^{(s)}$ , $\lambda ^{(s)}$ and $A ^{(s)}$ using posterior parameters.
 

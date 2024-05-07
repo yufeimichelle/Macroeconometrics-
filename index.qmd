@@ -14,7 +14,7 @@ bibliography: references.bib
 
 # Introduction
 
-How monetary policy shocks affect exchange rate? The most well-known study from @dornbusch1976 documented the overshooting model, which predicts that the monetary expansion would leads to an increase in domestic interest rate and persistence depreciation of exchange rate. However, more economists such as @eichenbaum1995 utilized VAR model found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.
+How monetary policy shocks affect exchange rate? The most well-known study from @dornbusch1976 documented the overshooting model, which predicts that the monetary expansion would lead to an increase in domestic interest rate and persistence depreciation of exchange rate. However, more economists such as @eichenbaum1995 utilized VAR model found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.
 
 The recent study @kim2018 further explored that relatively short delay in the effect of contractionary monetary shock to exchange rate appreciation for the UK, Australia, Sweden and Canada.
 
@@ -377,7 +377,7 @@ $$
 L(A,\Sigma |Y,X) = NIW_{K\times N} (\hat{A},(X'X)^{-1},(Y-X\hat{A} )'(Y-X\hat{A} ),T-N-K-1) 
 $$
 
-he Natural-Conjugate Prior for the SVARs model is also considered as a **Minnesota prior**. The Natural-Conjugate Prior Distribution is:
+The Natural-Conjugate Prior for the SVARs model is also considered as a **Minnesota prior**. The Natural-Conjugate Prior Distribution is:
 
 $$
 P(A,\Sigma) = P(A|\Sigma) p(\Sigma) 
@@ -630,8 +630,9 @@ for (s in 1:S){
   B0          = Q%*%B0.t
   B1          = Q%*%B1.t
   B0.inv      = solve(B0)
-  check       = prod(R1 %*% B0 %*% diag(N)[,1]  >= 0)
-  if (check==1){sign.restrictions.do.not.hold=FALSE}
+  
+  sign.restrictions.do.not.hold = !prod(R1 %*% B0 %*% diag(N)[,1]  >= 0)
+  
   i=i+1
   }
   i.vec = c(i.vec,i) 
@@ -694,7 +695,7 @@ simulation_1 = d1[,1]
 simulation_2 = d1[,2]
 table1 =data.frame(A,simulation_1,simulation_2 )
 
-knitr::kable(table1, caption = "posterior mean of A", digits = 2)
+knitr::kable(table1, caption = "posterior mean of A", digits = 2,col.names = NULL)
 ```
 
 ###### Table 4: posterior mean of A
@@ -707,7 +708,7 @@ simulation_1s = d2[,1]
 simulation_2s = d2[,2]
 table2 =data.frame(Sigma,simulation_1s,simulation_2s )
 
-knitr::kable(table2, caption = "posterior mean of Sigma", digits = 2)
+knitr::kable(table2, caption = "posterior mean of Sigma", digits = 2,col.names = NULL)
 ```
 
 ###### Table 5 posterior mean of Sigma
@@ -726,7 +727,7 @@ simulation_1b = d3[,1]
 simulation_2b = d3[,2]
 table3 =data.frame(B0,simulation_1b,simulation_2b )
 
-knitr::kable(table3, caption = "posterior mean of B0", digits = 2)
+knitr::kable(table3, caption = "posterior mean of B0", digits = 2,col.names = NULL)
 ```
 
 ###### Table 6: posterior mean of B0
@@ -740,7 +741,7 @@ simulation_1b1 = t(d4)[,1]
 simulation_2b1 = t(d4)[,2]
 table4 =data.frame(B1,simulation_1b1, simulation_2b1)
 
-knitr::kable(table4, caption = "posterior mean of B1", digits = 2)
+knitr::kable(table4, caption = "posterior mean of B1", digits = 2,col.names = NULL)
 ```
 
 ###### Table 7: posterior mean of B1
@@ -764,16 +765,15 @@ $$\lambda \sim \mathcal{Gamma}(\underline{s},\underline{a}  )$$
 The **Full Conditional Posterior** of $\lambda$ given $\Sigma$ can be derived as:
 
 $$
-p(\lambda |Y,X,\Sigma ) \propto L(Y,X|A,\Sigma)p(\Sigma,A, \lambda)\\
-\propto L(Y,X|A,\Sigma)p(\Sigma|A, \lambda)p(\Sigma)p(\lambda)\\
-\propto p(\Sigma|, A,\lambda)p(\lambda)
-$$
-
-$$
-p(\lambda |Y,X,\Sigma )\propto p(\Sigma|, A,\lambda)p(\lambda) \\
-\propto det(\lambda I_{N})^{\frac{\underline{\upsilon} }{2}} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]\right \}\lambda^{\underline{a}-1}e^{-\frac{\lambda}{\underline{s}} }  \\
-\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]-\frac{\lambda}{\underline{s}}\right \} \\
-\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\lambda(\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}})\right \} 
+\begin{aligned}
+p(\lambda |Y,X,\Sigma )
+&\propto L(A,\Sigma|Y,X)p(\Sigma,A, \lambda)\\
+&\propto L(A,\Sigma|Y,X)p(\Sigma|A, \lambda)p(A)p(\lambda)\\
+&\propto p(\Sigma|A,\lambda)p(\lambda) \\
+&\propto det(\lambda I_{N})^{\frac{\underline{\upsilon} }{2}} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]\right \}\lambda^{\underline{a}-1}e^{-\frac{\lambda}{\underline{s}} }  \\
+&\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]-\frac{\lambda}{\underline{s}}\right \} \\
+&\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\lambda(\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}})\right \} 
+\end{aligned}
 $$
 
 As we can show the kernel follows Gamma Distribution as the kernel Gamma distribution is:$$p(x|s,a) \propto x^{a-1}exp \left\{\frac{-(x)}{s} \right\}$$
@@ -942,10 +942,10 @@ simulation_1ext = d1_ext[,1]
 simulation_2ext = d1_ext[,2]
 table1_ext =data.frame(A,simulation_1ext,simulation_2ext )
 
-knitr::kable(table1_ext, caption = "posterior mean of A", digits = 2)
+knitr::kable(table1_ext, caption = "posterior mean of A", digits = 2,col.names = NULL)
 ```
 
-###### Table 8: posterior mean of A of extension model 
+###### Table 8: posterior mean of A of extension model
 
 ```{r}
 #| echo: false
@@ -955,12 +955,12 @@ simulation_1s_ext = d2_ext[,1]
 simulation_2s_ext = d2_ext[,2]
 table2_ext =data.frame(Sigma,simulation_1s_ext,simulation_2s_ext )
 
-knitr::kable(table2_ext, caption = "posterior mean of Sigma", digits = 2)
+knitr::kable(table2_ext, caption = "posterior mean of Sigma", digits = 2,col.names = NULL)
 
 
 ```
 
-###### Table 9: posterior mean of Sigma of extension model 
+###### Table 9: posterior mean of Sigma of extension model
 
 The simulated result of $B_{0}$ and $B_{+}$ from the extension model also has conclusion with the baseline model, indicating the sign restrictions imposed are satisfied. With a positive diagonal shown in [Table 10: posterior mean of B0 of extension model] in the posterior mean of $B_{0}$ . Also in [Table 11: posterior mean of B0 of extension model] $B_{1}$ shows a positive diagonal for y1 and y2, similar value as $B_{0}$ .
 
@@ -972,7 +972,7 @@ simulation_1b_ext = d3_ext[,1]
 simulation_2b_ext = d3_ext[,2]
 table3_ext =data.frame(B0,simulation_1b_ext,simulation_2b_ext )
 
-knitr::kable(table3_ext, caption = "posterior mean of B0", digits = 2)
+knitr::kable(table3_ext, caption = "posterior mean of B0", digits = 2,col.names = NULL)
 
 
 ```
@@ -987,7 +987,7 @@ simulation_1b1_ext = t(d4_ext)[,1]
 simulation_2b1_ext = t(d4_ext)[,2]
 table4_ext =data.frame(B1,simulation_1b1_ext, simulation_2b1_ext)
 
-knitr::kable(table4_ext, caption = "posterior mean of B1", digits = 2)
+knitr::kable(table4_ext, caption = "posterior mean of B1", digits = 2,col.names = NULL)
 
 ```
 

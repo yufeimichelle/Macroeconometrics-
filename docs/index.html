@@ -231,7 +231,7 @@ div.csl-indent {
 </blockquote>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>How monetary policy shocks affect exchange rate? The most well-known study from <span class="citation" data-cites="dornbusch1976">Dornbusch (<a href="#ref-dornbusch1976" role="doc-biblioref">1976</a>)</span> documented the overshooting model, which predicts that the monetary expansion would leads to an increase in domestic interest rate and persistence depreciation of exchange rate. However, more economists such as <span class="citation" data-cites="eichenbaum1995">Eichenbaum and Evans (<a href="#ref-eichenbaum1995" role="doc-biblioref">1995</a>)</span> utilized VAR model found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.</p>
+<p>How monetary policy shocks affect exchange rate? The most well-known study from <span class="citation" data-cites="dornbusch1976">Dornbusch (<a href="#ref-dornbusch1976" role="doc-biblioref">1976</a>)</span> documented the overshooting model, which predicts that the monetary expansion would lead to an increase in domestic interest rate and persistence depreciation of exchange rate. However, more economists such as <span class="citation" data-cites="eichenbaum1995">Eichenbaum and Evans (<a href="#ref-eichenbaum1995" role="doc-biblioref">1995</a>)</span> utilized VAR model found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.</p>
 <p>The recent study <span class="citation" data-cites="kim2018">Kim and Lim (<a href="#ref-kim2018" role="doc-biblioref">2018</a>)</span> further explored that relatively short delay in the effect of contractionary monetary shock to exchange rate appreciation for the UK, Australia, Sweden and Canada.</p>
 <p>This paper aims to focus on investigate the effect of monetary shock in a small open economy Australia, applying the Bayesian Structural Vector Auto-regression (SVAR) model. What is the role of monetary policy shock in exchange rate behavior in Australia? Are the effect similar to those large countries? Do we find similar puzzling responses?</p>
 </section>
@@ -557,7 +557,7 @@ L(A,\Sigma |Y,X) \propto det(\Sigma)^{-T/2}\exp\left \{{-\frac{1}{2}tr[\Sigma ^{
 <p><span class="math display">\[
 L(A,\Sigma |Y,X) = NIW_{K\times N} (\hat{A},(X'X)^{-1},(Y-X\hat{A} )'(Y-X\hat{A} ),T-N-K-1)
 \]</span></p>
-<p>he Natural-Conjugate Prior for the SVARs model is also considered as a <strong>Minnesota prior</strong>. The Natural-Conjugate Prior Distribution is:</p>
+<p>The Natural-Conjugate Prior for the SVARs model is also considered as a <strong>Minnesota prior</strong>. The Natural-Conjugate Prior Distribution is:</p>
 <p><span class="math display">\[
 P(A,\Sigma) = P(A|\Sigma) p(\Sigma)
 \]</span></p>
@@ -689,18 +689,19 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  B0          <span class="ot">=</span> Q<span class="sc">%*%</span>B0.t</span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  B1          <span class="ot">=</span> Q<span class="sc">%*%</span>B1.t</span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  B0.inv      <span class="ot">=</span> <span class="fu">solve</span>(B0)</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  check       <span class="ot">=</span> <span class="fu">prod</span>(R1 <span class="sc">%*%</span> B0 <span class="sc">%*%</span> <span class="fu">diag</span>(N)[,<span class="dv">1</span>]  <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (check<span class="sc">==</span><span class="dv">1</span>){sign.restrictions.do.not.hold<span class="ot">=</span><span class="cn">FALSE</span>}</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  i<span class="ot">=</span>i<span class="sc">+</span><span class="dv">1</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  i.vec <span class="ot">=</span> <span class="fu">c</span>(i.vec,i) </span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  B0.draws[,,s] <span class="ot">=</span> B0</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  B1.draws[,,s] <span class="ot">=</span> B1</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span> (<span class="fu">list</span>(<span class="at">B0.draws =</span> B0.draws,</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>             <span class="at">B1.draws =</span> B1.draws,</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>             <span class="at">i =</span> i.vec))</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  sign.restrictions.do.not.hold <span class="ot">=</span> <span class="sc">!</span><span class="fu">prod</span>(R1 <span class="sc">%*%</span> B0 <span class="sc">%*%</span> <span class="fu">diag</span>(N)[,<span class="dv">1</span>]  <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  i<span class="ot">=</span>i<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  i.vec <span class="ot">=</span> <span class="fu">c</span>(i.vec,i) </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  B0.draws[,,s] <span class="ot">=</span> B0</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  B1.draws[,,s] <span class="ot">=</span> B1</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span> (<span class="fu">list</span>(<span class="at">B0.draws =</span> B0.draws,</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>             <span class="at">B1.draws =</span> B1.draws,</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>             <span class="at">i =</span> i.vec))</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 
@@ -714,13 +715,6 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <caption>posterior mean of A</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">A</th>
-<th style="text-align: right;">simulation_1</th>
-<th style="text-align: right;">simulation_2</th>
-</tr>
-</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">constant term</td>
@@ -747,13 +741,6 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <caption>posterior mean of Sigma</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Sigma</th>
-<th style="text-align: right;">simulation_1s</th>
-<th style="text-align: right;">simulation_2s</th>
-</tr>
-</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">y1</td>
@@ -779,13 +766,6 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <caption>posterior mean of B0</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">B0</th>
-<th style="text-align: right;">simulation_1b</th>
-<th style="text-align: right;">simulation_2b</th>
-</tr>
-</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">y1</td>
@@ -808,13 +788,6 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <caption>posterior mean of B1</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">B1</th>
-<th style="text-align: right;">simulation_1b1</th>
-<th style="text-align: right;">simulation_2b1</th>
-</tr>
-</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">constant</td>
@@ -854,15 +827,15 @@ p(A,\Sigma |Y,X) \propto  L(A,\Sigma|Y,X)p(A,\Sigma)
 <p><span class="math display">\[\lambda \sim \mathcal{Gamma}(\underline{s},\underline{a}  )\]</span></p>
 <p>The <strong>Full Conditional Posterior</strong> of <span class="math inline">\(\lambda\)</span> given <span class="math inline">\(\Sigma\)</span> can be derived as:</p>
 <p><span class="math display">\[
-p(\lambda |Y,X,\Sigma ) \propto L(Y,X|A,\Sigma)p(\Sigma,A, \lambda)\\
-\propto L(Y,X|A,\Sigma)p(\Sigma|A, \lambda)p(\Sigma)p(\lambda)\\
-\propto p(\Sigma|, A,\lambda)p(\lambda)
-\]</span></p>
-<p><span class="math display">\[
-p(\lambda |Y,X,\Sigma )\propto p(\Sigma|, A,\lambda)p(\lambda) \\
-\propto det(\lambda I_{N})^{\frac{\underline{\upsilon} }{2}} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]\right \}\lambda^{\underline{a}-1}e^{-\frac{\lambda}{\underline{s}} }  \\
-\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]-\frac{\lambda}{\underline{s}}\right \} \\
-\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\lambda(\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}})\right \}
+\begin{aligned}
+p(\lambda |Y,X,\Sigma )
+&amp;\propto L(A,\Sigma|Y,X)p(\Sigma,A, \lambda)\\
+&amp;\propto L(A,\Sigma|Y,X)p(\Sigma|A, \lambda)p(A)p(\lambda)\\
+&amp;\propto p(\Sigma|A,\lambda)p(\lambda) \\
+&amp;\propto det(\lambda I_{N})^{\frac{\underline{\upsilon} }{2}} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]\right \}\lambda^{\underline{a}-1}e^{-\frac{\lambda}{\underline{s}} }  \\
+&amp;\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]-\frac{\lambda}{\underline{s}}\right \} \\
+&amp;\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\lambda(\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}})\right \}
+\end{aligned}
 \]</span></p>
 <p>As we can show the kernel follows Gamma Distribution as the kernel Gamma distribution is:<span class="math display">\[p(x|s,a) \propto x^{a-1}exp \left\{\frac{-(x)}{s} \right\}\]</span></p>
 <p>Hence, the full-conditional posterior distribution of <span class="math inline">\(\lambda\)</span> follows a Gamma Distribution.</p>
@@ -959,13 +932,6 @@ p(\lambda |Y,X,\Sigma )\propto p(\Sigma|, A,\lambda)p(\lambda) \\
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <caption>posterior mean of A</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">A</th>
-<th style="text-align: right;">simulation_1ext</th>
-<th style="text-align: right;">simulation_2ext</th>
-</tr>
-</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">constant term</td>
@@ -992,13 +958,6 @@ p(\lambda |Y,X,\Sigma )\propto p(\Sigma|, A,\lambda)p(\lambda) \\
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <caption>posterior mean of Sigma</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Sigma</th>
-<th style="text-align: right;">simulation_1s_ext</th>
-<th style="text-align: right;">simulation_2s_ext</th>
-</tr>
-</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">y1</td>
@@ -1022,13 +981,6 @@ p(\lambda |Y,X,\Sigma )\propto p(\Sigma|, A,\lambda)p(\lambda) \\
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <caption>posterior mean of B0</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">B0</th>
-<th style="text-align: right;">simulation_1b_ext</th>
-<th style="text-align: right;">simulation_2b_ext</th>
-</tr>
-</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">y1</td>
@@ -1051,13 +1003,6 @@ p(\lambda |Y,X,\Sigma )\propto p(\Sigma|, A,\lambda)p(\lambda) \\
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <caption>posterior mean of B1</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">B1</th>
-<th style="text-align: right;">simulation_1b1_ext</th>
-<th style="text-align: right;">simulation_2b1_ext</th>
-</tr>
-</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">constant</td>

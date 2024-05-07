@@ -14,7 +14,7 @@ bibliography: references.bib
 
 # Introduction
 
-How monetary policy shocks affect exchange rate? The most well-known study from @dornbusch1976 documented the overshooting model, which predicts that the monetary expansion would leads to an increase in domestic interest rate and persistence depreciation of exchange rate. However, more economists such as @eichenbaum1995 utilized VAR model found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.
+How monetary policy shocks affect exchange rate? The most well-known study from @dornbusch1976 documented the overshooting model, which predicts that the monetary expansion would lead to an increase in domestic interest rate and persistence depreciation of exchange rate. However, more economists such as @eichenbaum1995 utilized VAR model found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.
 
 The recent study @kim2018 further explored that relatively short delay in the effect of contractionary monetary shock to exchange rate appreciation for the UK, Australia, Sweden and Canada.
 
@@ -377,7 +377,7 @@ $$
 L(A,\Sigma |Y,X) = NIW_{K\times N} (\hat{A},(X'X)^{-1},(Y-X\hat{A} )'(Y-X\hat{A} ),T-N-K-1) 
 $$
 
-he Natural-Conjugate Prior for the SVARs model is also considered as a **Minnesota prior**. The Natural-Conjugate Prior Distribution is:
+The Natural-Conjugate Prior for the SVARs model is also considered as a **Minnesota prior**. The Natural-Conjugate Prior Distribution is:
 
 $$
 P(A,\Sigma) = P(A|\Sigma) p(\Sigma) 
@@ -630,8 +630,9 @@ for (s in 1:S){
   B0          = Q%*%B0.t
   B1          = Q%*%B1.t
   B0.inv      = solve(B0)
-  check       = prod(R1 %*% B0 %*% diag(N)[,1]  >= 0)
-  if (check==1){sign.restrictions.do.not.hold=FALSE}
+  
+  sign.restrictions.do.not.hold = !prod(R1 %*% B0 %*% diag(N)[,1]  >= 0)
+  
   i=i+1
   }
   i.vec = c(i.vec,i) 
@@ -764,16 +765,15 @@ $$\lambda \sim \mathcal{Gamma}(\underline{s},\underline{a}  )$$
 The **Full Conditional Posterior** of $\lambda$ given $\Sigma$ can be derived as:
 
 $$
-p(\lambda |Y,X,\Sigma ) \propto L(Y,X|A,\Sigma)p(\Sigma,A, \lambda)\\
-\propto L(Y,X|A,\Sigma)p(\Sigma|A, \lambda)p(\Sigma)p(\lambda)\\
-\propto p(\Sigma|, A,\lambda)p(\lambda)
-$$
-
-$$
-p(\lambda |Y,X,\Sigma )\propto p(\Sigma|, A,\lambda)p(\lambda) \\
-\propto det(\lambda I_{N})^{\frac{\underline{\upsilon} }{2}} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]\right \}\lambda^{\underline{a}-1}e^{-\frac{\lambda}{\underline{s}} }  \\
-\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]-\frac{\lambda}{\underline{s}}\right \} \\
-\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\lambda(\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}})\right \} 
+\begin{aligned}
+p(\lambda |Y,X,\Sigma )
+&\propto L(A,\Sigma|Y,X)p(\Sigma,A, \lambda)\\
+&\propto L(A,\Sigma|Y,X)p(\Sigma|A, \lambda)p(A)p(\lambda)\\
+&\propto p(\Sigma|A,\lambda)p(\lambda) \\
+&\propto det(\lambda I_{N})^{\frac{\underline{\upsilon} }{2}} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]\right \}\lambda^{\underline{a}-1}e^{-\frac{\lambda}{\underline{s}} }  \\
+&\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]-\frac{\lambda}{\underline{s}}\right \} \\
+&\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\lambda(\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}})\right \} 
+\end{aligned}
 $$
 
 As we can show the kernel follows Gamma Distribution as the kernel Gamma distribution is:$$p(x|s,a) \propto x^{a-1}exp \left\{\frac{-(x)}{s} \right\}$$

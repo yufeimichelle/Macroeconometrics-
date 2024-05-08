@@ -615,7 +615,7 @@ B1.tilde = posterior.draws$B1.tilde
 R1 = restrictions
 
 i.vec = c()
-S = 1000
+S = S
 for (s in 1:S){
   B0.t    = B0.tilde[,,s]
   B1.t    = B1.tilde[,,s]

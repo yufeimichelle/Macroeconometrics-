@@ -622,7 +622,7 @@ for (s in 1:S){
   sign.restrictions.do.not.hold = TRUE
   i=1
   while (sign.restrictions.do.not.hold){
-  Z           = matrix(rnorm(4),2,2)
+  Z           = matrix(rnorm(N*N),N,N)
   QR          = qr(Z, tol = 1e-10)
   Q           = qr.Q(QR,complete=TRUE)
   R           = qr.R(QR,complete=TRUE)

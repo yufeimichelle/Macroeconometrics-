@@ -194,6 +194,8 @@ div.csl-indent {
   <li><a href="#estimation-algorithm-1" id="toc-estimation-algorithm-1" class="nav-link" data-scroll-target="#estimation-algorithm-1"><strong>Estimation Algorithm</strong></a></li>
   <li><a href="#simulation-result-1" id="toc-simulation-result-1" class="nav-link" data-scroll-target="#simulation-result-1"><strong>Simulation Result</strong></a></li>
   </ul></li>
+  <li><a href="#empirical-estimation-results" id="toc-empirical-estimation-results" class="nav-link" data-scroll-target="#empirical-estimation-results">Empirical Estimation Results</a></li>
+  <li><a href="#baseline-model-1" id="toc-baseline-model-1" class="nav-link" data-scroll-target="#baseline-model-1"><strong>Baseline Model</strong></a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
@@ -681,7 +683,7 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  sign.restrictions.do.not.hold <span class="ot">=</span> <span class="cn">TRUE</span></span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  i<span class="ot">=</span><span class="dv">1</span></span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (sign.restrictions.do.not.hold){</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  Z           <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">4</span>),<span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  Z           <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(N<span class="sc">*</span>N),N,N)</span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  QR          <span class="ot">=</span> <span class="fu">qr</span>(Z, <span class="at">tol =</span> <span class="fl">1e-10</span>)</span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  Q           <span class="ot">=</span> <span class="fu">qr.Q</span>(QR,<span class="at">complete=</span><span class="cn">TRUE</span>)</span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  R           <span class="ot">=</span> <span class="fu">qr.R</span>(QR,<span class="at">complete=</span><span class="cn">TRUE</span>)</span>
@@ -1028,6 +1030,301 @@ p(\lambda |Y,X,\Sigma )
 <h6 class="anchored" data-anchor-id="table-11-posterior-mean-of-b0-of-extension-model">Table 11: posterior mean of B0 of extension model</h6>
 </section>
 </section>
+</section>
+<section id="empirical-estimation-results" class="level2">
+<h2 class="anchored" data-anchor-id="empirical-estimation-results">Empirical Estimation Results</h2>
+<div class="cell">
+
+</div>
+</section>
+<section id="baseline-model-1" class="level2">
+<h2 class="anchored" data-anchor-id="baseline-model-1"><strong>Baseline Model</strong></h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Posterior Mean of A</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">ERA</th>
+<th style="text-align: right;">MB</th>
+<th style="text-align: right;">Short_R</th>
+<th style="text-align: right;">GDP</th>
+<th style="text-align: right;">CPI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">-0.0163</td>
+<td style="text-align: right;">0.0536</td>
+<td style="text-align: right;">2.3104</td>
+<td style="text-align: right;">0.0277</td>
+<td style="text-align: right;">-0.0032</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.9962</td>
+<td style="text-align: right;">-0.0021</td>
+<td style="text-align: right;">0.0353</td>
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">0.0001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0013</td>
+<td style="text-align: right;">0.9984</td>
+<td style="text-align: right;">-0.1284</td>
+<td style="text-align: right;">-0.0014</td>
+<td style="text-align: right;">0.0009</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0015</td>
+<td style="text-align: right;">-0.0034</td>
+<td style="text-align: right;">0.9720</td>
+<td style="text-align: right;">0.0001</td>
+<td style="text-align: right;">0.0014</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">-0.0003</td>
+<td style="text-align: right;">-0.0120</td>
+<td style="text-align: right;">0.9996</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0014</td>
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">-0.0868</td>
+<td style="text-align: right;">-0.0003</td>
+<td style="text-align: right;">0.9995</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0011</td>
+<td style="text-align: right;">-0.0006</td>
+<td style="text-align: right;">0.0014</td>
+<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">-0.0004</td>
+<td style="text-align: right;">-0.0344</td>
+<td style="text-align: right;">-0.0003</td>
+<td style="text-align: right;">0.0002</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0008</td>
+<td style="text-align: right;">0.0009</td>
+<td style="text-align: right;">-0.0509</td>
+<td style="text-align: right;">-0.0004</td>
+<td style="text-align: right;">0.0003</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0001</td>
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">-0.0025</td>
+<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0003</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0212</td>
+<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">-0.0001</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0006</td>
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">0.0010</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">-0.0138</td>
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">0.0001</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0005</td>
+<td style="text-align: right;">0.0003</td>
+<td style="text-align: right;">0.0448</td>
+<td style="text-align: right;">-0.0004</td>
+<td style="text-align: right;">-0.0001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0039</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0003</td>
+<td style="text-align: right;">0.0001</td>
+<td style="text-align: right;">-0.0114</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">-0.0017</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">-0.0107</td>
+<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">0.0001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0005</td>
+<td style="text-align: right;">-0.0095</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0002</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0013</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0001</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0065</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">-0.0008</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">-0.0068</td>
+<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">0.0004</td>
+<td style="text-align: right;">-0.0379</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0027</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0006</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">-0.0034</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0004</td>
+<td style="text-align: right;">0.0003</td>
+<td style="text-align: right;">-0.0120</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0001</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0001</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0026</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Posterior Mean of Sigma</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">ERA</th>
+<th style="text-align: right;">MB</th>
+<th style="text-align: right;">Short_R</th>
+<th style="text-align: right;">GDP</th>
+<th style="text-align: right;">CPI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.0019</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0013</td>
+<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">0e+00</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0006</td>
+<td style="text-align: right;">-0.0044</td>
+<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">0e+00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0013</td>
+<td style="text-align: right;">-0.0044</td>
+<td style="text-align: right;">1.1876</td>
+<td style="text-align: right;">4e-04</td>
+<td style="text-align: right;">6e-04</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0004</td>
+<td style="text-align: right;">1e-04</td>
+<td style="text-align: right;">0e+00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0006</td>
+<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">0e+00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
 <section id="references" class="level2">
 

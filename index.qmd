@@ -993,4 +993,77 @@ knitr::kable(table4_ext, caption = "posterior mean of B1", digits = 2,col.names 
 
 ###### Table 11: posterior mean of B0 of extension model
 
+## Empirical Estimation Results
+
+```{r}
+#| echo: false
+#| message: false
+#merge into one data set
+df <- as.data.frame(merge(exchange_rate_usd, MB, Short_R, GDP, CPI))
+
+# create a numeric df
+df_num <- cbind(
+  as.numeric(df$ERA),
+  as.numeric(df$MB),
+  as.numeric(df$Short_R),
+  as.numeric(df$GDP),
+  as.numeric(df$CPI)
+)
+colnames(df_num) <- colnames(df)
+
+
+# definition
+p            = 6                            # number of lags
+Y            = df_num[(1+p):nrow(df_num),]
+X            = matrix(1,nrow(Y),1)
+S            =1000                          # number of iterations 
+N            = ncol(Y)                      # number of variables
+K            = N*p + 1                      # K = 1 + pN
+
+for (i in 1:p){
+  X     = cbind(X,df_num[((p+1):nrow(df_num))-i,])
+}
+
+shock = c(0,-1,1,0,-1)
+# generate MLE of A and Sigma 
+A.hat        = solve(t(X)%*%X)%*%t(X)%*%Y                
+Sigma.hat    = t(Y-X%*%A.hat)%*%(Y-X%*%A.hat)/nrow(Y)   
+
+```
+
+## **Baseline Model**
+
+```{r}
+#| echo: false
+#| message: false
+# get prior
+Prior_df = GetPrior.parameters(N=N,p=p,Sigma.hat=Sigma.hat)
+
+#baseline model
+#posterior
+posterior_pram_df = Posterior_parameters(X=X,Y=Y,A=Prior_df$A_prior,V=Prior_df$V_prior,
+                                      S=Prior_df$S_prior,nu=Prior_df$nu_prior)
+
+# Draw samples of A, sigma and SF parameters
+draws_df = posterior.draws(S = S, posterior_pram = posterior_pram_df)
+
+# sign restriction
+sign_restrictions = shock
+R1_df            = diag(sign_restrictions)
+
+Restriction_output_df = ImposeSignRestriction(restrictions = R1_df,N=N,p=p,S=S,posterior.draws=draws_df )
+
+
+#the mean of posterior draws of A matrices
+mean_A <- round(apply(draws_df$A.posterior,1:2,mean),4)
+colnames(mean_A) <- colnames(df)
+knitr::kable(mean_A, caption = "Posterior Mean of A", index=TRUE)
+
+
+#the mean of posterior draws of sigma matrices
+mean_sigma <- round(apply(draws_df$Sigma.posterior,1:2,mean),4)
+colnames(mean_sigma) <- colnames(df)
+knitr::kable(mean_sigma,caption = "Posterior Mean of Sigma",  index=TRUE)
+```
+
 ## References

@@ -34,7 +34,7 @@ The endogenous variables for the SVAR analysis included:
 
 -   **Consumer Price Index(CPI):** Consumer price index, seasonally adjusted quarterly (from ABS)
 
-The data are collected from the Reserve Bank of Australia (RBA) and Australian Bureau of Statistics (ABS), adjusted in quarterly frequency and from 1990 Q1 to 2023 Q4, including 172 observations.
+The data are collected from the Reserve Bank of Australia (RBA) and Australian Bureau of Statistics (ABS), adjusted in quarterly frequency and from 1990 Q1 to 2023 Q4, including 136 observations.
 
 The first variable is the key variable in the analysis of the research, and the other 4 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in [Figure 1: Time-series plots].
 
@@ -161,11 +161,32 @@ GDP_p = autoplot(GDP) +
 ```{r}
 #| echo: false
 #| message: false
+data_all = list(exchange_rate_usd, MB, Short_R, GDP, CPI)
+
+variable <- c('ERA', 'MB', 'Short_R','GDP', 'CPI')
+#merge into one data set
+df <- as.data.frame(merge(exchange_rate_usd, MB, Short_R, GDP, CPI))
+
+# create a numeric df
+df_num <- cbind(
+  as.numeric(df$ERA),
+  as.numeric(df$MB),
+  as.numeric(df$Short_R),
+  as.numeric(df$GDP),
+  as.numeric(df$CPI)
+)
+colnames(df_num) <- colnames(df)
+
+```
+
+```{r}
+#| echo: false
+#| message: false
 #| 
 #combining 
-
-
 exchange_p + MB_p + SR_p + GDP_p  + CPI_p  + plot_layout(ncol = 2)
+
+
 ```
 
 ###### Figure 1: Time-series plots
@@ -747,7 +768,7 @@ knitr::kable(table4, caption = "posterior mean of B1", digits = 2,col.names = NU
 
 ###### Table 7: posterior mean of B1
 
-## **Extension Model**
+## **Extension Model With Gamma Distribution** 
 
 Considering the extension on the $\Sigma$ , assume the hyper parameter $\underline{S}$ of the prior distribution for $\Sigma$ is now adjust as $\lambda I_{N}$, where the parameter $\lambda$ following gamma prior distribution, using a hierarchical model.
 
@@ -999,25 +1020,13 @@ knitr::kable(table4_ext, caption = "posterior mean of B1", digits = 2,col.names 
 ```{r}
 #| echo: false
 #| message: false
-#merge into one data set
-df <- as.data.frame(merge(exchange_rate_usd, MB, Short_R, GDP, CPI))
-
-# create a numeric df
-df_num <- cbind(
-  as.numeric(df$ERA),
-  as.numeric(df$MB),
-  as.numeric(df$Short_R),
-  as.numeric(df$GDP),
-  as.numeric(df$CPI)
-)
-colnames(df_num) <- colnames(df)
 
 
 # definition
-p            = 6                            # number of lags
+p            = 4                            # number of lags, quaterly data
 Y            = df_num[(1+p):nrow(df_num),]
 X            = matrix(1,nrow(Y),1)
-S            =1000                          # number of iterations 
+S            =5000                          # number of iterations 
 N            = ncol(Y)                      # number of variables
 K            = N*p + 1                      # K = 1 + pN
 
@@ -1025,10 +1034,15 @@ for (i in 1:p){
   X     = cbind(X,df_num[((p+1):nrow(df_num))-i,])
 }
 
+#restrictions
 shock = c(0,-1,1,0,-1)
+
+
 # generate MLE of A and Sigma 
 A.hat        = solve(t(X)%*%X)%*%t(X)%*%Y                
 Sigma.hat    = t(Y-X%*%A.hat)%*%(Y-X%*%A.hat)/nrow(Y)   
+
+
 
 ```
 
@@ -1037,6 +1051,7 @@ Sigma.hat    = t(Y-X%*%A.hat)%*%(Y-X%*%A.hat)/nrow(Y)
 ```{r}
 #| echo: false
 #| message: false
+
 # get prior
 Prior_df = GetPrior.parameters(N=N,p=p,Sigma.hat=Sigma.hat)
 
@@ -1048,23 +1063,283 @@ posterior_pram_df = Posterior_parameters(X=X,Y=Y,A=Prior_df$A_prior,V=Prior_df$V
 # Draw samples of A, sigma and SF parameters
 draws_df = posterior.draws(S = S, posterior_pram = posterior_pram_df)
 
-# sign restriction
-sign_restrictions = shock
-R1_df            = diag(sign_restrictions)
-
-Restriction_output_df = ImposeSignRestriction(restrictions = R1_df,N=N,p=p,S=S,posterior.draws=draws_df )
-
 
 #the mean of posterior draws of A matrices
 mean_A <- round(apply(draws_df$A.posterior,1:2,mean),4)
 colnames(mean_A) <- colnames(df)
-knitr::kable(mean_A, caption = "Posterior Mean of A", index=TRUE)
+knitr::kable(mean_A, caption = "posterior mean of A",index=TRUE)
 
 
 #the mean of posterior draws of sigma matrices
 mean_sigma <- round(apply(draws_df$Sigma.posterior,1:2,mean),4)
 colnames(mean_sigma) <- colnames(df)
-knitr::kable(mean_sigma,caption = "Posterior Mean of Sigma",  index=TRUE)
+knitr::kable(mean_sigma, caption = "posterior mean of Sigma",index=TRUE)
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+
+
+# new sign restriction on impulse response
+##################################################
+
+ImposeSignRestrictionIRF <- function (restrictions,N,p,S,posterior.draws){
+  
+  B0.draws      = array(NA,c(N,N,S))
+  B1.draws      = array(NA,c(N,(1+N*p),S))
+  IR0.draws     = array(NA,c(N,N,S))
+  IR1.draws     = array(NA,c(N,(1+N*p),S))
+  
+  B0.tilde = posterior.draws$B0.tilde
+  B1.tilde = posterior.draws$B1.tilde
+  R1 = restrictions
+  
+  i.vec = c()
+  S = S
+  for (s in 1:S){
+    B0.t    = B0.tilde[,,s]
+    B1.t    = B1.tilde[,,s]
+    sign.restrictions.do.not.hold = TRUE
+    i=1
+    while (sign.restrictions.do.not.hold){
+      Z           = matrix(rnorm(N*N),N,N)
+      QR          = qr(Z, tol = 1e-10)
+      Q           = qr.Q(QR,complete=TRUE)
+      R           = qr.R(QR,complete=TRUE)
+      Q           = t(Q %*% diag(sign(diag(R))))
+      B0          = Q%*%B0.t
+      B1          = Q%*%B1.t
+      B0.inv      = solve(B0)
+      check       = prod(R1 %*%B0.inv%*% diag(N)[,1]  >= 0) #impulse response
+      if (check==1){sign.restrictions.do.not.hold=FALSE}
+      i=i+1
+    }
+    i.vec = c(i.vec,i) 
+    B0.draws[,,s] = B0
+    B1.draws[,,s] = B1
+    IR0.draws[,,s] =B0.inv
+    #IR1.draws[,,s] =B0.inv%*%B1%*%B0.inv
+  }
+  return (list(B0.draws = B0.draws,
+               B1.draws = B1.draws,
+               IR0.draws = IR0.draws,
+               #IR1.draws = IR1.draws,
+               i = i.vec))
+}
+
+
+sign_restrictions = shock
+
+R1_df            = diag(sign_restrictions)
+
+#Restriction_output_df = ImposeSignRestriction(restrictions = R1_df,N=N,p=p,S=S,posterior.draws=draws_df )
+
+#with impulse response 
+Restriction_output_df_IRF = ImposeSignRestrictionIRF(restrictions = R1_df,N=N,p=p,S=S,posterior.draws=draws_df )
+
+
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+
+# Forecast Error Variance Decomposition with Impulse response restriction 
+
+B.posteriorIR       = array(NA,c(N,N,S))
+A.posteriorIR       = array(NA,c(N,K,S))
+for (s in 1:S){
+  B_IR               = solve(Restriction_output_df_IRF$B0.draws[,,s])
+  B.posteriorIR[,,s]= B_IR
+  A.posteriorIR[,,s]= B_IR %*% Restriction_output_df_IRF$B1.draws[,,s]
+}
+
+#define
+h       = 20  #8 = 2years, 20=5years
+library(HDInterval)
+
+IRF_function = function(S,h,N,B,p,A.posterior,B.posterior){
+  
+  IRF.posterior     = array(NA,c(N,N,h+1,S))
+  IRF.inf.posterior = array(NA,c(N,N,S))
+  FEVD.posterior    = array(NA,c(N,N,h+1,S))
+  J                 = cbind(diag(N),matrix(0,N,N*(p-1)))
+  
+  for (s in 1:S){
+    A.bold          = rbind(A.posterior[,2:(1+N*p),s],cbind(diag(N*(p-1)),matrix(0,N*(p-1),N)))
+    IRF.inf.posterior[,,s]          = J %*% solve(diag(N*p)-A.bold) %*% t(J) %*% B.posterior[,,s]
+    A.bold.power    = A.bold
+    for (i in 1:(h+1)){
+      if (i==1){
+        IRF.posterior[,,i,s]        = B.posterior[,,s]
+      } else {
+        IRF.posterior[,,i,s]        = J %*% A.bold.power %*% t(J) %*% IRF.posterior[,,i-1,s]
+        A.bold.power                = A.bold.power %*% A.bold
+      }
+      for (n in 1:N){
+        for (nn in 1:N){
+          FEVD.posterior[n,nn,i,s]  = sum(IRF.posterior[n,nn,1:i,s]^2)
+        }
+      }
+      FEVD.posterior[,,i,s]         = diag(1/apply(FEVD.posterior[,,i,s],1,sum))%*%FEVD.posterior[,,i,s]
+    }
+  }
+  
+  #FEVD.posterior    = 100*FEVD.posterior
+  
+  return(list(#FEVD.posterior    = 100*FEVD.posterior,
+              FEVD.posterior    = FEVD.posterior,
+              IRF.posterior     = IRF.posterior,
+              A.bold.power      = A.bold.power ,
+              IRF.inf.posterior = IRF.inf.posterior,
+              A.bold            = A.bold))
+}
+
+
+#adjust with impulse response
+IRF_df_IR = IRF_function(S=S,h=h,N=N,B=B,p=p,A.posterior=A.posteriorIR,B.posterior=B.posteriorIR)
+
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+# plot IRFs and FEVDs
+
+IRF.posterior.mps = IRF_df_IR$IRF.posterior[,1,,]
+IRFs.k1           = apply(IRF.posterior.mps,1:2,median)
+IRFs.k1           = apply(IRF.posterior.mps,1:2,median)
+
+IRFs.inf.k1       = apply(IRF.posterior.mps,1,mean)
+rownames(IRFs.k1) = colnames(df_num)
+
+IRFs.k1.hdi    = apply(IRF.posterior.mps,1:2,hdi, credMass=0.90)
+hh          = 1:(h+1)
+
+
+
+# Define colors
+mcxs1  = "#05386B"
+mcxs2  = "#379683"
+mcxs3  = "#5CDB95"
+mcxs4  = "#8EE4AF"
+mcxs5  = "#EDF5E1"
+purple = "#b02442"
+
+mcxs1.rgb   = col2rgb(mcxs3)
+mcxs1.shade1= rgb(mcxs1.rgb[1],mcxs1.rgb[2],mcxs1.rgb[3], alpha=120, maxColorValue=255)
+mcxs2.rgb   = col2rgb(mcxs2)
+mcxs2.shade1= rgb(mcxs2.rgb[1],mcxs2.rgb[2],mcxs2.rgb[3], alpha=120, maxColorValue=255)
+
+
+
+#plot
+variable <- c('ERA', 'MB', 'Short_R','GDP', 'CPI')
+par(mfrow=c(4,2), mar=c(2,2,2,2),cex.axis=1, cex.lab=1)
+for (n in 1:N){
+  ylims     = range(IRFs.k1[n,hh],IRFs.k1.hdi[,n,1:(h+1)],0)
+  plot(hh,IRFs.k1[n,hh], type="l", ylim=ylims, axes=FALSE, xlab="", ylab=rownames(IRFs.k1)[n],main=variable[n])
+  axis(1,c(1,10,20),c("","10 quarters","20quarters"))
+  
+ 
+  axis(2,c(ylims[1],0,ylims[2]),round(c(ylims[1],0,ylims[2]),3))
+  polygon(c(hh,(h+1):1), c(IRFs.k1.hdi[1,n,hh],IRFs.k1.hdi[2,n,(h+1):1]), col=mcxs1.shade1,border=mcxs1.shade1)
+  abline(h=0)
+  lines(hh, IRFs.k1[n,hh],lwd=2,col=mcxs1)
+}
+
+```
+
+## **Extension Model With Gamma Distribution** 
+
+```{r}
+#| echo: false
+#| message: false
+
+
+# Extend model
+############################################################
+#gamma distribution of S
+#prior parameters
+a_prior = 2
+s_prior = 0.5
+
+S1 =5000
+S2 =5000
+
+draws_ext_df = posterior.draws.exten(S1 = S1, S2 = S2,X=X,Y=Y,A=Prior_df$A_prior,V=Prior_df$V_prior,nu=Prior_df$nu_prior)
+
+#restriction
+Restriction_output_ext= ImposeSignRestrictionIRF(restrictions = R1_df,N=N,p=p,S=S,posterior.draws=draws_ext_df)
+
+#the mean of posterior draws of A matrices
+mean_A_ext <- round(apply(draws_ext_df$A.posterior,1:2,mean),4)
+colnames(mean_A) <- colnames(df)
+knitr::kable(mean_A,  caption = "posterior mean of A",index=TRUE)
+
+
+#the mean of posterior draws of sigma matrices
+mean_sigma_ext <- round(apply(draws_ext_df$Sigma.posterior,1:2,mean),4)
+colnames(mean_sigma) <- colnames(df)
+knitr::kable(mean_sigma,  caption = "posterior mean of Sigma",index=TRUE)
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+# Impulse response functions
+# Forecast Error Variance Decomposition
+
+B.posterior_ext       = array(NA,c(N,N,S))
+A.posterior_ext       = array(NA,c(N,K,S))
+for (s in 1:S){
+  B_ext               = solve(Restriction_output_ext$B0.draws[,,s])
+  B.posterior_ext [,,s]= B_ext
+  A.posterior_ext [,,s]= B_ext %*% Restriction_output_ext$B1.draws[,,s]
+}
+
+
+IRF_ext = IRF_function(S=S,h=h,N=N,B=B_ext,p=p,A.posterior=A.posterior_ext,B.posterior=B.posterior_ext)
+
+# plot IRFs and FEVDs
+
+IRF.posterior.mps_ext = IRF_ext$IRF.posterior[,1,,]
+IRFs.k1_ext           = apply(IRF.posterior.mps_ext,1:2,median)
+#IRF.posterior.mps_ext = IRF.posterior.mps_ext*(0.25/IRFs.k1[4,1])
+IRFs.k1_ext            = apply(IRF.posterior.mps_ext,1:2,median)
+IRFs.inf.k1_ext       = apply(IRF.posterior.mps_ext,1,mean)
+rownames(IRFs.k1_ext ) = colnames(df_num)
+
+IRFs.k1.hdi_ext    = apply(IRF.posterior.mps_ext,1:2,hdi, credMass=0.90)
+hh          = 1:(h+1)
+
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+
+
+# plot 
+par(mfrow=c(4,2), mar=c(2,2,2,2),cex.axis=1, cex.lab=1)
+
+for (n in 1:N){
+  ylims     = range(IRFs.k1_ext[n,hh],IRFs.k1.hdi_ext[,n,1:(h+1)],0)
+  plot(hh,IRFs.k1_ext[n,hh], type="l", ylim=ylims, axes=FALSE, xlab="", ylab=rownames(IRFs.k1_ext)[n],main=variable[n])
+  axis(1,c(1,10,20),c("","10 quarters","20quarters"))
+  
+  
+  axis(2,c(ylims[1],0,ylims[2]),round(c(ylims[1],0,ylims[2]),3))
+  polygon(c(hh,(h+1):1), c(IRFs.k1.hdi_ext[1,n,hh],IRFs.k1.hdi_ext[2,n,(h+1):1]), col=mcxs2.shade1,border=mcxs2.shade1)
+  abline(h=0)
+  lines(hh, IRFs.k1_ext[n,hh],lwd=2,col=mcxs1)
+}
 ```
 
 ## References

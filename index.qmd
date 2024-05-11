@@ -1208,7 +1208,7 @@ IRF_function = function(S,h,N,B,p,A.posterior,B.posterior){
 
 ```
 
-[Figure 4. Impulse Response Function of Basic Model] shows the Impulse Response Function of the baseline model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we can not observe significant effect in exchange rate.There are slightly negative atitve effect on GDP and slightly positive effect on exchange rate in the short run.
+[Figure 4. Impulse Response Function of Basic Model] shows the Impulse Response Function of the baseline model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate in the short run.
 
 ```{r}
 #| echo: false

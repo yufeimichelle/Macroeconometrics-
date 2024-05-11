@@ -979,10 +979,11 @@ p(\lambda |Y,X,\Sigma )
 </section>
 <section id="baseline-model-1" class="level2">
 <h2 class="anchored" data-anchor-id="baseline-model-1"><strong>Baseline Model</strong></h2>
+<p>The <a href="#table-12.-posterior-mean-of-a">Table 12. Posterior Mean of A</a> and <a href="#table-13.-posterior-mean-of-sigma">Table 13. Posterior Mean of Sigma</a> presented the mean of posterior draws of A and <span class="math inline">\(\Sigma\)</span> matrices.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
-<caption>posterior mean of A</caption>
+<caption>Posterior Mean of A</caption>
 <thead>
 <tr class="header">
 <th style="text-align: right;">ERA</th>
@@ -1143,9 +1144,13 @@ p(\lambda |Y,X,\Sigma )
 </tbody>
 </table>
 </div>
+</div>
+<section id="table-12.-posterior-mean-of-a" class="level6">
+<h6 class="anchored" data-anchor-id="table-12.-posterior-mean-of-a">Table 12. Posterior Mean of A</h6>
+<div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
-<caption>posterior mean of Sigma</caption>
+<caption>Posterior Mean of Sigma</caption>
 <thead>
 <tr class="header">
 <th style="text-align: right;">ERA</th>
@@ -1193,16 +1198,63 @@ p(\lambda |Y,X,\Sigma )
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
+<section id="table-13.-posterior-mean-of-sigma" class="level6">
+<h6 class="anchored" data-anchor-id="table-13.-posterior-mean-of-sigma">Table 13. Posterior Mean of Sigma</h6>
+<p>Applying the following Impuse Response Function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>IRF_function <span class="ot">=</span> <span class="cf">function</span>(S,h,N,B,p,A.posterior,B.posterior){</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  IRF.posterior     <span class="ot">=</span> <span class="fu">array</span>(<span class="cn">NA</span>,<span class="fu">c</span>(N,N,h<span class="sc">+</span><span class="dv">1</span>,S))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  IRF.inf.posterior <span class="ot">=</span> <span class="fu">array</span>(<span class="cn">NA</span>,<span class="fu">c</span>(N,N,S))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  FEVD.posterior    <span class="ot">=</span> <span class="fu">array</span>(<span class="cn">NA</span>,<span class="fu">c</span>(N,N,h<span class="sc">+</span><span class="dv">1</span>,S))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  J                 <span class="ot">=</span> <span class="fu">cbind</span>(<span class="fu">diag</span>(N),<span class="fu">matrix</span>(<span class="dv">0</span>,N,N<span class="sc">*</span>(p<span class="dv">-1</span>)))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>S){</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    A.bold          <span class="ot">=</span> <span class="fu">rbind</span>(A.posterior[,<span class="dv">2</span><span class="sc">:</span>(<span class="dv">1</span><span class="sc">+</span>N<span class="sc">*</span>p),s],<span class="fu">cbind</span>(<span class="fu">diag</span>(N<span class="sc">*</span>(p<span class="dv">-1</span>)),<span class="fu">matrix</span>(<span class="dv">0</span>,N<span class="sc">*</span>(p<span class="dv">-1</span>),N)))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    IRF.inf.posterior[,,s]          <span class="ot">=</span> J <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">diag</span>(N<span class="sc">*</span>p)<span class="sc">-</span>A.bold) <span class="sc">%*%</span> <span class="fu">t</span>(J) <span class="sc">%*%</span> B.posterior[,,s]</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    A.bold.power    <span class="ot">=</span> A.bold</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(h<span class="sc">+</span><span class="dv">1</span>)){</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (i<span class="sc">==</span><span class="dv">1</span>){</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        IRF.posterior[,,i,s]        <span class="ot">=</span> B.posterior[,,s]</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        IRF.posterior[,,i,s]        <span class="ot">=</span> J <span class="sc">%*%</span> A.bold.power <span class="sc">%*%</span> <span class="fu">t</span>(J) <span class="sc">%*%</span> IRF.posterior[,,i<span class="dv">-1</span>,s]</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        A.bold.power                <span class="ot">=</span> A.bold.power <span class="sc">%*%</span> A.bold</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (n <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> (nn <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>          FEVD.posterior[n,nn,i,s]  <span class="ot">=</span> <span class="fu">sum</span>(IRF.posterior[n,nn,<span class="dv">1</span><span class="sc">:</span>i,s]<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>      FEVD.posterior[,,i,s]         <span class="ot">=</span> <span class="fu">diag</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">apply</span>(FEVD.posterior[,,i,s],<span class="dv">1</span>,sum))<span class="sc">%*%</span>FEVD.posterior[,,i,s]</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>              <span class="at">FEVD.posterior    =</span> FEVD.posterior,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>              <span class="at">IRF.posterior     =</span> IRF.posterior,</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>              <span class="at">A.bold.power      =</span> A.bold.power ,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>              <span class="at">IRF.inf.posterior =</span> IRF.inf.posterior,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>              <span class="at">A.bold            =</span> A.bold))</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><a href="#figure-4.-impulse-response-function-of-basic-model">Figure 4. Impulse Response Function of Basic Model</a> shows the Impulse Response Function of the baseline model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we can not observe significant effect in exchange rate.There are slightly negative atitve effect on GDP and slightly positive effect on exchange rate in the short run.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="figure-4.-impulse-response-function-of-basic-model" class="level6">
+<h6 class="anchored" data-anchor-id="figure-4.-impulse-response-function-of-basic-model">Figure 4. Impulse Response Function of Basic Model</h6>
+</section>
+</section>
 <section id="extension-model-with-gamma-distribution-1" class="level2">
 <h2 class="anchored" data-anchor-id="extension-model-with-gamma-distribution-1"><strong>Extension Model With Gamma Distribution</strong></h2>
+<p>The <a href="#table-14.-posterior-mean-of-a-in-extension-model">Table 14. Posterior Mean of A in extension model</a> and <a href="#table-15.-posterior-mean-of-sigma-in-extension-model">Table 15. Posterior Mean of Sigma in extension model</a> presented the mean of posterior draws of A and <span class="math inline">\(\Sigma\)</span> matrices for extension model.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
@@ -1367,6 +1419,10 @@ p(\lambda |Y,X,\Sigma )
 </tbody>
 </table>
 </div>
+</div>
+<section id="table-14.-posterior-mean-of-a-in-extension-model" class="level6">
+<h6 class="anchored" data-anchor-id="table-14.-posterior-mean-of-a-in-extension-model">Table 14. Posterior Mean of A in extension model</h6>
+<div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <caption>posterior mean of Sigma</caption>
@@ -1419,11 +1475,19 @@ p(\lambda |Y,X,\Sigma )
 </table>
 </div>
 </div>
+</section>
+<section id="table-15.-posterior-mean-of-sigma-in-extension-model" class="level6">
+<h6 class="anchored" data-anchor-id="table-15.-posterior-mean-of-sigma-in-extension-model">Table 15. Posterior Mean of Sigma in extension model</h6>
+<p><a href="#figure-5.-impulse-response-function-extension-model">Figure 5. Impulse Response Function Extension Model</a> shows the Impulse Response Function of the extension model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we still can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate in the short run.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</section>
+<section id="figure-5.-impulse-response-function-extension-model" class="level6">
+<h6 class="anchored" data-anchor-id="figure-5.-impulse-response-function-extension-model">Figure 5. Impulse Response Function Extension Model</h6>
+</section>
 </section>
 <section id="references" class="level2">
 

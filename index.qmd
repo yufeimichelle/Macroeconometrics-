@@ -768,7 +768,7 @@ knitr::kable(table4, caption = "posterior mean of B1", digits = 2,col.names = NU
 
 ###### Table 7: posterior mean of B1
 
-## **Extension Model With Gamma Distribution** 
+## **Extension Model With Gamma Distribution**
 
 Considering the extension on the $\Sigma$ , assume the hyper parameter $\underline{S}$ of the prior distribution for $\Sigma$ is now adjust as $\lambda I_{N}$, where the parameter $\lambda$ following gamma prior distribution, using a hierarchical model.
 
@@ -1048,6 +1048,8 @@ Sigma.hat    = t(Y-X%*%A.hat)%*%(Y-X%*%A.hat)/nrow(Y)
 
 ## **Baseline Model**
 
+The [Table 12. Posterior Mean of A] and [Table 13. Posterior Mean of Sigma] presented the mean of posterior draws of A and $\Sigma$ matrices.
+
 ```{r}
 #| echo: false
 #| message: false
@@ -1067,15 +1069,21 @@ draws_df = posterior.draws(S = S, posterior_pram = posterior_pram_df)
 #the mean of posterior draws of A matrices
 mean_A <- round(apply(draws_df$A.posterior,1:2,mean),4)
 colnames(mean_A) <- colnames(df)
-knitr::kable(mean_A, caption = "posterior mean of A",index=TRUE)
+knitr::kable(mean_A, caption = "Posterior Mean of A",index=TRUE)
 
+```
+
+###### Table 12. Posterior Mean of A
+
+```{r}
 
 #the mean of posterior draws of sigma matrices
 mean_sigma <- round(apply(draws_df$Sigma.posterior,1:2,mean),4)
 colnames(mean_sigma) <- colnames(df)
-knitr::kable(mean_sigma, caption = "posterior mean of Sigma",index=TRUE)
-
+knitr::kable(mean_sigma, caption = "Posterior Mean of Sigma",index=TRUE)
 ```
+
+###### Table 13. Posterior Mean of Sigma
 
 ```{r}
 #| echo: false
@@ -1140,13 +1148,6 @@ R1_df            = diag(sign_restrictions)
 Restriction_output_df_IRF = ImposeSignRestrictionIRF(restrictions = R1_df,N=N,p=p,S=S,posterior.draws=draws_df )
 
 
-
-```
-
-```{r}
-#| echo: false
-#| message: false
-
 # Forecast Error Variance Decomposition with Impulse response restriction 
 
 B.posteriorIR       = array(NA,c(N,N,S))
@@ -1160,6 +1161,12 @@ for (s in 1:S){
 #define
 h       = 20  #8 = 2years, 20=5years
 library(HDInterval)
+
+```
+
+Applying the following Impuse Response Function.
+
+```{r echo=TRUE}
 
 IRF_function = function(S,h,N,B,p,A.posterior,B.posterior){
   
@@ -1187,10 +1194,9 @@ IRF_function = function(S,h,N,B,p,A.posterior,B.posterior){
       FEVD.posterior[,,i,s]         = diag(1/apply(FEVD.posterior[,,i,s],1,sum))%*%FEVD.posterior[,,i,s]
     }
   }
+
   
-  #FEVD.posterior    = 100*FEVD.posterior
-  
-  return(list(#FEVD.posterior    = 100*FEVD.posterior,
+  return(list(
               FEVD.posterior    = FEVD.posterior,
               IRF.posterior     = IRF.posterior,
               A.bold.power      = A.bold.power ,
@@ -1199,15 +1205,19 @@ IRF_function = function(S,h,N,B,p,A.posterior,B.posterior){
 }
 
 
-#adjust with impulse response
-IRF_df_IR = IRF_function(S=S,h=h,N=N,B=B,p=p,A.posterior=A.posteriorIR,B.posterior=B.posteriorIR)
-
 
 ```
+
+[Figure 4. Impulse Response Function of Basic Model] shows the Impulse Response Function of the baseline model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we can not observe significant effect in exchange rate.There are slightly negative atitve effect on GDP and slightly positive effect on exchange rate in the short run.
 
 ```{r}
 #| echo: false
 #| message: false
+
+
+#adjust with impulse response
+IRF_df_IR = IRF_function(S=S,h=h,N=N,B=B,p=p,A.posterior=A.posteriorIR,B.posterior=B.posteriorIR)
+
 # plot IRFs and FEVDs
 
 IRF.posterior.mps = IRF_df_IR$IRF.posterior[,1,,]
@@ -1254,7 +1264,11 @@ for (n in 1:N){
 
 ```
 
-## **Extension Model With Gamma Distribution** 
+###### Figure 4. Impulse Response Function of Basic Model
+
+## **Extension Model With Gamma Distribution**
+
+The [Table 14. Posterior Mean of A in extension model] and [Table 15. Posterior Mean of Sigma in extension model] presented the mean of posterior draws of A and $\Sigma$ matrices for extension model.
 
 ```{r}
 #| echo: false
@@ -1281,13 +1295,18 @@ mean_A_ext <- round(apply(draws_ext_df$A.posterior,1:2,mean),4)
 colnames(mean_A) <- colnames(df)
 knitr::kable(mean_A,  caption = "posterior mean of A",index=TRUE)
 
+```
 
+###### Table 14. Posterior Mean of A in extension model
+
+```{r}
 #the mean of posterior draws of sigma matrices
 mean_sigma_ext <- round(apply(draws_ext_df$Sigma.posterior,1:2,mean),4)
 colnames(mean_sigma) <- colnames(df)
 knitr::kable(mean_sigma,  caption = "posterior mean of Sigma",index=TRUE)
-
 ```
+
+###### Table 15. Posterior Mean of Sigma in extension model
 
 ```{r}
 #| echo: false
@@ -1321,6 +1340,8 @@ hh          = 1:(h+1)
 
 ```
 
+[Figure 5. Impulse Response Function Extension Model] shows the Impulse Response Function of the extension model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we still can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate in the short run.
+
 ```{r}
 #| echo: false
 #| message: false
@@ -1341,5 +1362,7 @@ for (n in 1:N){
   lines(hh, IRFs.k1_ext[n,hh],lwd=2,col=mcxs1)
 }
 ```
+
+###### Figure 5. Impulse Response Function Extension Model
 
 ## References

@@ -518,7 +518,7 @@ Sigma.hat    = t(Y-X%*%A.hat)%*%(Y-X%*%A.hat)/nrow(Y)
 # Get the Minnesota prior 
 GetPrior.parameters <- function (N,p,Sigma.hat) {
   
-  kappa.1 <- 0.02 # assume kappa1 is 0.02
+  kappa.1 <- 1 # assume kappa1 is 1
   kappa.2 <- 100  # assume kappa2 is 100
   
   K = 1 + N*p 
@@ -1183,7 +1183,7 @@ IRF_function = function(S,h,N,B,p,A.posterior,B.posterior){
       if (i==1){
         IRF.posterior[,,i,s]        = B.posterior[,,s]
       } else {
-        IRF.posterior[,,i,s]        = J %*% A.bold.power %*% t(J) %*% IRF.posterior[,,i-1,s]
+        IRF.posterior[,,i,s]        = J %*% A.bold.power %*% t(J) %*% B.posterior[,,s]
         A.bold.power                = A.bold.power %*% A.bold
       }
       for (n in 1:N){
@@ -1208,7 +1208,7 @@ IRF_function = function(S,h,N,B,p,A.posterior,B.posterior){
 
 ```
 
-[Figure 4. Impulse Response Function of Basic Model] shows the Impulse Response Function of the baseline model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate in the short run.
+[Figure 4. Impulse Response Function of Basic Model] shows the Impulse Response Function of the baseline model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate, but the effect is not statistically significant in 68% confidence interval.
 
 ```{r}
 #| echo: false
@@ -1227,7 +1227,7 @@ IRFs.k1           = apply(IRF.posterior.mps,1:2,median)
 IRFs.inf.k1       = apply(IRF.posterior.mps,1,mean)
 rownames(IRFs.k1) = colnames(df_num)
 
-IRFs.k1.hdi    = apply(IRF.posterior.mps,1:2,hdi, credMass=0.90)
+IRFs.k1.hdi    = apply(IRF.posterior.mps,1:2,hdi, credMass=0.68)
 hh          = 1:(h+1)
 
 
@@ -1334,13 +1334,13 @@ IRFs.k1_ext            = apply(IRF.posterior.mps_ext,1:2,median)
 IRFs.inf.k1_ext       = apply(IRF.posterior.mps_ext,1,mean)
 rownames(IRFs.k1_ext ) = colnames(df_num)
 
-IRFs.k1.hdi_ext    = apply(IRF.posterior.mps_ext,1:2,hdi, credMass=0.90)
+IRFs.k1.hdi_ext    = apply(IRF.posterior.mps_ext,1:2,hdi, credMass=0.68)
 hh          = 1:(h+1)
 
 
 ```
 
-[Figure 5. Impulse Response Function Extension Model] shows the Impulse Response Function of the extension model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we still can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate in the short run.
+[Figure 5. Impulse Response Function Extension Model] shows the Impulse Response Function of the extension model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we still can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate, but the effect is not statistically significant in 68% confidence interval .
 
 ```{r}
 #| echo: false

@@ -1015,6 +1015,251 @@ knitr::kable(table4_ext, caption = "posterior mean of B1", digits = 2,col.names 
 
 ###### Table 11: posterior mean of B0 of extension model
 
+## **Extension Model With** Stochastic Volatility Heteroskedasticity
+
+Considering the potential heteroskedasticity in the data, to improve in-sample fit of model and improve precision of estimation of data, modelling Conditional heteroskedasticity includes the use of Stochastic Volatility models are adapted. The extension are specified as:
+
+$$
+Y = XA+E
+$$
+
+$$
+E|X\sim MN_{T\times N} (0_{T\times N} ,\Sigma ,\Omega)
+$$
+
+where $\Omega = diag(\boldsymbol\sigma^{2})$ and $\boldsymbol\sigma^2 = (\sigma_{1}^2, \sigma_{2}^2...\sigma_{T}^2)'$ follow Stochastic Volatility models:
+
+$$
+\sigma^2 = exp(h_t)
+$$
+
+$$
+h_t = h_{t-1}+\eta_{t}
+$$
+
+$$
+\eta_{t} \sim N(0,\sigma_{\eta}^2)
+$$
+
+The likelihood function under heteroskedasticity is:
+
+$$
+L(A,\Sigma |Y,X,\sigma^2) \propto det(diag(\sigma^2))det(\Sigma)^{-T/2}\exp\left \{{-\frac{1}{2}tr[\Sigma ^{-1}(Y-XA)'diag(\sigma^2)^{-1}(Y-XA)]}   \right \}  
+$$
+
+The main parameters are:
+
+$$
+\left\{\begin{matrix}\overline{V}=(X'diag(\sigma^2)^{-1}X+\underline{V}^{-1} )^{-1} \\\overline{A}=\overline{V}(X'diag(\sigma^2)^{-1}Y+\underline{V}^{-1} \underline{A}) \\\overline{v}=T+\underline{v} \\\overline{S}=\underline{S}+Y'diag(\sigma^2)^{-1}Y+\underline{A}'\underline{V}^{-1}\underline{A}-\overline{A}'\overline{V}^{-1}\overline{A}\end{matrix}\right.
+$$
+
+### Gibb Sampler using extension models
+
+Draw samples of sample $\Sigma ^{(s)}$ , $\lambda ^{(s)}$ and $A ^{(s)}$ using posterior parameters.
+
+Initialized $\sigma ^{(s)}$ as $\sigma ^{(0)}$
+
+At each iteration $s$:
+
+1.  Draw $\Sigma^{(s)}$ from $\mathcal{IW}_{N}(\overline{S}, \overline{v})$, and using the initialized $\sigma ^{(0)}$
+
+2.  Draw $\sigma ^{(s)}$ from using Stochastic Volatility models
+
+3.  Draw $A^{(s)}$ from $\mathcal{MN}_{K\times N}(\overline{A}, \Sigma,\overline{V} )$ by insert $\Sigma^{(s)}$
+
+Repeat 1 and 2 $S_{1}+S_{2}$times.
+
+Discard the first $S_{1}$ draws that allows the algorithm to converge to the stationary posterior distribution.
+
+Output is the sample draws from the joint posterior distribution $\left\{ {A^{(s)}, \Sigma^{(s)}} ,\sigma ^{(s)}\right\}^{S_{1}+S_{2}}_{s=S_{1}+1}$ .
+
+### **Estimation Algorithm**
+
+Function below is the `SVcommon.Gibbs.iteration` for Stochastic Volatility model
+
+```{r echo=TRUE}
+
+SVcommon.Gibbs.iteration = function(aux, priors){
+  # A single iteration of the Gibbs sampler for the SV component
+  #
+  # aux is a list containing:
+  #   Y - a TxN matrix
+  #   X - a TxK matrix
+  #   H - a Tx1 matrix
+  #   h0 - a scalar
+  #   sigma.v2 - a scalar
+  #   s - a Tx1 matrix
+  #   A - a KxN matrix
+  #   Sigma - an NxN matrix
+  #   sigma2 - a Tx1 matrix
+  #
+  # priors is a list containing:
+  #   h0.v - a positive scalar
+  #   h0.m - a scalar
+  #   sigmav.s - a positive scalar
+  #   sigmav.nu - a positive scalar
+  #   HH - a TxT matrix
+  
+  T             = dim(aux$Y)[1]
+  N             = dim(aux$Y)[2]
+  alpha.st      = c(1.92677,1.34744,0.73504,0.02266,0-0.85173,-1.97278,-3.46788,-5.55246,-8.68384,-14.65000)
+  sigma.st      = c(0.11265,0.17788,0.26768,0.40611,0.62699,0.98583,1.57469,2.54498,4.16591,7.33342)
+  pi.st         = c(0.00609,0.04775,0.13057,0.20674,0.22715,0.18842,0.12047,0.05591,0.01575,0.00115)
+  
+  Lambda        = solve(chol(aux$Sigma))
+  Z             = rowSums( ( aux$Y - aux$X %*% aux$A ) %*% Lambda ) / sqrt(N)
+  Y.tilde       = as.vector(log((Z + 0.0000001)^2))
+  Ytilde.alpha  = as.matrix(Y.tilde - alpha.st[as.vector(aux$s)])
+  
+  # sampling initial condition
+  ############################################################
+  V.h0.bar      = 1/((1 / priors$h0.v) + (1 / aux$sigma.v2))
+  m.h0.bar      = V.h0.bar*((priors$h0.m / priors$h0.v) + (aux$H[1] / aux$sigma.v2))
+  h0.draw       = rnorm(1, mean = m.h0.bar, sd = sqrt(V.h0.bar))
+  aux$h0        = h0.draw
+  
+  # sampling sigma.v2
+  ############################################################
+  sigma.v2.s    = priors$sigmav.s + sum(c(aux$H[1] - aux$h0, diff(aux$H))^2)
+  sigma.v2.draw = sigma.v2.s / rchisq(1, priors$sigmav.nu + T)
+  aux$sigma.v2  = sigma.v2.draw
+  
+  # sampling auxiliary states
+  ############################################################
+  Pr.tmp        = simplify2array(lapply(1:10,function(x){
+    dnorm(Y.tilde, mean = as.vector(aux$H + alpha.st[x]), sd = sqrt(sigma.st[x]), log = TRUE) + log(pi.st[x])
+  }))
+  Pr            = t(apply(Pr.tmp, 1, function(x){exp(x - max(x)) / sum(exp(x - max(x)))}))
+  s.cum         = t(apply(Pr, 1, cumsum))
+  r             = matrix(rep(runif(T), 10), ncol = 10)
+  ss            = apply(s.cum < r, 1, sum) + 1
+  aux$s         = as.matrix(ss)
+  
+  
+  # sampling log-volatilities using functions for tridiagonal precision matrix
+  ############################################################
+  Sigma.s.inv   = diag(1 / sigma.st[as.vector(aux$s)])
+  D.inv         = Sigma.s.inv + (1 / aux$sigma.v2) * priors$HH
+  b             = as.matrix(Ytilde.alpha / sigma.st[as.vector(aux$s)] + (aux$h0/aux$sigma.v2)*diag(T)[,1])
+  lead.diag     = diag(D.inv)
+  sub.diag      = mgcv::sdiag(D.inv, -1)
+  D.chol        = mgcv::trichol(ld = lead.diag, sd = sub.diag)
+  D.L           = diag(D.chol$ld)
+  mgcv::sdiag(D.L,-1) = D.chol$sd
+  x             = as.matrix(rnorm(T))
+  a             = forwardsolve(D.L, b)
+  draw          = backsolve(t(D.L), a + x)
+  aux$H         = as.matrix(draw)
+  aux$sigma2    = as.matrix(exp(draw))
+
+  return(aux)
+}
+
+```
+
+function `posterior.draws.hetero` below describe the gibb sampler:
+
+```{r echo=TRUE}
+
+#posterior parameters
+  
+posterior.draws.hetero = function(S1,S2,X,Y,A,V,S,nu){
+  
+  i_N <- diag(N)
+  nu_bar <- nrow(Y) + nu
+  S_total = S1+S2
+  
+  #posterior
+  A.posterior     <- array(NA,c(K,N,S_total))
+  Sigma.posterior <-array(NA,c(N,N,S_total))
+  h.posterior     <- array(NA,c(nrow(Y),S_total+1)) 
+  B0.tilde <- array(NA,c(N,N,S_total))
+  B1.tilde <- array(NA,c(N,K,S_total))
+  
+  
+  #initialize 
+  h.posterior[,1] = matrix(1,nrow(Y),1) 
+  
+  #define precision matrix H
+  HH                    <-  2*diag(nrow(Y))
+  mgcv::sdiag(HH,-1)    <-  -1
+  mgcv::sdiag(HH,1)     <-  -1
+  
+  
+  # define priors for SV model
+  #   h0.v - a positive scalar
+  #   h0.m - a scalar
+  #   sigmav.s - a positive scalar
+  #   sigmav.nu - a positive scalar
+  #   HH - a TxT matrix
+  priors = list(HH       = HH,
+                h0.m     = 0,
+                h0.v     = 1,
+                sigmav.s = 1,
+                sigmav.nu= 1)
+  
+  #Gibb Sampler
+  
+  
+  for (s in 1:S_total){
+    #step 1
+    V_bar.inv <- t(X)%*%diag(1/h.posterior[,s])%*%X + solve(V)
+    V_bar <- solve(V_bar.inv)
+    L        <- t(chol(V_bar)) 
+    A_bar <- V_bar%*%(t(X)%*%diag(1/h.posterior[,s])%*%Y + solve(V)%*%A)
+    S_bar <- S + t(Y)%*%diag(1/h.posterior[,s])%*%Y + t(A)%*%solve(V)%*%A - t(A_bar)%*%V_bar.inv%*%A_bar
+    
+   A.posterior <- array(rnorm(prod(c(dim(A_bar),S_total))),c(dim(A_bar),S_total))
+    Sigma.posterior_d      <- rWishart(n=1, df=nu_bar, Sigma=solve(S_bar))  
+    Sigma.posterior_draw   <- apply(Sigma.posterior_d ,3,solve)            
+    Sigma.posterior[,,s]   <- Sigma.posterior_draw 
+    cholSigma.s      <- chol(Sigma.posterior[,,s])
+    B0.tilde[,,s] <- solve(t(cholSigma.s)) 
+    A.posterior[,,s] <- A_bar + L%*%A.posterior[,,s]%*%cholSigma.s 
+     
+    
+    B1.tilde[,,s]  <- B0.tilde[,,s]%*%t(A.posterior[,,s])
+    
+    #step 2
+    if (s==1){#initialise
+      aux = list( 
+        Y             = Y,
+        X             = X,
+        H             = matrix(1,nrow(Y),1),
+        h0            = 0,
+        sigma.v2      = 1,
+        s             = matrix(1,nrow(Y),1),
+        Sigma         = Sigma.posterior[,,s],
+        A             = A.posterior[,,s],
+        sigma2        = matrix(1,nrow(Y),1)
+      )}
+    else{# updating 
+      aux = list(
+        Y           = Y,
+        X           = X,
+        H           = tmp$H,
+        h0          = tmp$h0,
+        sigma.v2    = tmp$sigma.v2,
+        s           = tmp$s,
+        Sigma       = Sigma.posterior[,,s],
+        A           = A.posterior[,,s],
+        sigma2      = tmp$sigma2
+      )
+    }
+    tmp                     <- SVcommon.Gibbs.iteration(aux,priors)
+    h.posterior[,s+1]      <- as.matrix(tmp$sigma2)
+  }
+  
+  
+  return(list(A.posterior     = A.posterior[,,(S1+1):S_total],
+              B0.tilde        = B0.tilde[,,(S1+1):S_total],
+              B1.tilde        = B1.tilde[,,(S1+1):S_total],
+              Sigma.posterior = Sigma.posterior[,,(S1+1):S_total],
+              h.posterior     = h.posterior[,(S1+2):(S_total+1)]
+  ))
+}
+```
+
 ## Empirical Estimation Results
 
 ```{r}
@@ -1364,5 +1609,63 @@ for (n in 1:N){
 ```
 
 ###### Figure 5. Impulse Response Function Extension Model
+
+## **Extension Model With** Stochastic Volatility Heteroskedasticity
+
+```{r}
+S1 =5000
+S2 =5000
+
+
+draws_hetero_df=posterior.draws.hetero(S1 = S1, S2 = S2,X=X,Y=Y,A=Prior_df$A_prior,V=Prior_df$V_prior,S =Prior_df$S_prior ,nu=Prior_df$nu_prior)
+
+#restriction
+Restriction_output_hetero= ImposeSignRestrictionIRF(restrictions = R1_df,N=N,p=p,S=S,posterior.draws=draws_hetero_df)
+
+
+```
+
+```{r}
+# Impulse response functions
+# Forecast Error Variance Decomposition
+
+B.posterior_ext       = array(NA,c(N,N,S))
+A.posterior_ext       = array(NA,c(N,K,S))
+for (s in 1:S){
+  B_ext               = solve(Restriction_output_hetero$B0.draws[,,s])
+  B.posterior_ext [,,s]= B_ext
+  A.posterior_ext [,,s]= B_ext %*% Restriction_output_hetero$B1.draws[,,s]
+}
+
+
+IRF_ext = IRF_function(S=S,h=h,N=N,B=B_ext,p=p,A.posterior=A.posterior_ext,B.posterior=B.posterior_ext)
+
+# plot IRFs and FEVDs
+
+IRF.posterior.mps_ext = IRF_ext$IRF.posterior[,1,,]
+IRFs.k1_ext           = apply(IRF.posterior.mps_ext,1:2,median)
+#IRF.posterior.mps_ext = IRF.posterior.mps_ext*(0.25/IRFs.k1[4,1])
+IRFs.k1_ext            = apply(IRF.posterior.mps_ext,1:2,median)
+IRFs.inf.k1_ext       = apply(IRF.posterior.mps_ext,1,mean)
+rownames(IRFs.k1_ext ) = colnames(df_num)
+
+IRFs.k1.hdi_ext    = apply(IRF.posterior.mps_ext,1:2,hdi, credMass=0.68)
+hh          = 1:(h+1)
+
+# plot 
+par(mfrow=c(4,2), mar=c(2,2,2,2),cex.axis=1, cex.lab=1)
+
+for (n in 1:N){
+  ylims     = range(IRFs.k1_ext[n,hh],IRFs.k1.hdi_ext[,n,1:(h+1)],0)
+  plot(hh,IRFs.k1_ext[n,hh], type="l", ylim=ylims, axes=FALSE, xlab="", ylab=rownames(IRFs.k1_ext)[n],main=variable[n])
+  axis(1,c(1,10,20),c("","10 quarters","20quarters"))
+  
+  
+  axis(2,c(ylims[1],0,ylims[2]),round(c(ylims[1],0,ylims[2]),3))
+  polygon(c(hh,(h+1):1), c(IRFs.k1.hdi_ext[1,n,hh],IRFs.k1.hdi_ext[2,n,(h+1):1]), col=mcxs2.shade1,border=mcxs2.shade1)
+  abline(h=0)
+  lines(hh, IRFs.k1_ext[n,hh],lwd=2,col=mcxs1)
+}
+```
 
 ## References

@@ -876,11 +876,11 @@ s_prior = 0.5
    
     S_bar_ext   <- lambda.posterior[s]*i_N + t(Y)%*%Y+ t(A)%*%solve(V)%*%A- t(A_bar)%*%V_bar.inv%*%A_bar
       
-    Sigma.posterior_d      <- rWishart(n=1, df=nu_bar, Sigma=solve(S_bar_ext))  
-    Sigma.posterior_draw   <- apply(Sigma.posterior_d ,3,solve)            
+    Sigma.posterior_d_inv  <- rWishart(n=1, df=nu_bar, Sigma=solve(S_bar_ext))[,,1]
+    Sigma.posterior_draw   <- solve(Sigma.posterior_d_inv)
     Sigma.posterior[,,s]   <- Sigma.posterior_draw 
    
-    s.posterior <- solve(0.5*sum(diag(solve(Sigma.posterior[,,s])))+1/s_prior)
+    s.posterior <- 1/(0.5*sum(diag(Sigma.posterior_d_inv))+1/s_prior)
     a.posterior <- a_prior+(nu_bar*N)/2
 
     

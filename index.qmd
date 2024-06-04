@@ -653,6 +653,7 @@ for (s in 1:S){
   B1          = Q%*%B1.t
   B0.inv      = solve(B0)
   
+  # please note that the code below inplements the restriction only on the first column of R1 %*% B0
   sign.restrictions.do.not.hold = !prod(R1 %*% B0 %*% diag(N)[,1]  >= 0)
   
   i=i+1

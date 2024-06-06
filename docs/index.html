@@ -209,10 +209,15 @@ window.Quarto = {
   <li><a href="#gibb-sampler-using-extension-models-1" id="toc-gibb-sampler-using-extension-models-1" class="nav-link" data-scroll-target="#gibb-sampler-using-extension-models-1">Gibb Sampler using extension models</a></li>
   <li><a href="#estimation-algorithm-2" id="toc-estimation-algorithm-2" class="nav-link" data-scroll-target="#estimation-algorithm-2"><strong>Estimation Algorithm</strong></a></li>
   </ul></li>
+  <li><a href="#extended-model-with-gamma-distribution-and-heteroskedasticity" id="toc-extended-model-with-gamma-distribution-and-heteroskedasticity" class="nav-link" data-scroll-target="#extended-model-with-gamma-distribution-and-heteroskedasticity">Extended Model with Gamma Distribution and Heteroskedasticity</a>
+  <ul class="collapse">
+  <li><a href="#gibb-sampler-using-extension-models-2" id="toc-gibb-sampler-using-extension-models-2" class="nav-link" data-scroll-target="#gibb-sampler-using-extension-models-2">Gibb Sampler using extension models</a></li>
+  </ul></li>
   <li><a href="#empirical-estimation-results" id="toc-empirical-estimation-results" class="nav-link" data-scroll-target="#empirical-estimation-results">Empirical Estimation Results</a></li>
   <li><a href="#baseline-model-1" id="toc-baseline-model-1" class="nav-link" data-scroll-target="#baseline-model-1"><strong>Baseline Model</strong></a></li>
   <li><a href="#extension-model-with-gamma-distribution-1" id="toc-extension-model-with-gamma-distribution-1" class="nav-link" data-scroll-target="#extension-model-with-gamma-distribution-1"><strong>Extension Model With Gamma Distribution</strong></a></li>
   <li><a href="#extension-model-with-stochastic-volatility-heteroskedasticity-1" id="toc-extension-model-with-stochastic-volatility-heteroskedasticity-1" class="nav-link" data-scroll-target="#extension-model-with-stochastic-volatility-heteroskedasticity-1"><strong>Extension Model With</strong> Stochastic Volatility Heteroskedasticity</a></li>
+  <li><a href="#extended-model-with-gamma-distribution-and-heteroskedasticity-1" id="toc-extended-model-with-gamma-distribution-and-heteroskedasticity-1" class="nav-link" data-scroll-target="#extended-model-with-gamma-distribution-and-heteroskedasticity-1">Extended Model with Gamma Distribution and Heteroskedasticity</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
@@ -457,7 +462,7 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left;">GDP</td>
-<td style="text-align: right;">-5.64</td>
+<td style="text-align: right;">-5.62</td>
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">0.01</td>
 </tr>
@@ -699,18 +704,19 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  B1          <span class="ot">=</span> Q<span class="sc">%*%</span>B1.t</span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  B0.inv      <span class="ot">=</span> <span class="fu">solve</span>(B0)</span>
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  sign.restrictions.do.not.hold <span class="ot">=</span> <span class="sc">!</span><span class="fu">prod</span>(R1 <span class="sc">%*%</span> B0 <span class="sc">%*%</span> <span class="fu">diag</span>(N)[,<span class="dv">1</span>]  <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  i<span class="ot">=</span>i<span class="sc">+</span><span class="dv">1</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  i.vec <span class="ot">=</span> <span class="fu">c</span>(i.vec,i) </span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  B0.draws[,,s] <span class="ot">=</span> B0</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  B1.draws[,,s] <span class="ot">=</span> B1</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span> (<span class="fu">list</span>(<span class="at">B0.draws =</span> B0.draws,</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>             <span class="at">B1.draws =</span> B1.draws,</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>             <span class="at">i =</span> i.vec))</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">#sign.restrictions.do.not.hold = !prod(R1 %*% B0 %*% diag(N)[,1]  &gt;= 0)</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sign.restrictions.do.not.hold = !prod(R1 %*% B0[,1]  &gt;= 0)</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  sign.restrictions.do.not.hold <span class="ot">=</span> <span class="sc">!</span><span class="fu">all</span>(<span class="fu">diag</span>(B0) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  i<span class="ot">=</span>i<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  i.vec <span class="ot">=</span> <span class="fu">c</span>(i.vec,i) </span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  B0.draws[,,s] <span class="ot">=</span> B0</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  B1.draws[,,s] <span class="ot">=</span> B1</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span> (<span class="fu">list</span>(<span class="at">B0.draws =</span> B0.draws,</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>             <span class="at">B1.draws =</span> B1.draws,</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>             <span class="at">i =</span> i.vec))</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="simulation-result" class="level3">
@@ -775,13 +781,13 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">y1</td>
-<td style="text-align: right;">0.64</td>
-<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">0.02</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">y2</td>
+<td style="text-align: right;">0.08</td>
 <td style="text-align: right;">0.66</td>
-<td style="text-align: right;">0.07</td>
 </tr>
 </tbody>
 </table>
@@ -797,18 +803,18 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">constant</td>
-<td style="text-align: right;">-0.01</td>
-<td style="text-align: right;">-0.01</td>
+<td style="text-align: right;">-0.02</td>
+<td style="text-align: right;">0.12</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">y1</td>
-<td style="text-align: right;">0.64</td>
-<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">0.07</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">y2</td>
-<td style="text-align: right;">0.04</td>
-<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.65</td>
 </tr>
 </tbody>
 </table>
@@ -985,12 +991,12 @@ p(\lambda |Y,X,\Sigma )
 <tr class="odd">
 <td style="text-align: left;">y1</td>
 <td style="text-align: right;">0.58</td>
-<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.02</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">y2</td>
-<td style="text-align: right;">0.59</td>
-<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.58</td>
 </tr>
 </tbody>
 </table>
@@ -1007,17 +1013,17 @@ p(\lambda |Y,X,\Sigma )
 <tr class="odd">
 <td style="text-align: left;">constant</td>
 <td style="text-align: right;">-0.01</td>
-<td style="text-align: right;">-0.01</td>
+<td style="text-align: right;">0.12</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">y1</td>
 <td style="text-align: right;">0.57</td>
-<td style="text-align: right;">0.59</td>
+<td style="text-align: right;">0.06</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">y2</td>
-<td style="text-align: right;">0.04</td>
-<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.57</td>
 </tr>
 </tbody>
 </table>
@@ -1058,7 +1064,7 @@ L(A,\Sigma |Y,X,\sigma^2) \propto det(diag(\sigma^2))det(\Sigma)^{-T/2}\exp\left
 \]</span></p>
 <section id="gibb-sampler-using-extension-models-1" class="level3">
 <h3 class="anchored" data-anchor-id="gibb-sampler-using-extension-models-1">Gibb Sampler using extension models</h3>
-<p>Draw samples of sample <span class="math inline">\(\Sigma ^{(s)}\)</span> , <span class="math inline">\(\lambda ^{(s)}\)</span> and <span class="math inline">\(A ^{(s)}\)</span> using posterior parameters.</p>
+<p>Draw samples of sample <span class="math inline">\(\Sigma ^{(s)}\)</span> , <span class="math inline">\(\sigma ^{(s)}\)</span> and <span class="math inline">\(A ^{(s)}\)</span> using posterior parameters.</p>
 <p>Initialized <span class="math inline">\(\sigma ^{(s)}\)</span> as <span class="math inline">\(\sigma ^{(0)}\)</span></p>
 <p>At each iteration <span class="math inline">\(s\)</span>:</p>
 <ol type="1">
@@ -1252,6 +1258,32 @@ L(A,\Sigma |Y,X,\sigma^2) \propto det(diag(\sigma^2))det(\Sigma)^{-T/2}\exp\left
 </div>
 </section>
 </section>
+<section id="extended-model-with-gamma-distribution-and-heteroskedasticity" class="level2">
+<h2 class="anchored" data-anchor-id="extended-model-with-gamma-distribution-and-heteroskedasticity">Extended Model with Gamma Distribution and Heteroskedasticity</h2>
+<p>Under both extension, the model is specified as:</p>
+<p><span class="math display">\[
+E|X\sim MN_{T\times N} (0_{T\times N} ,\Sigma ,\Omega)
+\]</span></p>
+<p>where <span class="math inline">\(\Omega = diag(\boldsymbol\sigma^{2})\)</span> and <span class="math inline">\(\boldsymbol\sigma^2 = (\sigma_{1}^2, \sigma_{2}^2...\sigma_{T}^2)'\)</span> follow Stochastic Volatility models. The hyper parameter <span class="math inline">\(\underline{S}\)</span> of the prior distribution for <span class="math inline">\(\Sigma\)</span> is now adjust as <span class="math inline">\(\lambda I_{N}\)</span>, where the parameter <span class="math inline">\(\lambda\)</span> following gamma prior distribution, using a hierarchical model.</p>
+<p><span class="math display">\[
+p(A,\Sigma |Y,X) = L(A,\Sigma|Y,X,\lambda)p(\Sigma|Y,X,\lambda)p(\Omega|Y,X,\sigma^2,h)
+\]</span></p>
+<section id="gibb-sampler-using-extension-models-2" class="level3">
+<h3 class="anchored" data-anchor-id="gibb-sampler-using-extension-models-2">Gibb Sampler using extension models</h3>
+<p>Draw samples of sample <span class="math inline">\(\Sigma ^{(s)}\)</span> , <span class="math inline">\(\lambda ^{(s)}\)</span> , <span class="math inline">\(\sigma ^{(s)}\)</span> and <span class="math inline">\(A ^{(s)}\)</span> using posterior parameters.</p>
+<p>Initialized <span class="math inline">\(\sigma ^{(s)}\)</span> as <span class="math inline">\(\sigma ^{(0)}\)</span> and <span class="math inline">\(\lambda ^{(s)}\)</span> as <span class="math inline">\(\lambda ^{(0)}\)</span> = 2</p>
+<p>At each iteration <span class="math inline">\(s\)</span>:</p>
+<ol type="1">
+<li><p>Draw <span class="math inline">\(\Sigma^{(s)}\)</span> from <span class="math inline">\(\mathcal{IW}_{N}(\overline{S}, \overline{v})\)</span>, and using the initialized <span class="math inline">\(\sigma ^{(0)}\)</span> and <span class="math inline">\(\lambda ^{(0)}\)</span></p></li>
+<li><p>Draw <span class="math inline">\(\lambda ^{(s)}\)</span> from <span class="math inline">\(\lambda ^{(s)}\)</span>, by insert <span class="math inline">\(\Sigma^{(s)}\)</span></p></li>
+<li><p>Draw <span class="math inline">\(\sigma ^{(s)}\)</span> from using Stochastic Volatility models</p></li>
+<li><p>Draw <span class="math inline">\(A^{(s)}\)</span> from <span class="math inline">\(\mathcal{MN}_{K\times N}(\overline{A}, \Sigma,\overline{V} )\)</span> by insert <span class="math inline">\(\Sigma^{(s)}\)</span></p></li>
+</ol>
+<p>Repeat 1 and 2 <span class="math inline">\(S_{1}+S_{2}\)</span>times.</p>
+<p>Discard the first <span class="math inline">\(S_{1}\)</span> draws that allows the algorithm to converge to the stationary posterior distribution.</p>
+<p>Output is the sample draws from the joint posterior distribution <span class="math inline">\(\left\{ {A^{(s)}, \Sigma^{(s)}} ,\lambda ^{(s)},\sigma ^{(s)}\right\}^{S_{1}+S_{2}}_{s=S_{1}+1}\)</span> .</p>
+</section>
+</section>
 <section id="empirical-estimation-results" class="level2">
 <h2 class="anchored" data-anchor-id="empirical-estimation-results">Empirical Estimation Results</h2>
 </section>
@@ -1273,149 +1305,149 @@ L(A,\Sigma |Y,X,\sigma^2) \propto det(diag(\sigma^2))det(\Sigma)^{-T/2}\exp\left
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">-0.0160</td>
-<td style="text-align: right;">0.0003</td>
-<td style="text-align: right;">0.8938</td>
-<td style="text-align: right;">0.0557</td>
-<td style="text-align: right;">0.0150</td>
+<td style="text-align: right;">-0.0027</td>
+<td style="text-align: right;">0.0011</td>
+<td style="text-align: right;">0.9203</td>
+<td style="text-align: right;">0.0530</td>
+<td style="text-align: right;">0.0159</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.9680</td>
-<td style="text-align: right;">-0.0155</td>
-<td style="text-align: right;">0.0940</td>
-<td style="text-align: right;">0.0050</td>
-<td style="text-align: right;">-0.0010</td>
+<td style="text-align: right;">0.9683</td>
+<td style="text-align: right;">-0.0161</td>
+<td style="text-align: right;">0.0957</td>
+<td style="text-align: right;">0.0052</td>
+<td style="text-align: right;">-0.0009</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.0056</td>
-<td style="text-align: right;">0.9955</td>
-<td style="text-align: right;">-0.0510</td>
-<td style="text-align: right;">-0.0031</td>
-<td style="text-align: right;">0.0014</td>
+<td style="text-align: right;">0.0060</td>
+<td style="text-align: right;">0.9957</td>
+<td style="text-align: right;">-0.0602</td>
+<td style="text-align: right;">-0.0032</td>
+<td style="text-align: right;">0.0015</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.0021</td>
-<td style="text-align: right;">-0.0120</td>
-<td style="text-align: right;">1.2296</td>
-<td style="text-align: right;">-0.0004</td>
-<td style="text-align: right;">0.0037</td>
+<td style="text-align: right;">0.0020</td>
+<td style="text-align: right;">-0.0119</td>
+<td style="text-align: right;">1.2291</td>
+<td style="text-align: right;">-0.0005</td>
+<td style="text-align: right;">0.0036</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.0045</td>
-<td style="text-align: right;">0.0050</td>
-<td style="text-align: right;">0.0964</td>
-<td style="text-align: right;">0.9989</td>
-<td style="text-align: right;">-0.0003</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">-0.0107</td>
-<td style="text-align: right;">0.0045</td>
-<td style="text-align: right;">-0.1961</td>
-<td style="text-align: right;">-0.0036</td>
-<td style="text-align: right;">0.9975</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">-0.0108</td>
-<td style="text-align: right;">-0.0036</td>
-<td style="text-align: right;">-0.0983</td>
-<td style="text-align: right;">-0.0014</td>
-<td style="text-align: right;">-0.0013</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.0016</td>
-<td style="text-align: right;">-0.0013</td>
-<td style="text-align: right;">0.0001</td>
-<td style="text-align: right;">-0.0002</td>
-<td style="text-align: right;">0.0005</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">-0.0083</td>
 <td style="text-align: right;">0.0030</td>
-<td style="text-align: right;">-0.1545</td>
-<td style="text-align: right;">-0.0012</td>
+<td style="text-align: right;">0.0054</td>
+<td style="text-align: right;">0.0975</td>
+<td style="text-align: right;">0.9990</td>
+<td style="text-align: right;">-0.0005</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0110</td>
+<td style="text-align: right;">0.0037</td>
+<td style="text-align: right;">-0.1970</td>
+<td style="text-align: right;">-0.0037</td>
+<td style="text-align: right;">0.9974</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0112</td>
+<td style="text-align: right;">-0.0033</td>
+<td style="text-align: right;">-0.1071</td>
+<td style="text-align: right;">-0.0015</td>
+<td style="text-align: right;">-0.0014</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0017</td>
+<td style="text-align: right;">-0.0014</td>
+<td style="text-align: right;">0.0016</td>
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">0.0004</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0081</td>
+<td style="text-align: right;">0.0030</td>
+<td style="text-align: right;">-0.1547</td>
+<td style="text-align: right;">-0.0010</td>
 <td style="text-align: right;">-0.0018</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0017</td>
-<td style="text-align: right;">0.0208</td>
+<td style="text-align: right;">0.0006</td>
+<td style="text-align: right;">0.0016</td>
+<td style="text-align: right;">0.0221</td>
 <td style="text-align: right;">0.0001</td>
-<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0001</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">-0.0025</td>
-<td style="text-align: right;">0.0019</td>
-<td style="text-align: right;">-0.0727</td>
-<td style="text-align: right;">-0.0007</td>
+<td style="text-align: right;">-0.0031</td>
+<td style="text-align: right;">0.0013</td>
+<td style="text-align: right;">-0.0670</td>
+<td style="text-align: right;">-0.0006</td>
 <td style="text-align: right;">-0.0007</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">-0.0063</td>
-<td style="text-align: right;">-0.0015</td>
-<td style="text-align: right;">-0.0643</td>
-<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">-0.0060</td>
+<td style="text-align: right;">-0.0013</td>
+<td style="text-align: right;">-0.0625</td>
+<td style="text-align: right;">-0.0002</td>
 <td style="text-align: right;">-0.0002</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.0007</td>
-<td style="text-align: right;">-0.0023</td>
-<td style="text-align: right;">0.0096</td>
-<td style="text-align: right;">-0.0005</td>
+<td style="text-align: right;">0.0006</td>
+<td style="text-align: right;">-0.0021</td>
+<td style="text-align: right;">0.0119</td>
+<td style="text-align: right;">-0.0004</td>
 <td style="text-align: right;">0.0001</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.0035</td>
-<td style="text-align: right;">0.0071</td>
-<td style="text-align: right;">-0.1401</td>
-<td style="text-align: right;">0.0009</td>
+<td style="text-align: right;">0.0036</td>
+<td style="text-align: right;">0.0069</td>
+<td style="text-align: right;">-0.1373</td>
+<td style="text-align: right;">0.0008</td>
 <td style="text-align: right;">-0.0010</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.0013</td>
-<td style="text-align: right;">0.0008</td>
-<td style="text-align: right;">0.0036</td>
+<td style="text-align: right;">0.0011</td>
+<td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">-0.0005</td>
 <td style="text-align: right;">0.0002</td>
 <td style="text-align: right;">0.0001</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">-0.0003</td>
-<td style="text-align: right;">0.0006</td>
-<td style="text-align: right;">-0.0305</td>
+<td style="text-align: right;">-0.0008</td>
+<td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">-0.0310</td>
 <td style="text-align: right;">-0.0002</td>
 <td style="text-align: right;">-0.0003</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">-0.0022</td>
 <td style="text-align: right;">-0.0003</td>
-<td style="text-align: right;">-0.0417</td>
+<td style="text-align: right;">-0.0399</td>
 <td style="text-align: right;">-0.0003</td>
 <td style="text-align: right;">-0.0001</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">0.0000</td>
 <td style="text-align: right;">-0.0014</td>
-<td style="text-align: right;">-0.0063</td>
+<td style="text-align: right;">-0.0036</td>
 <td style="text-align: right;">0.0002</td>
 <td style="text-align: right;">0.0000</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.0042</td>
-<td style="text-align: right;">-0.0016</td>
-<td style="text-align: right;">-0.0155</td>
+<td style="text-align: right;">0.0040</td>
+<td style="text-align: right;">-0.0015</td>
+<td style="text-align: right;">-0.0180</td>
 <td style="text-align: right;">-0.0010</td>
-<td style="text-align: right;">-0.0003</td>
+<td style="text-align: right;">-0.0004</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">0.0009</td>
 <td style="text-align: right;">0.0005</td>
-<td style="text-align: right;">0.0012</td>
-<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">0.0004</td>
+<td style="text-align: right;">0.0003</td>
 <td style="text-align: right;">0.0000</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">-0.0003</td>
-<td style="text-align: right;">0.0002</td>
-<td style="text-align: right;">-0.0168</td>
+<td style="text-align: right;">-0.0005</td>
+<td style="text-align: right;">0.0004</td>
+<td style="text-align: right;">-0.0171</td>
 <td style="text-align: right;">-0.0001</td>
 <td style="text-align: right;">-0.0002</td>
 </tr>
@@ -1456,7 +1488,7 @@ L(A,\Sigma |Y,X,\sigma^2) \propto det(diag(\sigma^2))det(\Sigma)^{-T/2}\exp\left
 <tr class="odd">
 <td style="text-align: right;">0.0045</td>
 <td style="text-align: right;">-0.0035</td>
-<td style="text-align: right;">0.1692</td>
+<td style="text-align: right;">0.1690</td>
 <td style="text-align: right;">1e-04</td>
 <td style="text-align: right;">5e-04</td>
 </tr>
@@ -1524,7 +1556,7 @@ L(A,\Sigma |Y,X,\sigma^2) \propto det(diag(\sigma^2))det(\Sigma)^{-T/2}\exp\left
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1552,149 +1584,149 @@ L(A,\Sigma |Y,X,\sigma^2) \propto det(diag(\sigma^2))det(\Sigma)^{-T/2}\exp\left
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">-0.0160</td>
-<td style="text-align: right;">0.0003</td>
-<td style="text-align: right;">0.8938</td>
-<td style="text-align: right;">0.0557</td>
-<td style="text-align: right;">0.0150</td>
+<td style="text-align: right;">-0.0027</td>
+<td style="text-align: right;">0.0011</td>
+<td style="text-align: right;">0.9203</td>
+<td style="text-align: right;">0.0530</td>
+<td style="text-align: right;">0.0159</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.9680</td>
-<td style="text-align: right;">-0.0155</td>
-<td style="text-align: right;">0.0940</td>
-<td style="text-align: right;">0.0050</td>
-<td style="text-align: right;">-0.0010</td>
+<td style="text-align: right;">0.9683</td>
+<td style="text-align: right;">-0.0161</td>
+<td style="text-align: right;">0.0957</td>
+<td style="text-align: right;">0.0052</td>
+<td style="text-align: right;">-0.0009</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.0056</td>
-<td style="text-align: right;">0.9955</td>
-<td style="text-align: right;">-0.0510</td>
-<td style="text-align: right;">-0.0031</td>
-<td style="text-align: right;">0.0014</td>
+<td style="text-align: right;">0.0060</td>
+<td style="text-align: right;">0.9957</td>
+<td style="text-align: right;">-0.0602</td>
+<td style="text-align: right;">-0.0032</td>
+<td style="text-align: right;">0.0015</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.0021</td>
-<td style="text-align: right;">-0.0120</td>
-<td style="text-align: right;">1.2296</td>
-<td style="text-align: right;">-0.0004</td>
-<td style="text-align: right;">0.0037</td>
+<td style="text-align: right;">0.0020</td>
+<td style="text-align: right;">-0.0119</td>
+<td style="text-align: right;">1.2291</td>
+<td style="text-align: right;">-0.0005</td>
+<td style="text-align: right;">0.0036</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.0045</td>
-<td style="text-align: right;">0.0050</td>
-<td style="text-align: right;">0.0964</td>
-<td style="text-align: right;">0.9989</td>
-<td style="text-align: right;">-0.0003</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">-0.0107</td>
-<td style="text-align: right;">0.0045</td>
-<td style="text-align: right;">-0.1961</td>
-<td style="text-align: right;">-0.0036</td>
-<td style="text-align: right;">0.9975</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">-0.0108</td>
-<td style="text-align: right;">-0.0036</td>
-<td style="text-align: right;">-0.0983</td>
-<td style="text-align: right;">-0.0014</td>
-<td style="text-align: right;">-0.0013</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.0016</td>
-<td style="text-align: right;">-0.0013</td>
-<td style="text-align: right;">0.0001</td>
-<td style="text-align: right;">-0.0002</td>
-<td style="text-align: right;">0.0005</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">-0.0083</td>
 <td style="text-align: right;">0.0030</td>
-<td style="text-align: right;">-0.1545</td>
-<td style="text-align: right;">-0.0012</td>
+<td style="text-align: right;">0.0054</td>
+<td style="text-align: right;">0.0975</td>
+<td style="text-align: right;">0.9990</td>
+<td style="text-align: right;">-0.0005</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0110</td>
+<td style="text-align: right;">0.0037</td>
+<td style="text-align: right;">-0.1970</td>
+<td style="text-align: right;">-0.0037</td>
+<td style="text-align: right;">0.9974</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0112</td>
+<td style="text-align: right;">-0.0033</td>
+<td style="text-align: right;">-0.1071</td>
+<td style="text-align: right;">-0.0015</td>
+<td style="text-align: right;">-0.0014</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0017</td>
+<td style="text-align: right;">-0.0014</td>
+<td style="text-align: right;">0.0016</td>
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">0.0004</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0081</td>
+<td style="text-align: right;">0.0030</td>
+<td style="text-align: right;">-0.1547</td>
+<td style="text-align: right;">-0.0010</td>
 <td style="text-align: right;">-0.0018</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0017</td>
-<td style="text-align: right;">0.0208</td>
+<td style="text-align: right;">0.0006</td>
+<td style="text-align: right;">0.0016</td>
+<td style="text-align: right;">0.0221</td>
 <td style="text-align: right;">0.0001</td>
-<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0001</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">-0.0025</td>
-<td style="text-align: right;">0.0019</td>
-<td style="text-align: right;">-0.0727</td>
-<td style="text-align: right;">-0.0007</td>
+<td style="text-align: right;">-0.0031</td>
+<td style="text-align: right;">0.0013</td>
+<td style="text-align: right;">-0.0670</td>
+<td style="text-align: right;">-0.0006</td>
 <td style="text-align: right;">-0.0007</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">-0.0063</td>
-<td style="text-align: right;">-0.0015</td>
-<td style="text-align: right;">-0.0643</td>
-<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">-0.0060</td>
+<td style="text-align: right;">-0.0013</td>
+<td style="text-align: right;">-0.0625</td>
+<td style="text-align: right;">-0.0002</td>
 <td style="text-align: right;">-0.0002</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.0007</td>
-<td style="text-align: right;">-0.0023</td>
-<td style="text-align: right;">0.0096</td>
-<td style="text-align: right;">-0.0005</td>
+<td style="text-align: right;">0.0006</td>
+<td style="text-align: right;">-0.0021</td>
+<td style="text-align: right;">0.0119</td>
+<td style="text-align: right;">-0.0004</td>
 <td style="text-align: right;">0.0001</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.0035</td>
-<td style="text-align: right;">0.0071</td>
-<td style="text-align: right;">-0.1401</td>
-<td style="text-align: right;">0.0009</td>
+<td style="text-align: right;">0.0036</td>
+<td style="text-align: right;">0.0069</td>
+<td style="text-align: right;">-0.1373</td>
+<td style="text-align: right;">0.0008</td>
 <td style="text-align: right;">-0.0010</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.0013</td>
-<td style="text-align: right;">0.0008</td>
-<td style="text-align: right;">0.0036</td>
+<td style="text-align: right;">0.0011</td>
+<td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">-0.0005</td>
 <td style="text-align: right;">0.0002</td>
 <td style="text-align: right;">0.0001</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">-0.0003</td>
-<td style="text-align: right;">0.0006</td>
-<td style="text-align: right;">-0.0305</td>
+<td style="text-align: right;">-0.0008</td>
+<td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">-0.0310</td>
 <td style="text-align: right;">-0.0002</td>
 <td style="text-align: right;">-0.0003</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">-0.0022</td>
 <td style="text-align: right;">-0.0003</td>
-<td style="text-align: right;">-0.0417</td>
+<td style="text-align: right;">-0.0399</td>
 <td style="text-align: right;">-0.0003</td>
 <td style="text-align: right;">-0.0001</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">0.0000</td>
 <td style="text-align: right;">-0.0014</td>
-<td style="text-align: right;">-0.0063</td>
+<td style="text-align: right;">-0.0036</td>
 <td style="text-align: right;">0.0002</td>
 <td style="text-align: right;">0.0000</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.0042</td>
-<td style="text-align: right;">-0.0016</td>
-<td style="text-align: right;">-0.0155</td>
+<td style="text-align: right;">0.0040</td>
+<td style="text-align: right;">-0.0015</td>
+<td style="text-align: right;">-0.0180</td>
 <td style="text-align: right;">-0.0010</td>
-<td style="text-align: right;">-0.0003</td>
+<td style="text-align: right;">-0.0004</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">0.0009</td>
 <td style="text-align: right;">0.0005</td>
-<td style="text-align: right;">0.0012</td>
-<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">0.0004</td>
+<td style="text-align: right;">0.0003</td>
 <td style="text-align: right;">0.0000</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">-0.0003</td>
-<td style="text-align: right;">0.0002</td>
-<td style="text-align: right;">-0.0168</td>
+<td style="text-align: right;">-0.0005</td>
+<td style="text-align: right;">0.0004</td>
+<td style="text-align: right;">-0.0171</td>
 <td style="text-align: right;">-0.0001</td>
 <td style="text-align: right;">-0.0002</td>
 </tr>
@@ -1735,7 +1767,7 @@ L(A,\Sigma |Y,X,\sigma^2) \propto det(diag(\sigma^2))det(\Sigma)^{-T/2}\exp\left
 <tr class="odd">
 <td style="text-align: right;">0.0045</td>
 <td style="text-align: right;">-0.0035</td>
-<td style="text-align: right;">0.1692</td>
+<td style="text-align: right;">0.1690</td>
 <td style="text-align: right;">1e-04</td>
 <td style="text-align: right;">5e-04</td>
 </tr>
@@ -1765,7 +1797,7 @@ L(A,\Sigma |Y,X,\sigma^2) \propto det(diag(\sigma^2))det(\Sigma)^{-T/2}\exp\left
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1781,7 +1813,19 @@ L(A,\Sigma |Y,X,\sigma^2) \propto det(diag(\sigma^2))det(\Sigma)^{-T/2}\exp\left
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="extended-model-with-gamma-distribution-and-heteroskedasticity-1" class="level2">
+<h2 class="anchored" data-anchor-id="extended-model-with-gamma-distribution-and-heteroskedasticity-1">Extended Model with Gamma Distribution and Heteroskedasticity</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

@@ -653,6 +653,7 @@ for (s in 1:S){
   B1          = Q%*%B1.t
   B0.inv      = solve(B0)
   
+  # please note that the code below inplements the restriction only on the first column of R1 %*% B0
   sign.restrictions.do.not.hold = !prod(R1 %*% B0 %*% diag(N)[,1]  >= 0)
   
   # sign.restrictions.do.not.hold = !prod(R1 %*% B0[,1]  >= 0)
@@ -795,8 +796,8 @@ p(\lambda |Y,X,\Sigma )
 &\propto L(A,\Sigma|Y,X)p(\Sigma|A, \lambda)p(A)p(\lambda)\\
 &\propto p(\Sigma|A,\lambda)p(\lambda) \\
 &\propto det(\lambda I_{N})^{\frac{\underline{\upsilon} }{2}} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]\right \}\lambda^{\underline{a}-1}e^{-\frac{\lambda}{\underline{s}} }  \\
-&\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]-\frac{\lambda}{\underline{s}}\right \} \\
-&\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\lambda(\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}})\right \} 
+&\propto (\lambda )^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]-\frac{\lambda}{\underline{s}}\right \} \\
+&\propto (\lambda )^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\lambda(\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}})\right \} 
 \end{aligned}
 $$
 
@@ -877,11 +878,11 @@ s_prior = 0.5
    
     S_bar_ext   <- lambda.posterior[s]*i_N + t(Y)%*%Y+ t(A)%*%solve(V)%*%A- t(A_bar)%*%V_bar.inv%*%A_bar
       
-    Sigma.posterior_d      <- rWishart(n=1, df=nu_bar, Sigma=solve(S_bar_ext))  
-    Sigma.posterior_draw   <- apply(Sigma.posterior_d ,3,solve)            
+    Sigma.posterior_d_inv  <- rWishart(n=1, df=nu_bar, Sigma=solve(S_bar_ext))[,,1]
+    Sigma.posterior_draw   <- solve(Sigma.posterior_d_inv)
     Sigma.posterior[,,s]   <- Sigma.posterior_draw 
    
-    s.posterior <- solve(0.5*sum(diag(solve(Sigma.posterior[,,s])))+1/s_prior)
+    s.posterior <- 1/(0.5*sum(diag(Sigma.posterior_d_inv))+1/s_prior)
     a.posterior <- a_prior+(nu_bar*N)/2
 
     

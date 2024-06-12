@@ -505,6 +505,25 @@ Y_{t} =\mu_{0}  + \sum_{i=0}^{p} (A_{i}Y_{t-i} )+\epsilon_{t}
 Y_{t}=\begin{pmatrix}ERA_{t} \\MB_{t} \\{ShortR}_{t} \\GDP_{t} \\CPI_{t}\end{pmatrix}
 \]</span></p>
 <p>Following the arguments developed in <span class="citation" data-cites="scholl2008a">Scholl and Uhlig (<a href="#ref-scholl2008a" role="doc-biblioref">2008</a>)</span> , that restrictions should be concerning on the shape but not the size of the exchange rate response,thus sign restriction should be imposed. Adapting the methodology specified in <span class="citation" data-cites="kim2018">Kim and Lim (<a href="#ref-kim2018" role="doc-biblioref">2018</a>)</span>, the following sign restrictions are imposed on the impulse response to identify the Monetary policy shock.</p>
+<p><span class="math display">\[
+f(B_0,B_+)=\Theta_0=B=
+\begin{bmatrix}
+* &amp; * &amp; * &amp; * &amp; *  \\
+- &amp; * &amp; * &amp; * &amp; *  \\
++ &amp; * &amp; * &amp; * &amp; *  \\
+* &amp; * &amp; * &amp; * &amp; *  \\
+- &amp; * &amp; * &amp; * &amp; *  \\
+\end{bmatrix}
+\]</span> The restriction matrix R is shown as the following:</p>
+<p><span class="math display">\[
+\textbf{R}=\begin{bmatrix}
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0  \\
+0 &amp; -1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 0  \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; -1 \\
+\end{bmatrix}
+\]</span></p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
@@ -704,19 +723,18 @@ p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  B1          <span class="ot">=</span> Q<span class="sc">%*%</span>B1.t</span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  B0.inv      <span class="ot">=</span> <span class="fu">solve</span>(B0)</span>
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">#sign.restrictions.do.not.hold = !prod(R1 %*% B0 %*% diag(N)[,1]  &gt;= 0)</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sign.restrictions.do.not.hold = !prod(R1 %*% B0[,1]  &gt;= 0)</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  sign.restrictions.do.not.hold <span class="ot">=</span> <span class="sc">!</span><span class="fu">all</span>(<span class="fu">diag</span>(B0) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  i<span class="ot">=</span>i<span class="sc">+</span><span class="dv">1</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  i.vec <span class="ot">=</span> <span class="fu">c</span>(i.vec,i) </span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  B0.draws[,,s] <span class="ot">=</span> B0</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  B1.draws[,,s] <span class="ot">=</span> B1</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span> (<span class="fu">list</span>(<span class="at">B0.draws =</span> B0.draws,</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>             <span class="at">B1.draws =</span> B1.draws,</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>             <span class="at">i =</span> i.vec))</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  sign.restrictions.do.not.hold <span class="ot">=</span> <span class="sc">!</span><span class="fu">all</span>(<span class="fu">diag</span>(B0) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  i<span class="ot">=</span>i<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  i.vec <span class="ot">=</span> <span class="fu">c</span>(i.vec,i) </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  B0.draws[,,s] <span class="ot">=</span> B0</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  B1.draws[,,s] <span class="ot">=</span> B1</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span> (<span class="fu">list</span>(<span class="at">B0.draws =</span> B0.draws,</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>             <span class="at">B1.draws =</span> B1.draws,</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>             <span class="at">i =</span> i.vec))</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="simulation-result" class="level3">
@@ -845,8 +863,8 @@ p(\lambda |Y,X,\Sigma )
 &amp;\propto L(A,\Sigma|Y,X)p(\Sigma|A, \lambda)p(A)p(\lambda)\\
 &amp;\propto p(\Sigma|A,\lambda)p(\lambda) \\
 &amp;\propto det(\lambda I_{N})^{\frac{\underline{\upsilon} }{2}} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]\right \}\lambda^{\underline{a}-1}e^{-\frac{\lambda}{\underline{s}} }  \\
-&amp;\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]-\frac{\lambda}{\underline{s}}\right \} \\
-&amp;\propto (\lambda I_{N})^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\lambda(\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}})\right \}
+&amp;\propto (\lambda )^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]-\frac{\lambda}{\underline{s}}\right \} \\
+&amp;\propto (\lambda )^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\lambda(\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}})\right \}
 \end{aligned}
 \]</span></p>
 <p>As we can show the kernel follows Gamma Distribution as the kernel Gamma distribution is:<span class="math display">\[p(x|s,a) \propto x^{a-1}exp \left\{\frac{-(x)}{s} \right\}\]</span></p>
@@ -856,7 +874,7 @@ p(\lambda |Y,X,\Sigma )
 \]</span></p>
 <p>The main parameters are:</p>
 <p><span class="math display">\[
-\left\{\begin{matrix} \overline{s}=[\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}}] \\\overline{a}=\frac{\underline{\upsilon}N }{2}+\underline{a}\end{matrix}\right.
+\left\{\begin{matrix} \overline{s}=[\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}}]^{-1} \\\overline{a}=\frac{\underline{\upsilon}N }{2}+\underline{a}\end{matrix}\right.
 \]</span></p>
 <section id="gibb-sampler-using-extension-models" class="level4">
 <h4 class="anchored" data-anchor-id="gibb-sampler-using-extension-models">Gibb Sampler using extension models</h4>
@@ -903,11 +921,11 @@ p(\lambda |Y,X,\Sigma )
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>   </span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    S_bar_ext   <span class="ot">&lt;-</span> lambda.posterior[s]<span class="sc">*</span>i_N <span class="sc">+</span> <span class="fu">t</span>(Y)<span class="sc">%*%</span>Y<span class="sc">+</span> <span class="fu">t</span>(A)<span class="sc">%*%</span><span class="fu">solve</span>(V)<span class="sc">%*%</span>A<span class="sc">-</span> <span class="fu">t</span>(A_bar)<span class="sc">%*%</span>V_bar.inv<span class="sc">%*%</span>A_bar</span>
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    Sigma.posterior_d      <span class="ot">&lt;-</span> <span class="fu">rWishart</span>(<span class="at">n=</span><span class="dv">1</span>, <span class="at">df=</span>nu_bar, <span class="at">Sigma=</span><span class="fu">solve</span>(S_bar_ext))  </span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    Sigma.posterior_draw   <span class="ot">&lt;-</span> <span class="fu">apply</span>(Sigma.posterior_d ,<span class="dv">3</span>,solve)            </span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    Sigma.posterior_d_inv  <span class="ot">&lt;-</span> <span class="fu">rWishart</span>(<span class="at">n=</span><span class="dv">1</span>, <span class="at">df=</span>nu_bar, <span class="at">Sigma=</span><span class="fu">solve</span>(S_bar_ext))[,,<span class="dv">1</span>]</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    Sigma.posterior_draw   <span class="ot">&lt;-</span> <span class="fu">solve</span>(Sigma.posterior_d_inv)</span>
 <span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    Sigma.posterior[,,s]   <span class="ot">&lt;-</span> Sigma.posterior_draw </span>
 <span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    s.posterior <span class="ot">&lt;-</span> <span class="fu">solve</span>(<span class="fl">0.5</span><span class="sc">*</span><span class="fu">sum</span>(<span class="fu">diag</span>(<span class="fu">solve</span>(Sigma.posterior[,,s])))<span class="sc">+</span><span class="dv">1</span><span class="sc">/</span>s_prior)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    s.posterior <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>(<span class="fl">0.5</span><span class="sc">*</span><span class="fu">sum</span>(<span class="fu">diag</span>(Sigma.posterior_d_inv))<span class="sc">+</span><span class="dv">1</span><span class="sc">/</span>s_prior)</span>
 <span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    a.posterior <span class="ot">&lt;-</span> a_prior<span class="sc">+</span>(nu_bar<span class="sc">*</span>N)<span class="sc">/</span><span class="dv">2</span></span>
 <span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -1282,6 +1300,7 @@ p(A,\Sigma |Y,X) = L(A,\Sigma|Y,X,\lambda)p(\Sigma|Y,X,\lambda)p(\Omega|Y,X,\sig
 <p>Repeat 1 and 2 <span class="math inline">\(S_{1}+S_{2}\)</span>times.</p>
 <p>Discard the first <span class="math inline">\(S_{1}\)</span> draws that allows the algorithm to converge to the stationary posterior distribution.</p>
 <p>Output is the sample draws from the joint posterior distribution <span class="math inline">\(\left\{ {A^{(s)}, \Sigma^{(s)}} ,\lambda ^{(s)},\sigma ^{(s)}\right\}^{S_{1}+S_{2}}_{s=S_{1}+1}\)</span> .</p>
+<p>Function below is the <code>posterior.draws.extenhetero</code> for Gibb Sampler:</p>
 </section>
 </section>
 <section id="empirical-estimation-results" class="level2">
@@ -1584,150 +1603,150 @@ p(A,\Sigma |Y,X) = L(A,\Sigma|Y,X,\lambda)p(\Sigma|Y,X,\lambda)p(\Omega|Y,X,\sig
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">-0.0027</td>
-<td style="text-align: right;">0.0011</td>
-<td style="text-align: right;">0.9203</td>
-<td style="text-align: right;">0.0530</td>
-<td style="text-align: right;">0.0159</td>
+<td style="text-align: right;">-0.0079</td>
+<td style="text-align: right;">-0.0008</td>
+<td style="text-align: right;">0.8439</td>
+<td style="text-align: right;">0.0518</td>
+<td style="text-align: right;">0.0155</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.9683</td>
-<td style="text-align: right;">-0.0161</td>
-<td style="text-align: right;">0.0957</td>
-<td style="text-align: right;">0.0052</td>
-<td style="text-align: right;">-0.0009</td>
+<td style="text-align: right;">0.9688</td>
+<td style="text-align: right;">-0.0152</td>
+<td style="text-align: right;">0.1034</td>
+<td style="text-align: right;">0.0053</td>
+<td style="text-align: right;">-0.0007</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.0060</td>
+<td style="text-align: right;">0.0058</td>
 <td style="text-align: right;">0.9957</td>
-<td style="text-align: right;">-0.0602</td>
-<td style="text-align: right;">-0.0032</td>
+<td style="text-align: right;">-0.0536</td>
+<td style="text-align: right;">-0.0038</td>
 <td style="text-align: right;">0.0015</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.0020</td>
-<td style="text-align: right;">-0.0119</td>
-<td style="text-align: right;">1.2291</td>
+<td style="text-align: right;">0.0022</td>
+<td style="text-align: right;">-0.0122</td>
+<td style="text-align: right;">1.2310</td>
 <td style="text-align: right;">-0.0005</td>
 <td style="text-align: right;">0.0036</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">0.0030</td>
-<td style="text-align: right;">0.0054</td>
-<td style="text-align: right;">0.0975</td>
-<td style="text-align: right;">0.9990</td>
-<td style="text-align: right;">-0.0005</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">-0.0110</td>
-<td style="text-align: right;">0.0037</td>
-<td style="text-align: right;">-0.1970</td>
-<td style="text-align: right;">-0.0037</td>
-<td style="text-align: right;">0.9974</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">-0.0112</td>
-<td style="text-align: right;">-0.0033</td>
-<td style="text-align: right;">-0.1071</td>
-<td style="text-align: right;">-0.0015</td>
-<td style="text-align: right;">-0.0014</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.0017</td>
-<td style="text-align: right;">-0.0014</td>
-<td style="text-align: right;">0.0016</td>
-<td style="text-align: right;">-0.0002</td>
-<td style="text-align: right;">0.0004</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">-0.0081</td>
-<td style="text-align: right;">0.0030</td>
-<td style="text-align: right;">-0.1547</td>
-<td style="text-align: right;">-0.0010</td>
-<td style="text-align: right;">-0.0018</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.0006</td>
-<td style="text-align: right;">0.0016</td>
-<td style="text-align: right;">0.0221</td>
-<td style="text-align: right;">0.0001</td>
-<td style="text-align: right;">0.0001</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">-0.0031</td>
-<td style="text-align: right;">0.0013</td>
-<td style="text-align: right;">-0.0670</td>
-<td style="text-align: right;">-0.0006</td>
-<td style="text-align: right;">-0.0007</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">-0.0060</td>
-<td style="text-align: right;">-0.0013</td>
-<td style="text-align: right;">-0.0625</td>
-<td style="text-align: right;">-0.0002</td>
-<td style="text-align: right;">-0.0002</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">0.0006</td>
-<td style="text-align: right;">-0.0021</td>
-<td style="text-align: right;">0.0119</td>
-<td style="text-align: right;">-0.0004</td>
-<td style="text-align: right;">0.0001</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.0036</td>
-<td style="text-align: right;">0.0069</td>
-<td style="text-align: right;">-0.1373</td>
-<td style="text-align: right;">0.0008</td>
-<td style="text-align: right;">-0.0010</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">0.0011</td>
-<td style="text-align: right;">0.0007</td>
-<td style="text-align: right;">-0.0005</td>
-<td style="text-align: right;">0.0002</td>
-<td style="text-align: right;">0.0001</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">-0.0008</td>
-<td style="text-align: right;">0.0007</td>
-<td style="text-align: right;">-0.0310</td>
-<td style="text-align: right;">-0.0002</td>
-<td style="text-align: right;">-0.0003</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">-0.0022</td>
-<td style="text-align: right;">-0.0003</td>
-<td style="text-align: right;">-0.0399</td>
-<td style="text-align: right;">-0.0003</td>
-<td style="text-align: right;">-0.0001</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">-0.0014</td>
-<td style="text-align: right;">-0.0036</td>
-<td style="text-align: right;">0.0002</td>
-<td style="text-align: right;">0.0000</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">0.0040</td>
-<td style="text-align: right;">-0.0015</td>
-<td style="text-align: right;">-0.0180</td>
-<td style="text-align: right;">-0.0010</td>
-<td style="text-align: right;">-0.0004</td>
+<td style="text-align: right;">0.0058</td>
+<td style="text-align: right;">0.0912</td>
+<td style="text-align: right;">0.9994</td>
+<td style="text-align: right;">-0.0005</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.0009</td>
-<td style="text-align: right;">0.0005</td>
-<td style="text-align: right;">0.0004</td>
-<td style="text-align: right;">0.0003</td>
+<td style="text-align: right;">-0.0105</td>
+<td style="text-align: right;">0.0039</td>
+<td style="text-align: right;">-0.1937</td>
+<td style="text-align: right;">-0.0033</td>
+<td style="text-align: right;">0.9980</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0115</td>
+<td style="text-align: right;">-0.0037</td>
+<td style="text-align: right;">-0.1084</td>
+<td style="text-align: right;">-0.0014</td>
+<td style="text-align: right;">-0.0015</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0015</td>
+<td style="text-align: right;">-0.0019</td>
+<td style="text-align: right;">-0.0028</td>
+<td style="text-align: right;">0.0001</td>
+<td style="text-align: right;">0.0006</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0084</td>
+<td style="text-align: right;">0.0035</td>
+<td style="text-align: right;">-0.1569</td>
+<td style="text-align: right;">-0.0010</td>
+<td style="text-align: right;">-0.0016</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">0.0014</td>
+<td style="text-align: right;">0.0305</td>
+<td style="text-align: right;">0.0000</td>
 <td style="text-align: right;">0.0000</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">-0.0005</td>
-<td style="text-align: right;">0.0004</td>
-<td style="text-align: right;">-0.0171</td>
+<td style="text-align: right;">-0.0024</td>
+<td style="text-align: right;">0.0013</td>
+<td style="text-align: right;">-0.0659</td>
+<td style="text-align: right;">-0.0006</td>
+<td style="text-align: right;">-0.0006</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0064</td>
+<td style="text-align: right;">-0.0013</td>
+<td style="text-align: right;">-0.0629</td>
+<td style="text-align: right;">-0.0003</td>
+<td style="text-align: right;">-0.0002</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">-0.0020</td>
+<td style="text-align: right;">0.0092</td>
+<td style="text-align: right;">-0.0002</td>
 <td style="text-align: right;">-0.0001</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0036</td>
+<td style="text-align: right;">0.0067</td>
+<td style="text-align: right;">-0.1363</td>
+<td style="text-align: right;">0.0008</td>
+<td style="text-align: right;">-0.0012</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0009</td>
+<td style="text-align: right;">0.0005</td>
+<td style="text-align: right;">0.0017</td>
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0007</td>
+<td style="text-align: right;">0.0008</td>
+<td style="text-align: right;">-0.0269</td>
+<td style="text-align: right;">-0.0005</td>
+<td style="text-align: right;">-0.0003</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0024</td>
+<td style="text-align: right;">-0.0004</td>
+<td style="text-align: right;">-0.0404</td>
+<td style="text-align: right;">-0.0003</td>
+<td style="text-align: right;">-0.0001</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0012</td>
+<td style="text-align: right;">-0.0033</td>
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0041</td>
+<td style="text-align: right;">-0.0015</td>
+<td style="text-align: right;">-0.0180</td>
+<td style="text-align: right;">-0.0010</td>
+<td style="text-align: right;">-0.0003</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">-0.0002</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0007</td>
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">-0.0177</td>
+<td style="text-align: right;">0.0000</td>
 <td style="text-align: right;">-0.0002</td>
 </tr>
 </tbody>
@@ -1751,39 +1770,39 @@ p(A,\Sigma |Y,X) = L(A,\Sigma|Y,X,\lambda)p(\Sigma|Y,X,\lambda)p(\Omega|Y,X,\sig
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.0017</td>
-<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">0.0027</td>
+<td style="text-align: right;">-0.0002</td>
 <td style="text-align: right;">0.0045</td>
-<td style="text-align: right;">0e+00</td>
-<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">0.0001</td>
+<td style="text-align: right;">0.0000</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">-0.0001</td>
-<td style="text-align: right;">0.0006</td>
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">0.0020</td>
 <td style="text-align: right;">-0.0035</td>
-<td style="text-align: right;">0e+00</td>
-<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0002</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">0.0045</td>
 <td style="text-align: right;">-0.0035</td>
-<td style="text-align: right;">0.1690</td>
-<td style="text-align: right;">1e-04</td>
-<td style="text-align: right;">5e-04</td>
+<td style="text-align: right;">0.1693</td>
+<td style="text-align: right;">0.0001</td>
+<td style="text-align: right;">0.0004</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0001</td>
 <td style="text-align: right;">0.0000</td>
 <td style="text-align: right;">0.0001</td>
-<td style="text-align: right;">1e-04</td>
-<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">0.0015</td>
+<td style="text-align: right;">0.0003</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0005</td>
-<td style="text-align: right;">0e+00</td>
-<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">0.0004</td>
+<td style="text-align: right;">0.0003</td>
+<td style="text-align: right;">0.0013</td>
 </tr>
 </tbody>
 </table>
@@ -1809,27 +1828,487 @@ p(A,\Sigma |Y,X) = L(A,\Sigma|Y,X,\lambda)p(\Sigma|Y,X,\lambda)p(\Omega|Y,X,\sig
 </section>
 <section id="extension-model-with-stochastic-volatility-heteroskedasticity-1" class="level2">
 <h2 class="anchored" data-anchor-id="extension-model-with-stochastic-volatility-heteroskedasticity-1"><strong>Extension Model With</strong> Stochastic Volatility Heteroskedasticity</h2>
+<p>The <a href="#table-16.-posterior-mean-of-a-in-heteroskedasiticity-model">Table 16. Posterior Mean of A in heteroskedasiticity model</a>and <a href="#table-17.-posterior-mean-of-sigma-in-heteroskedasiticity-model">Table 17. Posterior Mean of Sigma in heteroskedasiticity model</a>presented the mean of posterior draws of A and <span class="math inline">\(\Sigma\)</span> matrices for extension model.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>posterior mean of A</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">ERA</th>
+<th style="text-align: right;">MB</th>
+<th style="text-align: right;">Short_R</th>
+<th style="text-align: right;">GDP</th>
+<th style="text-align: right;">CPI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">-0.0220</td>
+<td style="text-align: right;">-0.0187</td>
+<td style="text-align: right;">0.0115</td>
+<td style="text-align: right;">0.0174</td>
+<td style="text-align: right;">0.0179</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0098</td>
+<td style="text-align: right;">-0.0168</td>
+<td style="text-align: right;">-0.0190</td>
+<td style="text-align: right;">-0.0288</td>
+<td style="text-align: right;">-0.0171</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0240</td>
+<td style="text-align: right;">-0.0020</td>
+<td style="text-align: right;">-0.0010</td>
+<td style="text-align: right;">-0.0048</td>
+<td style="text-align: right;">0.0148</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0136</td>
+<td style="text-align: right;">-0.0069</td>
+<td style="text-align: right;">-0.0141</td>
+<td style="text-align: right;">-0.0017</td>
+<td style="text-align: right;">0.0020</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0075</td>
+<td style="text-align: right;">-0.0234</td>
+<td style="text-align: right;">0.0170</td>
+<td style="text-align: right;">-0.0079</td>
+<td style="text-align: right;">-0.0003</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0094</td>
+<td style="text-align: right;">-0.0155</td>
+<td style="text-align: right;">0.0073</td>
+<td style="text-align: right;">-0.0086</td>
+<td style="text-align: right;">0.0171</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0104</td>
+<td style="text-align: right;">0.0060</td>
+<td style="text-align: right;">0.0036</td>
+<td style="text-align: right;">-0.0056</td>
+<td style="text-align: right;">-0.0070</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0023</td>
+<td style="text-align: right;">0.0129</td>
+<td style="text-align: right;">-0.0019</td>
+<td style="text-align: right;">-0.0016</td>
+<td style="text-align: right;">-0.0185</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0012</td>
+<td style="text-align: right;">0.0101</td>
+<td style="text-align: right;">-0.0149</td>
+<td style="text-align: right;">0.0032</td>
+<td style="text-align: right;">0.0048</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0110</td>
+<td style="text-align: right;">-0.0119</td>
+<td style="text-align: right;">0.0237</td>
+<td style="text-align: right;">-0.0173</td>
+<td style="text-align: right;">0.0030</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0025</td>
+<td style="text-align: right;">0.0126</td>
+<td style="text-align: right;">-0.0270</td>
+<td style="text-align: right;">-0.0177</td>
+<td style="text-align: right;">-0.0027</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0052</td>
+<td style="text-align: right;">0.0090</td>
+<td style="text-align: right;">0.0266</td>
+<td style="text-align: right;">0.0193</td>
+<td style="text-align: right;">0.0289</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0004</td>
+<td style="text-align: right;">-0.0003</td>
+<td style="text-align: right;">-0.0055</td>
+<td style="text-align: right;">-0.0126</td>
+<td style="text-align: right;">0.0105</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0092</td>
+<td style="text-align: right;">-0.0138</td>
+<td style="text-align: right;">0.0144</td>
+<td style="text-align: right;">-0.0010</td>
+<td style="text-align: right;">0.0076</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0178</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0098</td>
+<td style="text-align: right;">-0.0102</td>
+<td style="text-align: right;">-0.0124</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0097</td>
+<td style="text-align: right;">0.0087</td>
+<td style="text-align: right;">0.0129</td>
+<td style="text-align: right;">-0.0055</td>
+<td style="text-align: right;">0.0067</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0200</td>
+<td style="text-align: right;">-0.0018</td>
+<td style="text-align: right;">0.0138</td>
+<td style="text-align: right;">0.0170</td>
+<td style="text-align: right;">0.0030</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0005</td>
+<td style="text-align: right;">0.0197</td>
+<td style="text-align: right;">-0.0150</td>
+<td style="text-align: right;">0.0038</td>
+<td style="text-align: right;">0.0078</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0082</td>
+<td style="text-align: right;">-0.0066</td>
+<td style="text-align: right;">-0.0018</td>
+<td style="text-align: right;">-0.0069</td>
+<td style="text-align: right;">-0.0060</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0023</td>
+<td style="text-align: right;">0.0049</td>
+<td style="text-align: right;">0.0028</td>
+<td style="text-align: right;">-0.0168</td>
+<td style="text-align: right;">0.0141</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0022</td>
+<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">-0.0052</td>
+<td style="text-align: right;">-0.0228</td>
+<td style="text-align: right;">0.0282</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="table-16.-posterior-mean-of-a-in-heteroskedasiticity-model" class="level6">
+<h6 class="anchored" data-anchor-id="table-16.-posterior-mean-of-a-in-heteroskedasiticity-model">Table 16. Posterior Mean of A in heteroskedasiticity model</h6>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>posterior mean of Sigma</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">ERA</th>
+<th style="text-align: right;">MB</th>
+<th style="text-align: right;">Short_R</th>
+<th style="text-align: right;">GDP</th>
+<th style="text-align: right;">CPI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1e-04</td>
+<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">-0.0001</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">-1e-04</td>
+<td style="text-align: right;">0.0052</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">0e+00</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="table-17.-posterior-mean-of-sigma-in-heteroskedasiticity-model" class="level6">
+<h6 class="anchored" data-anchor-id="table-17.-posterior-mean-of-sigma-in-heteroskedasiticity-model">Table 17. Posterior Mean of Sigma in heteroskedasiticity model</h6>
+<p><a href="#figure-6.-impulse-response-result-using-heteroskedasiticity-model">Figure 6. Impulse response result using heteroskedasiticity model</a> shows the Impulse Response Function of the heteroskedasticity model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, the results is similar using baseline model, as the estimated posterior mean of A and <span class="math inline">\(\Sigma\)</span> are similar.</p>
+<p>However, we still can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate, but the effect is not statistically significant in 68% confidence interval. By using Stochastic Volatility heteroskedasticity , the resulting plot is flatter and confidence interval is wider compared to baseline model. This can be explained as to capture strong heteroskedasticity in forecasting usually required a large sample, but the sample we used in this paper only has 132 lags, which is not sufficient enough to produce better result using Stochastic Volatility heteroskedasticity model.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
+<section id="figure-6.-impulse-response-result-using-heteroskedasiticity-model" class="level6">
+<h6 class="anchored" data-anchor-id="figure-6.-impulse-response-result-using-heteroskedasiticity-model">Figure 6. Impulse response result using heteroskedasiticity model</h6>
+</section>
+</section>
 <section id="extended-model-with-gamma-distribution-and-heteroskedasticity-1" class="level2">
 <h2 class="anchored" data-anchor-id="extended-model-with-gamma-distribution-and-heteroskedasticity-1">Extended Model with Gamma Distribution and Heteroskedasticity</h2>
+<p>The <a href="#table-18.-posterior-mean-of-a-in-extended-model">Table 18. Posterior Mean of A in extended model</a> and <a href="#table-19.-posterior-mean-of-sigma-in-extended-model">Table 19. Posterior Mean of Sigma in extended model</a> presented the mean of posterior draws of A and <span class="math inline">\(\Sigma\)</span> matrices for extension model.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>posterior mean of A</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">ERA</th>
+<th style="text-align: right;">MB</th>
+<th style="text-align: right;">Short_R</th>
+<th style="text-align: right;">GDP</th>
+<th style="text-align: right;">CPI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.0076</td>
+<td style="text-align: right;">0.0248</td>
+<td style="text-align: right;">0.0161</td>
+<td style="text-align: right;">-0.0188</td>
+<td style="text-align: right;">-0.0171</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0083</td>
+<td style="text-align: right;">-0.0205</td>
+<td style="text-align: right;">-0.0279</td>
+<td style="text-align: right;">-0.0081</td>
+<td style="text-align: right;">-0.0136</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0037</td>
+<td style="text-align: right;">-0.0006</td>
+<td style="text-align: right;">-0.0026</td>
+<td style="text-align: right;">-0.0030</td>
+<td style="text-align: right;">-0.0080</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0158</td>
+<td style="text-align: right;">0.0054</td>
+<td style="text-align: right;">-0.0038</td>
+<td style="text-align: right;">-0.0004</td>
+<td style="text-align: right;">0.0109</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0043</td>
+<td style="text-align: right;">0.0166</td>
+<td style="text-align: right;">-0.0035</td>
+<td style="text-align: right;">0.0184</td>
+<td style="text-align: right;">-0.0127</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0174</td>
+<td style="text-align: right;">-0.0041</td>
+<td style="text-align: right;">-0.0152</td>
+<td style="text-align: right;">-0.0116</td>
+<td style="text-align: right;">-0.0045</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0269</td>
+<td style="text-align: right;">0.0140</td>
+<td style="text-align: right;">-0.0143</td>
+<td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">0.0053</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0046</td>
+<td style="text-align: right;">-0.0009</td>
+<td style="text-align: right;">0.0051</td>
+<td style="text-align: right;">0.0060</td>
+<td style="text-align: right;">-0.0004</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0174</td>
+<td style="text-align: right;">-0.0300</td>
+<td style="text-align: right;">0.0035</td>
+<td style="text-align: right;">0.0034</td>
+<td style="text-align: right;">-0.0091</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0035</td>
+<td style="text-align: right;">-0.0387</td>
+<td style="text-align: right;">-0.0182</td>
+<td style="text-align: right;">-0.0035</td>
+<td style="text-align: right;">-0.0044</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0097</td>
+<td style="text-align: right;">-0.0040</td>
+<td style="text-align: right;">-0.0028</td>
+<td style="text-align: right;">0.0073</td>
+<td style="text-align: right;">-0.0136</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0212</td>
+<td style="text-align: right;">0.0142</td>
+<td style="text-align: right;">-0.0026</td>
+<td style="text-align: right;">-0.0082</td>
+<td style="text-align: right;">0.0189</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0295</td>
+<td style="text-align: right;">0.0169</td>
+<td style="text-align: right;">0.0091</td>
+<td style="text-align: right;">-0.0066</td>
+<td style="text-align: right;">0.0108</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0141</td>
+<td style="text-align: right;">0.0064</td>
+<td style="text-align: right;">0.0168</td>
+<td style="text-align: right;">-0.0063</td>
+<td style="text-align: right;">0.0138</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0076</td>
+<td style="text-align: right;">-0.0130</td>
+<td style="text-align: right;">-0.0045</td>
+<td style="text-align: right;">0.0107</td>
+<td style="text-align: right;">-0.0064</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0049</td>
+<td style="text-align: right;">0.0028</td>
+<td style="text-align: right;">-0.0030</td>
+<td style="text-align: right;">0.0129</td>
+<td style="text-align: right;">-0.0171</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0021</td>
+<td style="text-align: right;">0.0041</td>
+<td style="text-align: right;">0.0115</td>
+<td style="text-align: right;">0.0057</td>
+<td style="text-align: right;">-0.0188</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0006</td>
+<td style="text-align: right;">-0.0138</td>
+<td style="text-align: right;">-0.0140</td>
+<td style="text-align: right;">-0.0100</td>
+<td style="text-align: right;">0.0026</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0102</td>
+<td style="text-align: right;">-0.0075</td>
+<td style="text-align: right;">-0.0055</td>
+<td style="text-align: right;">0.0050</td>
+<td style="text-align: right;">0.0074</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0069</td>
+<td style="text-align: right;">-0.0103</td>
+<td style="text-align: right;">-0.0243</td>
+<td style="text-align: right;">-0.0097</td>
+<td style="text-align: right;">0.0008</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0104</td>
+<td style="text-align: right;">-0.0134</td>
+<td style="text-align: right;">-0.0026</td>
+<td style="text-align: right;">0.0143</td>
+<td style="text-align: right;">-0.0066</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="table-18.-posterior-mean-of-a-in-extended-model" class="level6">
+<h6 class="anchored" data-anchor-id="table-18.-posterior-mean-of-a-in-extended-model">Table 18. Posterior Mean of A in extended model</h6>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>posterior mean of Sigma</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">ERA</th>
+<th style="text-align: right;">MB</th>
+<th style="text-align: right;">Short_R</th>
+<th style="text-align: right;">GDP</th>
+<th style="text-align: right;">CPI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="table-19.-posterior-mean-of-sigma-in-extended-model" class="level6">
+<h6 class="anchored" data-anchor-id="table-19.-posterior-mean-of-sigma-in-extended-model">Table 19. Posterior Mean of Sigma in extended model</h6>
+<p><a href="#figure-7.-results-of-extended-model">Figure 7. Results of extended model</a> shows the Impulse Response Function of the heteroskedasticity model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, the results is similar using baseline model, as the estimated posterior mean of A and <span class="math inline">\(\Sigma\)</span> are similar.</p>
+<p>However, we still can not observe significant effect in exchange rate for statistically significant in 68% confidence interval. By using Stochastic Volatility heteroskedasticity with extension with Gamma distribution, the resulting plot is flatter and confidence interval is wider compared to initial extension model. The reason behind the result could be explained, to capture strong heteroskedasticity in forecasting usually required a large sample, but the sample we used in this paper only has 132 lags, which is not sufficient enough to produce better result using Stochastic Volatility heteroskedasticity model. Futhermore, potential other correlation with Stochastic Volatility heteroskedasticity and the extension with Gamma distribution that has not observed in the analysis.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+</section>
+<section id="figure-7.-results-of-extended-model" class="level6">
+<h6 class="anchored" data-anchor-id="figure-7.-results-of-extended-model">Figure 7. Results of extended model</h6>
+</section>
 </section>
 <section id="references" class="level2">
 

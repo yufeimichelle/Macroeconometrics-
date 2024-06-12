@@ -333,6 +333,27 @@ $$
 
 Following the arguments developed in @scholl2008a , that restrictions should be concerning on the shape but not the size of the exchange rate response,thus sign restriction should be imposed. Adapting the methodology specified in @kim2018, the following sign restrictions are imposed on the impulse response to identify the Monetary policy shock.
 
+$$
+f(B_0,B_+)=\Theta_0=B=
+\begin{bmatrix}
+* & * & * & * & *  \\
+- & * & * & * & *  \\
++ & * & * & * & *  \\
+* & * & * & * & *  \\
+- & * & * & * & *  \\
+\end{bmatrix}
+$$ The restriction matrix R is shown as the following:
+
+$$
+\textbf{R}=\begin{bmatrix}
+0 & 0 & 0 & 0 & 0  \\
+0 & -1 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0  \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & -1 \\
+\end{bmatrix}
+$$
+
 ```{r}
 #| echo: false
 #| message: false
@@ -809,7 +830,7 @@ $$
 The main parameters are:
 
 $$
-\left\{\begin{matrix} \overline{s}=[\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}}] \\\overline{a}=\frac{\underline{\upsilon}N }{2}+\underline{a}\end{matrix}\right.
+\left\{\begin{matrix} \overline{s}=[\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}}]^{-1} \\\overline{a}=\frac{\underline{\upsilon}N }{2}+\underline{a}\end{matrix}\right.
 $$
 
 #### Gibb Sampler using extension models
@@ -1296,6 +1317,8 @@ Discard the first $S_{1}$ draws that allows the algorithm to converge to the sta
 
 Output is the sample draws from the joint posterior distribution $\left\{ {A^{(s)}, \Sigma^{(s)}} ,\lambda ^{(s)},\sigma ^{(s)}\right\}^{S_{1}+S_{2}}_{s=S_{1}+1}$ .
 
+Function below is the `posterior.draws.extenhetero` for Gibb Sampler:
+
 ```{r}
 
 #posterior parameters
@@ -1357,7 +1380,7 @@ Output is the sample draws from the joint posterior distribution $\left\{ {A^{(s
     Sigma.posterior_draw   <- apply(Sigma.posterior_d ,3,solve)            
     Sigma.posterior[,,s]   <- Sigma.posterior_draw 
     
-    s.posterior <- solve(0.5*sum(diag(solve(Sigma.posterior[,,s])))+1/s_prior)
+    s.posterior <- solve(0.5*sum(diag(solve(Sigma.posterior[,,s])))+(1/s_prior))
     a.posterior <- a_prior+(nu_bar*N)/2
     
     
@@ -1691,8 +1714,8 @@ Restriction_output_ext= ImposeSignRestrictionIRF(restrictions = R1_df,N=N,p=p,S=
 
 #the mean of posterior draws of A matrices
 mean_A_ext <- round(apply(draws_ext_df$A.posterior,1:2,mean),4)
-colnames(mean_A) <- colnames(df)
-knitr::kable(mean_A,  caption = "posterior mean of A",index=TRUE)
+colnames(mean_A_ext) <- colnames(df)
+knitr::kable(mean_A_ext,  caption = "posterior mean of A",index=TRUE)
 
 ```
 
@@ -1701,8 +1724,8 @@ knitr::kable(mean_A,  caption = "posterior mean of A",index=TRUE)
 ```{r}
 #the mean of posterior draws of sigma matrices
 mean_sigma_ext <- round(apply(draws_ext_df$Sigma.posterior,1:2,mean),4)
-colnames(mean_sigma) <- colnames(df)
-knitr::kable(mean_sigma,  caption = "posterior mean of Sigma",index=TRUE)
+colnames(mean_sigma_ext) <- colnames(df)
+knitr::kable(mean_sigma_ext,  caption = "posterior mean of Sigma",index=TRUE)
 ```
 
 ###### Table 15. Posterior Mean of Sigma in extension model
@@ -1766,6 +1789,8 @@ for (n in 1:N){
 
 ## **Extension Model With** Stochastic Volatility Heteroskedasticity
 
+The [Table 16. Posterior Mean of A in heteroskedasiticity model]and [Table 17. Posterior Mean of Sigma in heteroskedasiticity model]presented the mean of posterior draws of A and $\Sigma$ matrices for extension model.
+
 ```{r}
 S1 =5000
 S2 =5000
@@ -1776,8 +1801,29 @@ draws_hetero_df=posterior.draws.hetero(S1 = S1, S2 = S2,X=X,Y=Y,A=Prior_df$A_pri
 #restriction
 Restriction_output_hetero= ImposeSignRestrictionIRF(restrictions = R1_df,N=N,p=p,S=S,posterior.draws=draws_hetero_df)
 
+#the mean of posterior draws of A matrices
+mean_A_ext <- round(apply(draws_hetero_df$A.posterior,1:2,mean),4)
+colnames(mean_A_ext) <- colnames(df)
+knitr::kable(mean_A_ext,  caption = "posterior mean of A",index=TRUE)
+
+
 
 ```
+
+###### Table 16. Posterior Mean of A in heteroskedasiticity model
+
+```{r}
+#the mean of posterior draws of sigma matrices
+mean_sigma_ext <- round(apply(draws_hetero_df$Sigma.posterior,1:2,mean),4)
+colnames(mean_sigma_ext) <- colnames(df)
+knitr::kable(mean_sigma_ext,  caption = "posterior mean of Sigma",index=TRUE)
+```
+
+###### Table 17. Posterior Mean of Sigma in heteroskedasiticity model
+
+[Figure 6. Impulse response result using heteroskedasiticity model] shows the Impulse Response Function of the heteroskedasticity model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, the results is similar using baseline model, as the estimated posterior mean of A and $\Sigma$ are similar.
+
+However, we still can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate, but the effect is not statistically significant in 68% confidence interval. By using Stochastic Volatility heteroskedasticity , the resulting plot is flatter and confidence interval is wider compared to baseline model. This can be explained as to capture strong heteroskedasticity in forecasting usually required a large sample, but the sample we used in this paper only has 132 lags, which is not sufficient enough to produce better result using Stochastic Volatility heteroskedasticity model.
 
 ```{r}
 # Impulse response functions
@@ -1822,7 +1868,11 @@ for (n in 1:N){
 }
 ```
 
+###### Figure 6. Impulse response result using heteroskedasiticity model
+
 ## Extended Model with Gamma Distribution and Heteroskedasticity
+
+The [Table 18. Posterior Mean of A in extended model] and [Table 19. Posterior Mean of Sigma in extended model] presented the mean of posterior draws of A and $\Sigma$ matrices for extension model.
 
 ```{r}
 S1 =5000
@@ -1834,8 +1884,29 @@ draws_extend_df=posterior.draws.extenhetero(S1 = S1, S2 = S2,X=X,Y=Y,A=Prior_df$
 #restriction
 Restriction_output_extend_hetero= ImposeSignRestrictionIRF(restrictions = R1_df,N=N,p=p,S=S,posterior.draws=draws_extend_df)
 
+#the mean of posterior draws of A matrices
+mean_A_ext <- round(apply(draws_extend_df$A.posterior,1:2,mean),4)
+colnames(mean_A_ext) <- colnames(df)
+knitr::kable(mean_A_ext,  caption = "posterior mean of A",index=TRUE)
+
+
 
 ```
+
+###### Table 18.  Posterior Mean of A in extended model
+
+```{r}
+#the mean of posterior draws of sigma matrices
+mean_sigma_ext <- round(apply(draws_extend_df$Sigma.posterior,1:2,mean),4)
+colnames(mean_sigma_ext) <- colnames(df)
+knitr::kable(mean_sigma_ext,  caption = "posterior mean of Sigma",index=TRUE)
+```
+
+###### Table 19.  Posterior Mean of Sigma in extended model
+
+[Figure 7. Results of extended model] shows the Impulse Response Function of the heteroskedasticity model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, the results is similar using baseline model, as the estimated posterior mean of A and $\Sigma$ are similar.
+
+However, we still can not observe significant effect in exchange rate for statistically significant in 68% confidence interval. By using Stochastic Volatility heteroskedasticity with extension with Gamma distribution, the resulting plot is flatter and confidence interval is wider compared to initial extension model. The reason behind the result could be explained, to capture strong heteroskedasticity in forecasting usually required a large sample, but the sample we used in this paper only has 132 lags, which is not sufficient enough to produce better result using Stochastic Volatility heteroskedasticity model. Futhermore, potential other correlation with Stochastic Volatility heteroskedasticity and the extension with Gamma distribution that has not observed in the analysis.
 
 ```{r}
 
@@ -1880,5 +1951,7 @@ for (n in 1:N){
   lines(hh, IRFs.k1_ext[n,hh],lwd=2,col=mcxs1)
 }
 ```
+
+###### Figure 7. Results of extended model
 
 ## References

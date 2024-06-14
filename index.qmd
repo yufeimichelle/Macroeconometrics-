@@ -1505,6 +1505,18 @@ knitr::kable(mean_sigma, caption = "Posterior Mean of Sigma",index=TRUE)
 
 ###### Table 13. Posterior Mean of Sigma
 
+[Figure 4 . trace plot of Basic model posterior draws] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A.
+
+```{r}
+par(mfrow=c(2,2),mar=c(2,2,2,2))
+plot(draws_df$A.posterior[2,1,],type='l',col="#660099",ylab="",xlab="",main=expression(A[21]), lwd = 0.1)
+plot(draws_df$A.posterior[3,1,],type='l',col="#CC66CC",ylab="",xlab="",main=expression(A[31]), lwd = 0.1)
+plot(draws_df$Sigma.posterior[3,2,],type='l',col="#6699CC",ylab="",xlab="",main=expression(Sigma[32]), lwd = 0.1)
+plot(draws_df$Sigma.posterior[4,1,],type='l',col="#0066CC",ylab="",xlab="",main=expression(Sigma[41]), lwd = 0.1)
+```
+
+###### Figure 4 . trace plot of Basic  model posterior draws
+
 ```{r}
 #| echo: false
 #| message: false
@@ -1630,7 +1642,7 @@ IRF_function = function(S,h,N,B,p,A.posterior,B.posterior){
 
 ```
 
-[Figure 4. Impulse Response Function of Basic Model] shows the Impulse Response Function of the baseline model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate, but the effect is not statistically significant in 68% confidence interval.
+[Figure 5. Impulse Response Function of Basic Model] shows the Impulse Response Function of the baseline model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate, but the effect is not statistically significant in 68% confidence interval.
 
 ```{r}
 #| echo: false
@@ -1686,7 +1698,7 @@ for (n in 1:N){
 
 ```
 
-###### Figure 4. Impulse Response Function of Basic Model
+###### Figure 5. Impulse Response Function of Basic Model
 
 ## **Extension Model With Gamma Distribution**
 
@@ -1730,6 +1742,18 @@ knitr::kable(mean_sigma_ext,  caption = "posterior mean of Sigma",index=TRUE)
 
 ###### Table 15. Posterior Mean of Sigma in extension model
 
+[Figure 6 . trace plot of Extension Model posterior draws] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A.
+
+```{r}
+par(mfrow=c(2,2),mar=c(2,2,2,2))
+plot(draws_ext_df$A.posterior[2,1,],type='l',col="#660099",ylab="",xlab="",main=expression(A[21]), lwd = 0.1)
+plot(draws_ext_df$A.posterior[3,1,],type='l',col="#CC66CC",ylab="",xlab="",main=expression(A[31]), lwd = 0.1)
+plot(draws_ext_df$Sigma.posterior[3,2,],type='l',col="#6699CC",ylab="",xlab="",main=expression(Sigma[32]), lwd = 0.1)
+plot(draws_ext_df$Sigma.posterior[4,1,],type='l',col="#0066CC",ylab="",xlab="",main=expression(Sigma[41]), lwd = 0.1)
+```
+
+###### Figure 6 . trace plot of Extension Model posterior draws
+
 ```{r}
 #| echo: false
 #| message: false
@@ -1762,7 +1786,7 @@ hh          = 1:(h+1)
 
 ```
 
-[Figure 5. Impulse Response Function Extension Model] shows the Impulse Response Function of the extension model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we still can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate, but the effect is not statistically significant in 68% confidence interval .
+[Figure 7. Impulse Response Function Extension Model] shows the Impulse Response Function of the extension model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we still can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate, but the effect is not statistically significant in 68% confidence interval .
 
 ```{r}
 #| echo: false
@@ -1785,7 +1809,7 @@ for (n in 1:N){
 }
 ```
 
-###### Figure 5. Impulse Response Function Extension Model
+###### Figure 7. Impulse Response Function Extension Model
 
 ## **Extension Model With** Stochastic Volatility Heteroskedasticity
 
@@ -1821,7 +1845,19 @@ knitr::kable(mean_sigma_ext,  caption = "posterior mean of Sigma",index=TRUE)
 
 ###### Table 17. Posterior Mean of Sigma in heteroskedasiticity model
 
-[Figure 6. Impulse response result using heteroskedasiticity model] shows the Impulse Response Function of the heteroskedasticity model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, the results is similar using baseline model, as the estimated posterior mean of A and $\Sigma$ are similar.
+[Figure 8. trace plot of heteroskedasiticity model posterior draws] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A.
+
+```{r}
+par(mfrow=c(2,2),mar=c(2,2,2,2))
+plot(draws_hetero_df$A.posterior[2,1,],type='l',col="#660099",ylab="",xlab="",main=expression(A[21]), lwd = 0.1)
+plot(draws_hetero_df$A.posterior[3,1,],type='l',col="#CC66CC",ylab="",xlab="",main=expression(A[31]), lwd = 0.1)
+plot(draws_hetero_df$Sigma.posterior[3,2,],type='l',col="#6699CC",ylab="",xlab="",main=expression(Sigma[32]), lwd = 0.1)
+plot(draws_hetero_df$Sigma.posterior[4,1,],type='l',col="#0066CC",ylab="",xlab="",main=expression(Sigma[41]), lwd = 0.1)
+```
+
+###### Figure 8. trace plot of  heteroskedasiticity model posterior draws
+
+[Figure 9. Impulse response result using heteroskedasiticity model] shows the Impulse Response Function of the heteroskedasticity model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, the results is similar using baseline model, as the estimated posterior mean of A and $\Sigma$ are similar.
 
 However, we still can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate, but the effect is not statistically significant in 68% confidence interval. By using Stochastic Volatility heteroskedasticity , the resulting plot is flatter and confidence interval is wider compared to baseline model. This can be explained as to capture strong heteroskedasticity in forecasting usually required a large sample, but the sample we used in this paper only has 132 lags, which is not sufficient enough to produce better result using Stochastic Volatility heteroskedasticity model.
 
@@ -1868,7 +1904,7 @@ for (n in 1:N){
 }
 ```
 
-###### Figure 6. Impulse response result using heteroskedasiticity model
+###### Figure 9. Impulse response result using heteroskedasiticity model
 
 ## Extended Model with Gamma Distribution and Heteroskedasticity
 
@@ -1904,7 +1940,19 @@ knitr::kable(mean_sigma_ext,  caption = "posterior mean of Sigma",index=TRUE)
 
 ###### Table 19.  Posterior Mean of Sigma in extended model
 
-[Figure 7. Results of extended model] shows the Impulse Response Function of the heteroskedasticity model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, the results is similar using baseline model, as the estimated posterior mean of A and $\Sigma$ are similar.
+plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A.
+
+```{r}
+par(mfrow=c(2,2),mar=c(2,2,2,2))
+plot(draws_extend_df$A.posterior[2,1,],type='l',col="#660099",ylab="",xlab="",main=expression(A[21]), lwd = 0.1)
+plot(draws_extend_df$A.posterior[3,1,],type='l',col="#CC66CC",ylab="",xlab="",main=expression(A[31]), lwd = 0.1)
+plot(draws_extend_df$Sigma.posterior[3,2,],type='l',col="#6699CC",ylab="",xlab="",main=expression(Sigma[32]), lwd = 0.1)
+plot(draws_extend_df$Sigma.posterior[4,1,],type='l',col="#0066CC",ylab="",xlab="",main=expression(Sigma[41]), lwd = 0.1)
+```
+
+###### Figure 10. trace plot of extended model posterior draws
+
+[Figure 11. Impulse response result using extended model] shows the Impulse Response Function of the heteroskedasticity model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, the results is similar using baseline model, as the estimated posterior mean of A and $\Sigma$ are similar.
 
 However, we still can not observe significant effect in exchange rate for statistically significant in 68% confidence interval. By using Stochastic Volatility heteroskedasticity with extension with Gamma distribution, the resulting plot is flatter and confidence interval is wider compared to initial extension model. The reason behind the result could be explained, to capture strong heteroskedasticity in forecasting usually required a large sample, but the sample we used in this paper only has 132 lags, which is not sufficient enough to produce better result using Stochastic Volatility heteroskedasticity model. Futhermore, potential other correlation with Stochastic Volatility heteroskedasticity and the extension with Gamma distribution that has not observed in the analysis.
 
@@ -1952,6 +2000,6 @@ for (n in 1:N){
 }
 ```
 
-###### Figure 7. Results of extended model
+###### Figure 11. Impulse response result using extended model
 
 ## References

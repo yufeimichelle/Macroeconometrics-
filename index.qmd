@@ -1505,7 +1505,7 @@ knitr::kable(mean_sigma, caption = "Posterior Mean of Sigma",index=TRUE)
 
 ###### Table 13. Posterior Mean of Sigma
 
-[Figure 4 . trace plot of Basic model posterior draws] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A.
+[Figure 4 . trace plot of Basic model posterior draws] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A and $\Sigma$.
 
 ```{r}
 par(mfrow=c(2,2),mar=c(2,2,2,2))
@@ -1742,7 +1742,7 @@ knitr::kable(mean_sigma_ext,  caption = "posterior mean of Sigma",index=TRUE)
 
 ###### Table 15. Posterior Mean of Sigma in extension model
 
-[Figure 6 . trace plot of Extension Model posterior draws] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A.
+[Figure 6 . trace plot of Extension Model posterior draws] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A and $\Sigma$, although contain some out-liners, it still have similar mean as baseline model.
 
 ```{r}
 par(mfrow=c(2,2),mar=c(2,2,2,2))
@@ -1845,7 +1845,7 @@ knitr::kable(mean_sigma_ext,  caption = "posterior mean of Sigma",index=TRUE)
 
 ###### Table 17. Posterior Mean of Sigma in heteroskedasiticity model
 
-[Figure 8. trace plot of heteroskedasiticity model posterior draws] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A.
+[Figure 8. trace plot of heteroskedasiticity model posterior draws] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A and $\Sigma$. Unlike the baseline model, with Stochastic Volatility Heteroskedasticity, the posterior draws for A seems to be varying between 2 and -2, but still stationary.
 
 ```{r}
 par(mfrow=c(2,2),mar=c(2,2,2,2))
@@ -1940,7 +1940,7 @@ knitr::kable(mean_sigma_ext,  caption = "posterior mean of Sigma",index=TRUE)
 
 ###### Table 19.  Posterior Mean of Sigma in extended model
 
-plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A.
+[Table 19. Posterior Mean of Sigma in extended model] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A and $\Sigma$. Although with some out-liners, the draws of $\Sigma$ are still similar to the results in extension model. However, with heteroskedasticity, draws A fluctuate around -3 to 3 which is wider range than the normal extension model.
 
 ```{r}
 par(mfrow=c(2,2),mar=c(2,2,2,2))
@@ -2001,5 +2001,7 @@ for (n in 1:N){
 ```
 
 ###### Figure 11. Impulse response result using extended model
+
+## Conclusion
 
 ## References

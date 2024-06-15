@@ -1,0 +1,2118 @@
+---
+title: "Effects of Monetary Policy Shocks on Exchange Rate: Evidence from Australia"
+author: "Yufei Wu"
+
+execute:
+  echo: false
+  
+bibliography: references.bib
+---
+
+
+> **Abstract.** This research proposal aim to examine the exchange rate reactions to monetary policy shocks in Australia from 1980 to 2024 using the Bayesian Structural Vector Auto-regression (SVAR) model.
+>
+> **Keywords.** R, Monetary policy, exchange rate, SVAR model
+
+# Introduction
+
+How monetary policy shocks affect exchange rate? The most well-known study from @dornbusch1976 documented the overshooting model, which predicts that the monetary expansion would lead to an increase in domestic interest rate and persistence depreciation of exchange rate. However, more economists such as @eichenbaum1995 utilized VAR model found that contractionary monetary policy shocks lead to an appreciation in exchange rate, but might be delayed.
+
+The recent study @kim2018 further explored that relatively short delay in the effect of contractionary monetary shock to exchange rate appreciation for the UK, Australia, Sweden and Canada.
+
+This paper aims to focus on investigate the effect of monetary shock in a small open economy Australia, applying the Bayesian Structural Vector Auto-regression (SVAR) model. What is the role of monetary policy shock in exchange rate behavior in Australia? Are the effect similar to those large countries? Do we find similar puzzling responses?
+
+# Data
+
+The endogenous variables for the SVAR analysis included:
+
+-   **Exchange rate of AUD/USD (ERA):** nominal average exchange rate AUD/USD (from RBA)
+
+-   **Monetary base M1 (MB):** Monetary base, seasonally adjusted (M1) (from RBA)
+
+-   **Short--term interest rate (Short_R) :** Cash rate target (from RBA)
+
+-   **Gross Domestic Product (GDP):** Real GDP (quarterly) Gross domestic product, Chain volume measures (from RBA)
+
+-   **Consumer Price Index(CPI):** Consumer price index, seasonally adjusted quarterly (from ABS)
+
+The data are collected from the Reserve Bank of Australia (RBA) and Australian Bureau of Statistics (ABS), adjusted in quarterly frequency and from 1990 Q1 to 2023 Q4, including 136 observations.
+
+The first variable is the key variable in the analysis of the research, and the other 4 variables are the key monetary variables to identify the monetary shocks in Australia. All variables data have taken Logarithm except short-term interest rate and plotted in [Figure 1: Time-series plots].
+
+
+```{r}
+#| label: load-packages
+#| include: false
+library(patchwork)
+library(readrba)
+library(xts)
+library(ggplot2)
+library(readabs)
+library(dplyr)
+library(zoo)
+```
+
+```{r}
+#| echo: false
+#| message: false
+exchange_rate_usd <- read_rba(series_id = "FXRUSD") 
+
+exchange_rate_usd = xts(as.numeric(exchange_rate_usd$value), order.by = exchange_rate_usd$date) 
+exchange_rate_usd <- to.quarterly(exchange_rate_usd,OHLC = FALSE)
+
+exchange_rate_usd <- window(exchange_rate_usd,                   
+                    start = "1990 Q1",
+                    end = "2023 Q4")
+names(exchange_rate_usd) <- "ERA"
+
+exchange_p = autoplot(exchange_rate_usd) +
+  theme_classic()+
+  scale_x_yearqtr(format = "%Y")+
+  labs(title = "Exchange Rate (AUD/USD)")+
+  theme(axis.title.x = element_blank(),
+        plot.title = element_text(hjust = 0.5,
+                                  face = "bold"))
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+#MB Monetary base, seasonally adjusted (M1)
+MB <- read_rba(series_id = "DMAM1S") 
+MB = xts(MB$value, order.by = MB$date)   
+MB = to.quarterly(MB,OHLC = FALSE)
+MB <- window(MB,                   
+               start = "1990 Q1",
+               end = "2023 Q4")
+MB = log(MB)
+names(MB) <- "MB"
+MB_p = autoplot(MB) +
+  theme_classic()+
+  scale_x_yearqtr(format = "%Y")+
+  labs(title = "Monetary Base (M1)")+
+  theme(axis.title.x = element_blank(),
+        plot.title = element_text(hjust = 0.5,
+                                  face = "bold"))
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+#Cash rate target
+Short_R <- read_rba(series_id = "FIRMMCRTD") 
+Short_R = xts(Short_R$value, order.by = Short_R$date)    
+Short_R = to.quarterly(Short_R,OHLC = FALSE)
+Short_R <- window(Short_R,                   
+             start = "1990 Q1",
+             end = "2023 Q4")
+names(Short_R) <- "Short_R"
+SR_p = autoplot(Short_R) +
+  theme_classic()+
+  scale_x_yearqtr(format = "%Y")+
+  labs(title = "Short-Term Interest Rate")+
+  theme(axis.title.x = element_blank(),
+        plot.title = element_text(hjust = 0.5,
+                                  face = "bold"))
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+#CPI Consumer price index, seasonally adjusted
+
+CPI = read_abs(series_id = 'A2325846C')
+CPI = xts(CPI$value, as.yearqtr(CPI$date, format = "%Y-%m-%d"))    
+CPI <- window(CPI,                   
+              start = "1990 Q1",
+              end = "2023 Q4")
+CPI = log(CPI)
+names(CPI) <- "CPI"
+CPI_p = autoplot(CPI) +
+  theme_classic()+
+  labs(title = "Consumer Price Index")+
+  theme(axis.title.x = element_blank(),
+        plot.title = element_text(hjust = 0.5,
+                                  face = "bold"))
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+#new gdp
+GDP = read_abs(series_id = "A2304404C")     
+GDP     = xts(GDP$value, as.yearqtr(GDP$date, format = "%Y-%m-%d"))
+GDP <- window(GDP,                   
+              start = "1990 Q1",
+              end = "2023 Q4")
+GDP = log(GDP)
+names(GDP) <- "GDP"
+GDP_p = autoplot(GDP) +
+  theme_classic()+
+  labs(title = "Gross Domestic Product")+
+  theme(axis.title.x = element_blank(),
+        plot.title = element_text(hjust = 0.5,
+                                  face = "bold"))
+
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+data_all = list(exchange_rate_usd, MB, Short_R, GDP, CPI)
+
+variable <- c('ERA', 'MB', 'Short_R','GDP', 'CPI')
+#merge into one data set
+df <- as.data.frame(merge(exchange_rate_usd, MB, Short_R, GDP, CPI))
+
+# create a numeric df
+df_num <- cbind(
+  as.numeric(df$ERA),
+  as.numeric(df$MB),
+  as.numeric(df$Short_R),
+  as.numeric(df$GDP),
+  as.numeric(df$CPI)
+)
+colnames(df_num) <- colnames(df)
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| 
+#combining 
+exchange_p + MB_p + SR_p + GDP_p  + CPI_p  + plot_layout(ncol = 2)
+
+
+```
+
+
+###### Figure 1: Time-series plots
+
+Exchange rate changes are volatile overtime, exhibits peaks and troughs. Monetary base, GDP and CPI all illustrate increasing trend overtime, with some drops during the global financial crisis and during COVID-19 period. Short-term interest rate displays a downward trend since 2000. All time-series plots are restricted in the time period from 1980 Q1 to 2022 Q4.
+
+[Table 1: Summary Statistics] provides statistics summary of all variables from 1980 Q1 to 2022 Q4.
+
+
+```{r}
+#| echo: false
+#| message: false
+data_all = list(exchange_rate_usd, MB, Short_R, GDP, CPI)
+variable <- c('ERA', 'MB', 'Short_R','GDP', 'CPI')
+N <- rep(172, length(variable))
+mean <- sapply(data_all, mean)
+sd <- sapply(data_all, sd)
+min <- sapply(data_all, min)
+max <- sapply(data_all, max)
+table1 =data.frame(variable, N, mean,sd, min, max)
+
+
+knitr::kable(table1, caption = "Summary Statistics", digits = 2)
+
+
+```
+
+
+###### Table 1: Summary statistics
+
+## Preliminary Data Analysis
+
+[Figure 2: ACF plots] shows that for GDP and CPI have non-zero auto correlations for at least 10 lags, for the ERA, MB, Short_R have non-zero auto correlations for at least 10 lags (shown in 2.5 years).This implies that all series are not white noise and may be non- stationary.We can take a first difference to remove the autocorrelation and ensure stationary for the series and check using ADF test.
+
+[Figure 3: PACF plots] shows no statistically significant lags except short-term interest rate. Short-term interest rate has some spikes in 4th lag and 5th lag, but not strong.This may suggest that except short-term interest rate, other series are stationary in order 1.
+
+
+```{r}
+
+#| echo: false
+#| message: false
+par(mfrow = c(3, 2))
+acf(exchange_rate_usd, lag.max = 10, plot = TRUE, main = "Exchange Rate (AUD/USD) ACF")
+acf(MB, lag.max = 10, plot = TRUE , main = "Monetary Base (M1) ACF")
+acf(Short_R, lag.max = 10, plot = TRUE , main = "Short-Term Interest Rate ACF")
+acf(GDP, lag.max = 10, plot = TRUE , main = "Gross Domestic Product ACF")
+acf(CPI, lag.max = 10, plot = TRUE , main = "Consumer Price Index ACF")
+```
+
+
+###### Figure 2: ACF plots
+
+
+```{r}
+#| echo: false
+#| message: false
+par(mfrow = c(3, 2))
+pacf(exchange_rate_usd, lag.max = 10, plot = TRUE, main = "Exchange Rate (AUD/USD) PACF")
+pacf(MB, lag.max = 10, plot = TRUE, main = "Monetary Base (M1) PACF")
+pacf(Short_R, lag.max = 10, plot = TRUE , main = "Short-Term Interest Rate PACF")
+pacf(GDP, lag.max = 10, plot = TRUE , main = "Gross Domestic Product PACF")
+pacf(CPI, lag.max = 10, plot = TRUE , main = "Consumer Price Index PACF")
+```
+
+
+###### Figure 3: PACF plots
+
+Augmented Dickey-Fuller Test is performed to test for stationarity, the null hypothesis is unit-root non-stationary.A p-value less than 5% implies the null hypothesis is rejected.
+
+[Table 2: ADF test] shows that for ERA, MB, GDP, we can not reject the null hypothesis at 5% significant level and considered as unit-root non-stationary. Short-term interest rate and CPI can reject the null at 5% significant level and considered as unit-root stationary.
+
+[Table 3: ADF test of First Difference] shows the first difference of all variables, ERA, MB, GDP can reject the null at 5% significant level and considered as unit-root stationary at first difference condition, they are integrated of order 1.
+
+
+```{r warning=FALSE}
+#| echo: false
+#| message: false
+library(tseries)
+
+adf <- as.data.frame(matrix(nrow=5,ncol=3,NA))
+rownames(adf) <- variable
+colnames(adf) <- c("Dickey-Fuller","Lag order", "p-value")
+
+for (i in data_all){
+  adf[colnames(i),1] = round(as.numeric(adf.test(i)[1]),2)
+  adf[colnames(i),2] = adf.test(i)[2]
+  adf[colnames(i),3] = round(as.numeric(adf.test(i)[4]),2)
+  
+}
+  
+knitr::kable(adf, caption = "ADF test", digits = 2)
+```
+
+
+###### Table 2: ADF test
+
+
+```{r warning=FALSE}
+#| echo: false
+#| message: false
+#ADF test of first difference
+adf1 <- as.data.frame(matrix(nrow=5,ncol=3,NA))
+rownames(adf1) <- variable
+colnames(adf1) <- c("Dickey-Fuller","Lag order", "p-value")
+
+for (i in data_all){
+  adf1[colnames(i),1] = round(as.numeric(adf.test(na.omit(diff(i)))[1]),2)
+  adf1[colnames(i),2] = adf.test(na.omit(diff(i)))[2]
+  adf1[colnames(i),3] = round(as.numeric(adf.test(na.omit(diff(i)))[4]),2)
+  
+}
+
+knitr::kable(adf1, caption = "ADF test of First Difference", digits = 2)
+```
+
+
+###### Table 3: ADF test of First Difference
+
+## **Methodology**
+
+The **Structural Form (SF) model** of Structural VARs is:
+
+
+```{=tex}
+\begin{align}
+B_{0} Y_{t} =b_{0}  + \sum_{i=0}^{p} (B_{i}Y_{t-i} )+u_{t} 
+\end{align}
+```
+
+```{=tex}
+\begin{align}
+u_{t}|Y_{t-1} \sim iid(0_{N},I_{N}  )
+\end{align}
+```
+
+$Y_{t}$ is $N \times 1$ matrix of endogenous variable, $B_{0}$ is $N \times N$ matrix of contemporaneous relationships, $u_{t}$ is a $N \times 1$ vector of conditionally on$Y_{t-1}$orthogonal or independent structural shocks.
+
+The **Reduced Form (RF)** representation is:
+
+
+```{=tex}
+\begin{align}
+Y_{t} =\mu_{0}  + \sum_{i=0}^{p} (A_{i}Y_{t-i} )+\epsilon_{t} 
+\end{align}
+```
+
+```{=tex}
+\begin{align}
+\epsilon_{t}|Y_{t-1} \sim iid(0_{N},\Sigma )
+\end{align}
+```
+
+### **Sign Restriction Identification**
+
+For the model in this research report, $Y_{t}$ contains 5 variables as:
+
+$$
+Y_{t}=\begin{pmatrix}ERA_{t} \\MB_{t} \\{ShortR}_{t} \\GDP_{t} \\CPI_{t}\end{pmatrix}
+$$
+
+Following the arguments developed in @scholl2008a , that restrictions should be concerning on the shape but not the size of the exchange rate response,thus sign restriction should be imposed. Adapting the methodology specified in @kim2018, the following sign restrictions are imposed on the impulse response to identify the Monetary policy shock.
+
+$$
+f(B_0,B_+)=\Theta_0=B=
+\begin{bmatrix}
+* & * & * & * & *  \\
+- & * & * & * & *  \\
++ & * & * & * & *  \\
+* & * & * & * & *  \\
+- & * & * & * & *  \\
+\end{bmatrix}
+$$ The restriction matrix R is shown as the following:
+
+$$
+\textbf{R}=\begin{bmatrix}
+0 & 0 & 0 & 0 & 0  \\
+0 & -1 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0  \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & -1 \\
+\end{bmatrix}
+$$
+
+
+```{r}
+#| echo: false
+#| message: false
+variable <- c('ERA', 'MB', 'Short_R','GDP', 'CPI')
+res <- c('unrestricted','- negative','+ positive','unrestricted','- negative')
+
+table1 =data.frame(variable, res)
+
+
+knitr::kable(table1, caption = "Sign Restrictions")
+```
+
+
+## Estimation Framework
+
+### **Model specification**
+
+The **matrix representation** is:
+
+
+```{=tex}
+\begin{align}
+Y = XA+E
+\end{align}
+```
+
+```{=tex}
+\begin{align}
+E|X\sim MN_{T\times N} (0_{T\times N} ,\Sigma ,I_{T})
+\end{align}
+```
+
+$$
+Y =\begin{bmatrix}
+                        y_{1'}  \\y_{2'}  \\. \\. \\. \\y_{T'} \end{bmatrix} 
+A =\begin{bmatrix}\mu_{0'} \\A_{1'} \\.\\.\\.\\A_{p'} \end{bmatrix}
+x_{t}  =\begin{bmatrix}\ 1 \\y_{t-1} \\.\\.\\.\\y_{t-p} \end{bmatrix}
+X  =\begin{bmatrix}\ x_{1'}  \\x_{2'} \\.\\.\\.\\x_{T'} \end{bmatrix}
+E  =\begin{bmatrix}\ \epsilon _{1'}  \\\epsilon _{2'} \\.\\.\\.\\\epsilon _{T'} \end{bmatrix}
+$$
+
+The **covariance matrix** of $\epsilon_{t}$ can be written as:
+
+
+```{=tex}
+\begin{align}
+\Sigma  = B_{0} ^{-1} B_{0} ^{-1'} 
+\end{align}
+```
+
+The **Likelihood function** would be:
+
+$$
+L(A,\Sigma |Y,X) \propto det(\Sigma)^{-T/2}\exp\left \{{-\frac{1}{2}tr[\Sigma ^{-1}(Y-XA)'(Y-XA)]}   \right \}   
+$$
+
+The **Maximum Likelihood Estimation** is:
+
+$$
+\hat{A} =  (X'X)^{-1}(X'Y)
+$$
+
+$$
+\hat{\Sigma } =  \frac{1}{T} (Y-X\hat{A} )'(Y-X\hat{A} )
+$$
+
+The **Likelihood function** can be written as a Normal-Inverse Wishart Distribution:
+
+$$
+L(A,\Sigma |Y,X) = NIW_{K\times N} (\hat{A},(X'X)^{-1},(Y-X\hat{A} )'(Y-X\hat{A} ),T-N-K-1) 
+$$
+
+The Natural-Conjugate Prior for the SVARs model is also considered as a **Minnesota prior**. The Natural-Conjugate Prior Distribution is:
+
+$$
+P(A,\Sigma) = P(A|\Sigma) p(\Sigma) 
+$$
+
+$$
+\\
+A|\Sigma \sim MN_{K\times N} (\underline{A}, \Sigma,\underline{V})
+$$
+
+$$
+\\
+\Sigma\sim IW_{N}( \underline{S},  \underline{v})
+$$
+
+**Minnesota prior** has two main properties:
+
+1.Macroeconomic variables are unit-root non-stationary and are well-characterised by a multivariate random walk process. Thus the prior mean of A is:
+
+$$
+\underline{A} = \left [ \mathbf{0}_{N\times1 }\;\; \;I_{N} \;\; \;\mathbf{0}_{N\times(p-1)N } \right ]' 
+$$
+
+2.The Prior Shrinkage is the dispersion of prior distribution around prior mean $\underline{A}$ is determined by the diagonal element $\underline{V}$ , thus the prior covariance matrix and diagonal element are:
+
+$$Var[vec(A)] = \Sigma  \otimes V$$ $$\underline{V}=diag\left ( \left [ k_{2} \; \; \;k_{1}(\mathbf{p} ^{-2}\otimes \imath '_{N}    \right ]  \right )   $$
+
+for $\mathbf{p}=[1,2...p]$ and $\imath =rep(1,N)$
+
+## **Baseline Model**
+
+Overall, the **Full Conditional Posterior** can be derived as:
+
+$$
+p(A,\Sigma |Y,X) \propto  L(A,\Sigma|Y,X)p(A,\Sigma) 
+$$
+
+$$p(A,\Sigma |Y,X) = p(A|Y,X,\Sigma)p(\Sigma|Y,X)$$
+
+$$
+p(A|Y,X,\Sigma) =  MN_{K\times N } (\overline{A}, \Sigma,\overline{V})
+$$
+
+$$
+p(\Sigma|Y,X) = IW_{N}(\overline{S},\overline{v})
+$$
+
+The main parameters are:
+
+$$
+\left\{\begin{matrix}\overline{V}=(X'X+\underline{V}^{-1} )^{-1} \\\overline{A}=\overline{V}(X'Y+\underline{V}^{-1} \underline{A}) \\\overline{v}=T+\underline{v} \\\overline{S}=\underline{S}+Y'Y+\underline{A}'\underline{V}^{-1}\underline{A}-\overline{A}'\overline{V}^{-1}\overline{A}\end{matrix}\right.
+$$
+
+### **Estimation Procedure**
+
+**Step1:** Simulate 300 samples of Y with 2 columns indicating 2 policy effect(N=2) using bi-variate Gaussian random walk processes, that is p=1. Thus, K = 1+Np =3. Using sample Y can also generate sample X.
+
+**Step2:** Use the sample Y and X to compute the estimated posterior parameters $\overline{V},\overline{A},\overline{v},\overline{S}$ as shown above.
+
+**Step3:** Draw samples of sample $\Sigma ^{(s)}$ and $A ^{(s)}$ using posterior parameters observed in step 2 and iterations S = 1000.
+
+At each iteration $s$:
+
+1.  Draw $\Sigma^{(s)}$ from $\mathcal{IW}_{N}(\overline{S}, \overline{v})$, and take $\Sigma^{(s)}$ as known
+
+2.  Draw $A^{(s)}$ from $\mathcal{MN}_{K\times N}(\overline{A}, \Sigma,\overline{V} )$ by insert $\Sigma^{(s)}$
+
+Output is the sample draws from the joint posterior distribution $\left\{ {A^{(s)}, \Sigma^{(s)}} \right\}^{S}_{s=1}$.
+
+**Step4**: Compute the initial value of SF parameters using the covariance matrix which implies: $\tilde{B_{0}} = chol(\Sigma^{(s)-1})$ and $\tilde{B_{+}} = \tilde{B_{0}} A^{(s)}$
+
+**Step5**: Define the restriction matrix R, which is a diagonal matrix that identify the restrictions.
+
+Draw an independent standard normal $N\times N$ matrix Z and let Z = QR be the QR decomposition of Z with the diagonal of R normalized to be positive, return sample $Q^{(D)}$ Sample Q from Harr distribution.
+
+**Step6**:Use matrix $Q^{(D)}$ to compute parameters $B_{0} = Q\tilde{B_{0}}$ and $B_{+} = Q\tilde{B_{+}}$ and the corresponding impulse responses $\Theta$ that subject to sign restrictions.
+
+To check that $Rf(B_{+},B_{0})e_{n}>0_{R\times 1}$ for n = 1,...,N.
+
+If these parameters do not satisfy the sign restrictions defined in step5, then return to step5.
+
+**Step7:** After iterations, if these parameters do satisfy the sign restrictions, return the parameters $(B_{+} ,B_{0} )$
+
+
+```{r}
+#| echo: false
+#| message: false
+
+#step1 
+set.seed(2024)
+
+#simulate 2 samples of Y from random walk 
+RW1 <- arima.sim(model= list(order = c(0, 1, 0)), n=300, mean=0, sd=1)
+#plot.ts(RW1,main="Random Walk 1", col=4,xlab="")
+#plot.ts(diff(RW1),main="First difference of Random Walk 1", col=4,xlab="")
+
+RW2 <- arima.sim(model= list(order = c(0, 1, 0)), n=300, mean=0, sd=1)
+#plot.ts(RW2,main="Random Walk 2", col=4,xlab="")
+#plot.ts(diff(RW2),main="First difference of Random Walk 2", col=4,xlab="")
+
+RW  <- cbind(RW1,RW2)
+
+Y            = RW[2:nrow(RW),]             #simulate sample Y
+X            = matrix(1,nrow(Y),1)          #simulate sample X
+X            = cbind(X,RW[2: nrow(RW)-1,]) 
+S            =1000                          # number of iterations 
+N            = ncol(Y)                      # number of variables
+p            = 1                            # number of lags
+K            = N*p + 1                      # K = 1 + pN
+
+#step2
+
+# generate MLE of A and Sigma 
+A.hat        = solve(t(X)%*%X)%*%t(X)%*%Y                
+Sigma.hat    = t(Y-X%*%A.hat)%*%(Y-X%*%A.hat)/nrow(Y)   
+
+# Get the Minnesota prior 
+GetPrior.parameters <- function (N,p,Sigma.hat) {
+  
+  kappa.1 <- 1 # assume kappa1 is 1
+  kappa.2 <- 100  # assume kappa2 is 100
+  
+  K = 1 + N*p 
+  
+  A_prior = matrix(0,K,N)
+  A_prior[2:(N+1),] = diag(N) 
+  V_prior = diag(c(kappa.2,kappa.1*((1:p)^(-2))%x%rep(1,N)))
+  S_prior = diag(diag(Sigma.hat))
+  nu_prior = N+1
+  
+  return (list(A_prior=A_prior,
+               V_prior = V_prior,
+               S_prior = S_prior,
+               nu_prior = nu_prior))
+}
+
+# find the prior for the sample
+Prior = GetPrior.parameters(N=N,p=p,Sigma.hat=Sigma.hat)
+
+
+
+```
+
+
+### **Estimation Algorithm**
+
+
+```{r warning=FALSE}
+#| echo: false
+#| message: false
+
+#step 3
+
+# Get the posterior parameters 
+Posterior_parameters <- function (X,Y,A,V,S,nu) {
+  
+  V_bar.inv <- t(X)%*%X + solve(V)
+  V_bar <- solve(V_bar.inv)
+  A_bar <- V_bar%*%(t(X)%*%Y + solve(V)%*%A)
+  nu_bar <- nrow(Y) + nu
+  S_bar <- S + t(Y)%*%Y + t(A)%*%solve(V)%*%A - t(A_bar)%*%V_bar.inv%*%A_bar
+  
+  
+  return (list(V_bar = V_bar,
+               A_bar = A_bar,
+               nu_bar = nu_bar,
+               S_bar = S_bar))
+}
+
+# Get the posterior parameters for the simulated sample
+posterior_pram = Posterior_parameters(X=X,Y=Y,A=Prior$A_prior,V=Prior$V_prior,
+                                      S=Prior$S_prior,nu=Prior$nu_prior)
+
+
+```
+
+
+Function below is the `posterior.draws` for step 3 to 4:
+
+
+```{r echo=TRUE}
+
+# Draw samples of A and sigma
+
+posterior.draws = function(S, posterior_pram){
+  
+  A.bar  <- posterior_pram$A_bar
+  V.bar  <- posterior_pram$V_bar
+  S.bar  <- posterior_pram$S_bar
+  nu.bar <- posterior_pram$nu_bar
+  
+  B0.tilde <- array(NA,c(N,N,S))
+  B1.tilde <- array(NA,c(N,K,S))
+  L        <- t(chol(V.bar)) 
+  
+  Sigma.posterior   <- rWishart(S, df=nu.bar, Sigma=solve(S.bar))  
+  Sigma.posterior   <- apply(Sigma.posterior,3,solve)            
+  Sigma.posterior   <- array(Sigma.posterior,c(N,N,S))   
+  A.posterior       <- array(rnorm(prod(c(dim(A.bar),S))),c(dim(A.bar),S))
+  
+  # Compute the initial value of SF parameters
+  for (s in 1:S){
+    cholSigma.s      <- chol(Sigma.posterior[,,s])
+    B0.tilde[,,s] <- solve(t(cholSigma.s)) 
+    A.posterior[,,s] <- A.bar + L%*%A.posterior[,,s]%*%cholSigma.s 
+    B1.tilde[,,s]  <- B0.tilde[,,s]%*%t(A.posterior[,,s])
+  }
+  
+ # Sample draws from the joint posterior distribution 
+  return(list(A.posterior     = A.posterior,
+              B0.tilde        = B0.tilde,
+              B1.tilde        = B1.tilde,
+              Sigma.posterior = Sigma.posterior))
+}
+
+```
+
+```{r warning=FALSE}
+#| echo: false
+#| message: false
+
+# Draw samples of A, sigma and SF parameters
+draws = posterior.draws(S = 1000, posterior_pram = posterior_pram)
+```
+
+
+After drawing posterior parameters, we impose sign restrictions to identify the model. Use the orthogonal matrix Q, to identity such that $B_{0} = Q\tilde{B_{0}}$ and $B_{+} = Q\tilde{B_{+}}$ satisfy the sign restrictions, as the the algorithm implemented in @fry2011.
+
+Function below is the `ImposeSignRestriction` for step 5 to 7:
+
+
+```{r echo=TRUE}
+
+
+ImposeSignRestriction <- function (restrictions,N,p,S,posterior.draws){
+
+B0.draws      = array(NA,c(N,N,S))
+B1.draws      = array(NA,c(N,(1+N*p),S))
+
+B0.tilde = posterior.draws$B0.tilde
+B1.tilde = posterior.draws$B1.tilde
+R1 = restrictions
+
+i.vec = c()
+S = S
+for (s in 1:S){
+  B0.t    = B0.tilde[,,s]
+  B1.t    = B1.tilde[,,s]
+  sign.restrictions.do.not.hold = TRUE
+  i=1
+  while (sign.restrictions.do.not.hold){
+  Z           = matrix(rnorm(N*N),N,N)
+  QR          = qr(Z, tol = 1e-10)
+  Q           = qr.Q(QR,complete=TRUE)
+  R           = qr.R(QR,complete=TRUE)
+  Q           = t(Q %*% diag(sign(diag(R))))
+  B0          = Q%*%B0.t
+  B1          = Q%*%B1.t
+  B0.inv      = solve(B0)
+  
+
+  sign.restrictions.do.not.hold = !all(diag(B0) > 0)
+  i=i+1
+  }
+  i.vec = c(i.vec,i) 
+  B0.draws[,,s] = B0
+  B1.draws[,,s] = B1
+}
+return (list(B0.draws = B0.draws,
+             B1.draws = B1.draws,
+             i = i.vec))
+}
+
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+#step 5
+sign.restrictions = c(1,1)
+R1            = diag(sign.restrictions)
+
+
+A.check <- array(NA,c(N+1,N,S))
+S.check <- array(NA,c(N,N,S))
+
+Restriction_output = ImposeSignRestriction(restrictions = R1,N=N,p=p,S=S,posterior.draws=draws )
+
+B0.draws1 = Restriction_output$B0.draws
+B1.draws1 = Restriction_output$B1.draws
+
+for (s in 1:S){
+  # convert B0 into Sigma 
+  S.check[,,s] <- solve(B0.draws1[,,s]) %*% t(solve(B0.draws1[,,s]))
+  A.check[,,s] <- t(solve(B0.draws1[,,s] )%*% B1.draws1[,,s])
+ 
+}
+
+d1 <- round(apply(A.check,1:2,mean),4)
+d2 <- round(apply(S.check,1:2,mean),4)
+
+# B0 and B1 has positive diagonal 
+# similar number in diagonal 
+d3 <-round(apply(B0.draws1,1:2,mean),4)
+d4 <-round(apply(B1.draws1,1:2,mean),4)
+
+```
+
+
+### **Simulation Result**
+
+[Table 4: posterior mean of A] show the matrix of A suggesting the baseline model estimation using artificial data of 1 lag and constant term is showing zero posterior mean.
+
+[Table 5 posterior mean of Sigma] shows that covariance matrices $\Sigma$ are close to an identity matrix.
+
+
+```{r}
+#| echo: false
+#| message: false
+#| 
+A <- c('constant term', 'lag-1','lag-2')
+simulation_1 = d1[,1]
+simulation_2 = d1[,2]
+table1 =data.frame(A,simulation_1,simulation_2 )
+
+knitr::kable(table1, caption = "posterior mean of A", digits = 2,col.names = NULL)
+```
+
+
+###### Table 4: posterior mean of A
+
+
+```{r}
+#| echo: false
+#| message: false
+Sigma <- c('y1','y2')
+simulation_1s = d2[,1]
+simulation_2s = d2[,2]
+table2 =data.frame(Sigma,simulation_1s,simulation_2s )
+
+knitr::kable(table2, caption = "posterior mean of Sigma", digits = 2,col.names = NULL)
+```
+
+
+###### Table 5 posterior mean of Sigma
+
+The simulated result of $B_{0}$ and $B_{+}$ are shown in the table below:
+
+As the restrictions is positive diagonal, the result of $B_{0}$ satisfy the sign restrictions with a positive diagonal as shown in [Table 6: posterior mean of B0].
+
+The lag 1 $B_{1}$ are shown in [Table 7: posterior mean of B1], with similar result in y1 and y2 as $B_{0}$ , also with a positive diagonal, indicating it also satisfy the sign restrictions.
+
+
+```{r}
+#| echo: false
+#| message: false
+B0 <- c('y1','y2')
+simulation_1b = d3[,1]
+simulation_2b = d3[,2]
+table3 =data.frame(B0,simulation_1b,simulation_2b )
+
+knitr::kable(table3, caption = "posterior mean of B0", digits = 2,col.names = NULL)
+```
+
+
+###### Table 6: posterior mean of B0
+
+
+```{r}
+#| echo: false
+#| message: false
+B1 <- c('constant','y1','y2')
+
+simulation_1b1 = t(d4)[,1]
+simulation_2b1 = t(d4)[,2]
+table4 =data.frame(B1,simulation_1b1, simulation_2b1)
+
+knitr::kable(table4, caption = "posterior mean of B1", digits = 2,col.names = NULL)
+```
+
+
+###### Table 7: posterior mean of B1
+
+## **Extension Model With Gamma Distribution**
+
+Considering the extension on the $\Sigma$ , assume the hyper parameter $\underline{S}$ of the prior distribution for $\Sigma$ is now adjust as $\lambda I_{N}$, where the parameter $\lambda$ following gamma prior distribution, using a hierarchical model.
+
+$$
+p(A,\Sigma |Y,X) \propto  L(A,\Sigma|Y,X)p(A,\Sigma) 
+$$
+
+$$p(A,\Sigma |Y,X) = p(A|Y,X,\Sigma)p(\Sigma|Y,X,\lambda)$$
+
+$$
+\Sigma |\lambda \sim IW(\lambda I_{N}, \underline{\upsilon } )
+$$
+
+$$\lambda \sim \mathcal{Gamma}(\underline{s},\underline{a}  )$$
+
+The **Full Conditional Posterior** of $\lambda$ given $\Sigma$ can be derived as:
+
+$$
+\begin{aligned}
+p(\lambda |Y,X,\Sigma )
+&\propto L(A,\Sigma|Y,X)p(\Sigma,A, \lambda)\\
+&\propto L(A,\Sigma|Y,X)p(\Sigma|A, \lambda)p(A)p(\lambda)\\
+&\propto p(\Sigma|A,\lambda)p(\lambda) \\
+&\propto det(\lambda I_{N})^{\frac{\underline{\upsilon} }{2}} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]\right \}\lambda^{\underline{a}-1}e^{-\frac{\lambda}{\underline{s}} }  \\
+&\propto (\lambda )^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\frac{1}{2}tr\left [ \Sigma ^{-1}\lambda I_{N}\right]-\frac{\lambda}{\underline{s}}\right \} \\
+&\propto (\lambda )^{\frac{\underline{\upsilon}N }{2}+\underline{a}-1} \exp \left \{ -\lambda(\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}})\right \} 
+\end{aligned}
+$$
+
+As we can show the kernel follows Gamma Distribution as the kernel Gamma distribution is:$$p(x|s,a) \propto x^{a-1}exp \left\{\frac{-(x)}{s} \right\}$$
+
+Hence, the full-conditional posterior distribution of $\lambda$ follows a Gamma Distribution.
+
+$$
+\lambda|Y,X,\Sigma \sim \mathcal{Gamma}(\overline{a},\overline{s})
+$$
+
+The main parameters are:
+
+$$
+\left\{\begin{matrix} \overline{s}=[\frac{1}{2}tr\left [ \Sigma ^{-1} \right]+\frac{1}{\underline{s}}]^{-1} \\\overline{a}=\frac{\underline{\upsilon}N }{2}+\underline{a}\end{matrix}\right.
+$$
+
+#### Gibb Sampler using extension models
+
+Draw samples of sample $\Sigma ^{(s)}$ , $\lambda ^{(s)}$ and $A ^{(s)}$ using posterior parameters.
+
+Initialized $\lambda ^{(s)}$ as $\lambda ^{(0)}$ = 2
+
+At each iteration $s$:
+
+1.  Draw $\Sigma^{(s)}$ from $\mathcal{IW}_{N}(\overline{S}, \overline{v})$, and using the initialized $\lambda ^{(0)}$
+
+2.  Draw $\lambda ^{(s)}$ from $\lambda ^{(s)}$, by insert $\Sigma^{(s)}$
+
+3.  Draw $A^{(s)}$ from $\mathcal{MN}_{K\times N}(\overline{A}, \Sigma,\overline{V} )$ by insert $\Sigma^{(s)}$
+
+Repeat 1 and 2 $S_{1}+S_{2}$times.
+
+Discard the first $S_{1}$ draws that allows the algorithm to converge to the stationary posterior distribution.
+
+Output is the sample draws from the joint posterior distribution $\left\{ {A^{(s)}, \Sigma^{(s)}} ,\lambda ^{(s)}\right\}^{S_{1}+S_{2}}_{s=S_{1}+1}$.
+
+### **Estimation Algorithm**
+
+Function below is the `posterior.draws.exten` for Gibb Sampler:
+
+
+```{r}
+#| echo: false
+#| message: false
+#gamma distribution of S
+#prior parameters
+a_prior = 2
+s_prior = 0.5
+
+```
+
+```{r echo=TRUE}
+
+#posterior parameters
+  
+  posterior.draws.exten = function(S1,S2,X,Y,A,V,nu){
+    
+    i_N <- diag(N)
+    #posterior
+    V_bar.inv <- t(X)%*%X + solve(V)
+    V_bar <- solve(V_bar.inv)
+    A_bar <- V_bar%*%(t(X)%*%Y + solve(V)%*%A)
+    nu_bar <- nrow(Y) + nu
+    S_total = S1+S2
+   
+    
+    A.posterior <- array(rnorm(prod(c(dim(A_bar),S_total))),c(dim(A_bar),S_total))
+    
+    
+    B0.tilde <- array(NA,c(N,N,S_total))
+    B1.tilde <- array(NA,c(N,K,S_total))
+    L        <- t(chol(V_bar)) 
+    Sigma.posterior <-array(NA,c(N,N,S_total))
+    lambda.posterior  = matrix(NA, S_total, 1)
+    lambda.posterior[1] = 2
+    
+    for (s in 1:S_total){
+   
+    S_bar_ext   <- lambda.posterior[s]*i_N + t(Y)%*%Y+ t(A)%*%solve(V)%*%A- t(A_bar)%*%V_bar.inv%*%A_bar
+      
+    Sigma.posterior_d_inv  <- rWishart(n=1, df=nu_bar, Sigma=solve(S_bar_ext))[,,1]
+    Sigma.posterior_draw   <- solve(Sigma.posterior_d_inv)
+    Sigma.posterior[,,s]   <- Sigma.posterior_draw 
+   
+    s.posterior <- 1/(0.5*sum(diag(Sigma.posterior_d_inv))+1/s_prior)
+    a.posterior <- a_prior+(nu_bar*N)/2
+
+    
+    if (s!=S_total){
+      lambda.posterior[s+1] = rgamma(n=1, shape = s.posterior,  scale = a.posterior)
+    }
+    
+
+      cholSigma.s      <- chol(Sigma.posterior[,,s])
+      B0.tilde[,,s] <- solve(t(cholSigma.s)) 
+      A.posterior[,,s] <- A_bar + L%*%A.posterior[,,s]%*%cholSigma.s 
+      B1.tilde[,,s]  <- B0.tilde[,,s]%*%t(A.posterior[,,s])
+    
+    }
+    
+    return(list(A.posterior     = A.posterior[,,(S1+1):S_total],
+                B0.tilde        = B0.tilde[,,(S1+1):S_total],
+                B1.tilde        = B1.tilde[,,(S1+1):S_total],
+                Sigma.posterior = Sigma.posterior[,,(S1+1):S_total]
+                  ))
+}
+
+
+
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+
+draws_ext = posterior.draws.exten(S1 = 1000, S2 = 1000,X=X,Y=Y,A=Prior$A_prior,V=Prior$V_prior,nu=Prior$nu_prior)
+
+
+
+#step 5
+
+
+sign.restrictions = c(1,1)
+R1            = diag(sign.restrictions)
+
+
+Restriction_output_ext= ImposeSignRestriction(restrictions = R1,N=N,p=p,S=S,posterior.draws=draws_ext)
+
+
+
+
+
+A.check_ext <- array(NA,c(N+1,N,S))
+S.check_ext <- array(NA,c(N,N,S))
+
+B0.draws_ext  = Restriction_output_ext $B0.draws
+B1.draws_ext  = Restriction_output_ext $B1.draws
+
+for (s in 1:S){
+  # convert B0 into Sigma 
+  S.check_ext [,,s] <- solve(B0.draws_ext [,,s]) %*% t(solve(B0.draws_ext [,,s]))
+  #S.check_ext [,,s] <- B0.draws_ext[,,s] %*% t(B0.draws_ext[,,s])
+  A.check_ext [,,s] <- t(solve(B0.draws_ext [,,s] )%*% B1.draws_ext [,,s])
+}
+
+d1_ext <- round(apply(A.check_ext ,1:2,mean),4)
+d2_ext <- round(apply(S.check_ext ,1:2,mean),4)
+
+# B0 and B1 has positive diagonal 
+# similar number in diagonal 
+d3_ext <-round(apply(B0.draws_ext,1:2,mean),4)
+d4_ext <-round(apply(B1.draws_ext,1:2,mean),4)
+
+
+```
+
+
+### **Simulation Result**
+
+[Table 8: posterior mean of A of extension model] shows the posterior mean of matrix of A following the extension model, the constant term is also showing zero posterior mean. [Table 9: posterior mean of Sigma of extension model] shows that covariance matrices $\Sigma$ of the extension model also close to an identity matrix.
+
+
+```{r}
+#| echo: false
+#| message: false
+A <- c('constant term', 'lag-1','lag-2')
+simulation_1ext = d1_ext[,1]
+simulation_2ext = d1_ext[,2]
+table1_ext =data.frame(A,simulation_1ext,simulation_2ext )
+
+knitr::kable(table1_ext, caption = "posterior mean of A", digits = 2,col.names = NULL)
+```
+
+
+###### Table 8: posterior mean of A of extension model
+
+
+```{r}
+#| echo: false
+#| message: false
+Sigma <- c('y1','y2')
+simulation_1s_ext = d2_ext[,1]
+simulation_2s_ext = d2_ext[,2]
+table2_ext =data.frame(Sigma,simulation_1s_ext,simulation_2s_ext )
+
+knitr::kable(table2_ext, caption = "posterior mean of Sigma", digits = 2,col.names = NULL)
+
+
+```
+
+
+###### Table 9: posterior mean of Sigma of extension model
+
+The simulated result of $B_{0}$ and $B_{+}$ from the extension model also has conclusion with the baseline model, indicating the sign restrictions imposed are satisfied. With a positive diagonal shown in [Table 10: posterior mean of B0 of extension model] in the posterior mean of $B_{0}$ . Also in [Table 11: posterior mean of B0 of extension model] $B_{1}$ shows a positive diagonal for y1 and y2, similar value as $B_{0}$ .
+
+
+```{r}
+#| echo: false
+#| message: false
+B0 <- c('y1','y2')
+simulation_1b_ext = d3_ext[,1]
+simulation_2b_ext = d3_ext[,2]
+table3_ext =data.frame(B0,simulation_1b_ext,simulation_2b_ext )
+
+knitr::kable(table3_ext, caption = "posterior mean of B0", digits = 2,col.names = NULL)
+
+
+```
+
+
+###### Table 10: posterior mean of B0 of extension model
+
+
+```{r}
+#| echo: false
+#| message: false
+B1_ext <- c('constant','y1','y2')
+simulation_1b1_ext = t(d4_ext)[,1]
+simulation_2b1_ext = t(d4_ext)[,2]
+table4_ext =data.frame(B1,simulation_1b1_ext, simulation_2b1_ext)
+
+knitr::kable(table4_ext, caption = "posterior mean of B1", digits = 2,col.names = NULL)
+
+```
+
+
+###### Table 11: posterior mean of B0 of extension model
+
+## **Extension Model With** Stochastic Volatility Heteroskedasticity
+
+Considering the potential heteroskedasticity in the data, to improve in-sample fit of model and improve precision of estimation of data, modelling Conditional heteroskedasticity includes the use of Stochastic Volatility models are adapted. The extension are specified as:
+
+$$
+Y = XA+E
+$$
+
+$$
+E|X\sim MN_{T\times N} (0_{T\times N} ,\Sigma ,\Omega)
+$$
+
+where $\Omega = diag(\boldsymbol\sigma^{2})$ and $\boldsymbol\sigma^2 = (\sigma_{1}^2, \sigma_{2}^2...\sigma_{T}^2)'$ follow Stochastic Volatility models:
+
+$$
+\sigma^2 = exp(h_t)
+$$
+
+$$
+h_t = h_{t-1}+\eta_{t}
+$$
+
+$$
+\eta_{t} \sim N(0,\sigma_{\eta}^2)
+$$
+
+The likelihood function under heteroskedasticity is:
+
+$$
+L(A,\Sigma |Y,X,\sigma^2) \propto det(diag(\sigma^2))det(\Sigma)^{-T/2}\exp\left \{{-\frac{1}{2}tr[\Sigma ^{-1}(Y-XA)'diag(\sigma^2)^{-1}(Y-XA)]}   \right \}  
+$$
+
+The main parameters are:
+
+$$
+\left\{\begin{matrix}\overline{V}=(X'diag(\sigma^2)^{-1}X+\underline{V}^{-1} )^{-1} \\\overline{A}=\overline{V}(X'diag(\sigma^2)^{-1}Y+\underline{V}^{-1} \underline{A}) \\\overline{v}=T+\underline{v} \\\overline{S}=\underline{S}+Y'diag(\sigma^2)^{-1}Y+\underline{A}'\underline{V}^{-1}\underline{A}-\overline{A}'\overline{V}^{-1}\overline{A}\end{matrix}\right.
+$$
+
+### Gibb Sampler using extension models
+
+Draw samples of sample $\Sigma ^{(s)}$ , $\sigma ^{(s)}$ and $A ^{(s)}$ using posterior parameters.
+
+Initialized $\sigma ^{(s)}$ as $\sigma ^{(0)}$
+
+At each iteration $s$:
+
+1.  Draw $\Sigma^{(s)}$ from $\mathcal{IW}_{N}(\overline{S}, \overline{v})$, and using the initialized $\sigma ^{(0)}$
+
+2.  Draw $\sigma ^{(s)}$ from using Stochastic Volatility models
+
+3.  Draw $A^{(s)}$ from $\mathcal{MN}_{K\times N}(\overline{A}, \Sigma,\overline{V} )$ by insert $\Sigma^{(s)}$
+
+Repeat 1 and 2 $S_{1}+S_{2}$times.
+
+Discard the first $S_{1}$ draws that allows the algorithm to converge to the stationary posterior distribution.
+
+Output is the sample draws from the joint posterior distribution $\left\{ {A^{(s)}, \Sigma^{(s)}} ,\sigma ^{(s)}\right\}^{S_{1}+S_{2}}_{s=S_{1}+1}$ .
+
+### **Estimation Algorithm**
+
+Function below is the `SVcommon.Gibbs.iteration` for Stochastic Volatility model
+
+
+```{r echo=TRUE}
+
+SVcommon.Gibbs.iteration = function(aux, priors){
+  # A single iteration of the Gibbs sampler for the SV component
+  #
+  # aux is a list containing:
+  #   Y - a TxN matrix
+  #   X - a TxK matrix
+  #   H - a Tx1 matrix
+  #   h0 - a scalar
+  #   sigma.v2 - a scalar
+  #   s - a Tx1 matrix
+  #   A - a KxN matrix
+  #   Sigma - an NxN matrix
+  #   sigma2 - a Tx1 matrix
+  #
+  # priors is a list containing:
+  #   h0.v - a positive scalar
+  #   h0.m - a scalar
+  #   sigmav.s - a positive scalar
+  #   sigmav.nu - a positive scalar
+  #   HH - a TxT matrix
+  
+  T             = dim(aux$Y)[1]
+  N             = dim(aux$Y)[2]
+  alpha.st      = c(1.92677,1.34744,0.73504,0.02266,0-0.85173,-1.97278,-3.46788,-5.55246,-8.68384,-14.65000)
+  sigma.st      = c(0.11265,0.17788,0.26768,0.40611,0.62699,0.98583,1.57469,2.54498,4.16591,7.33342)
+  pi.st         = c(0.00609,0.04775,0.13057,0.20674,0.22715,0.18842,0.12047,0.05591,0.01575,0.00115)
+  
+  Lambda        = solve(chol(aux$Sigma))
+  Z             = rowSums( ( aux$Y - aux$X %*% aux$A ) %*% Lambda ) / sqrt(N)
+  Y.tilde       = as.vector(log((Z + 0.0000001)^2))
+  Ytilde.alpha  = as.matrix(Y.tilde - alpha.st[as.vector(aux$s)])
+  
+  # sampling initial condition
+  ############################################################
+  V.h0.bar      = 1/((1 / priors$h0.v) + (1 / aux$sigma.v2))
+  m.h0.bar      = V.h0.bar*((priors$h0.m / priors$h0.v) + (aux$H[1] / aux$sigma.v2))
+  h0.draw       = rnorm(1, mean = m.h0.bar, sd = sqrt(V.h0.bar))
+  aux$h0        = h0.draw
+  
+  # sampling sigma.v2
+  ############################################################
+  sigma.v2.s    = priors$sigmav.s + sum(c(aux$H[1] - aux$h0, diff(aux$H))^2)
+  sigma.v2.draw = sigma.v2.s / rchisq(1, priors$sigmav.nu + T)
+  aux$sigma.v2  = sigma.v2.draw
+  
+  # sampling auxiliary states
+  ############################################################
+  Pr.tmp        = simplify2array(lapply(1:10,function(x){
+    dnorm(Y.tilde, mean = as.vector(aux$H + alpha.st[x]), sd = sqrt(sigma.st[x]), log = TRUE) + log(pi.st[x])
+  }))
+  Pr            = t(apply(Pr.tmp, 1, function(x){exp(x - max(x)) / sum(exp(x - max(x)))}))
+  s.cum         = t(apply(Pr, 1, cumsum))
+  r             = matrix(rep(runif(T), 10), ncol = 10)
+  ss            = apply(s.cum < r, 1, sum) + 1
+  aux$s         = as.matrix(ss)
+  
+  
+  # sampling log-volatilities using functions for tridiagonal precision matrix
+  ############################################################
+  Sigma.s.inv   = diag(1 / sigma.st[as.vector(aux$s)])
+  D.inv         = Sigma.s.inv + (1 / aux$sigma.v2) * priors$HH
+  b             = as.matrix(Ytilde.alpha / sigma.st[as.vector(aux$s)] + (aux$h0/aux$sigma.v2)*diag(T)[,1])
+  lead.diag     = diag(D.inv)
+  sub.diag      = mgcv::sdiag(D.inv, -1)
+  D.chol        = mgcv::trichol(ld = lead.diag, sd = sub.diag)
+  D.L           = diag(D.chol$ld)
+  mgcv::sdiag(D.L,-1) = D.chol$sd
+  x             = as.matrix(rnorm(T))
+  a             = forwardsolve(D.L, b)
+  draw          = backsolve(t(D.L), a + x)
+  aux$H         = as.matrix(draw)
+  aux$sigma2    = as.matrix(exp(draw))
+
+  return(aux)
+}
+
+```
+
+
+function `posterior.draws.hetero` below describe the gibb sampler:
+
+
+```{r echo=TRUE}
+
+#posterior parameters
+  
+posterior.draws.hetero = function(S1,S2,X,Y,A,V,S,nu){
+  
+  i_N <- diag(N)
+  nu_bar <- nrow(Y) + nu
+  S_total = S1+S2
+  
+  #posterior
+  A.posterior     <- array(NA,c(K,N,S_total))
+  Sigma.posterior <-array(NA,c(N,N,S_total))
+  h.posterior     <- array(NA,c(nrow(Y),S_total+1)) 
+  B0.tilde <- array(NA,c(N,N,S_total))
+  B1.tilde <- array(NA,c(N,K,S_total))
+  
+  
+  #initialize 
+  h.posterior[,1] = matrix(1,nrow(Y),1) 
+  
+  #define precision matrix H
+  HH                    <-  2*diag(nrow(Y))
+  mgcv::sdiag(HH,-1)    <-  -1
+  mgcv::sdiag(HH,1)     <-  -1
+  
+  
+  # define priors for SV model
+  #   h0.v - a positive scalar
+  #   h0.m - a scalar
+  #   sigmav.s - a positive scalar
+  #   sigmav.nu - a positive scalar
+  #   HH - a TxT matrix
+  priors = list(HH       = HH,
+                h0.m     = 0,
+                h0.v     = 1,
+                sigmav.s = 1,
+                sigmav.nu= 1)
+  
+  #Gibb Sampler
+  
+  
+  for (s in 1:S_total){
+    #step 1
+    V_bar.inv <- t(X)%*%diag(1/h.posterior[,s])%*%X + solve(V)
+    V_bar <- solve(V_bar.inv)
+    L        <- t(chol(V_bar)) 
+    A_bar <- V_bar%*%(t(X)%*%diag(1/h.posterior[,s])%*%Y + solve(V)%*%A)
+    S_bar <- S + t(Y)%*%diag(1/h.posterior[,s])%*%Y + t(A)%*%solve(V)%*%A - t(A_bar)%*%V_bar.inv%*%A_bar
+    
+   A.posterior <- array(rnorm(prod(c(dim(A_bar),S_total))),c(dim(A_bar),S_total))
+    Sigma.posterior_d      <- rWishart(n=1, df=nu_bar, Sigma=solve(S_bar))  
+    Sigma.posterior_draw   <- apply(Sigma.posterior_d ,3,solve)            
+    Sigma.posterior[,,s]   <- Sigma.posterior_draw 
+    cholSigma.s      <- chol(Sigma.posterior[,,s])
+    B0.tilde[,,s] <- solve(t(cholSigma.s)) 
+    A.posterior[,,s] <- A_bar + L%*%A.posterior[,,s]%*%cholSigma.s 
+     
+    
+    B1.tilde[,,s]  <- B0.tilde[,,s]%*%t(A.posterior[,,s])
+    
+    #step 2
+    if (s==1){#initialise
+      aux = list( 
+        Y             = Y,
+        X             = X,
+        H             = matrix(1,nrow(Y),1),
+        h0            = 0,
+        sigma.v2      = 1,
+        s             = matrix(1,nrow(Y),1),
+        Sigma         = Sigma.posterior[,,s],
+        A             = A.posterior[,,s],
+        sigma2        = matrix(1,nrow(Y),1)
+      )}
+    else{# updating 
+      aux = list(
+        Y           = Y,
+        X           = X,
+        H           = tmp$H,
+        h0          = tmp$h0,
+        sigma.v2    = tmp$sigma.v2,
+        s           = tmp$s,
+        Sigma       = Sigma.posterior[,,s],
+        A           = A.posterior[,,s],
+        sigma2      = tmp$sigma2
+      )
+    }
+    tmp                     <- SVcommon.Gibbs.iteration(aux,priors)
+    h.posterior[,s+1]      <- as.matrix(tmp$sigma2)
+  }
+  
+  
+  return(list(A.posterior     = A.posterior[,,(S1+1):S_total],
+              B0.tilde        = B0.tilde[,,(S1+1):S_total],
+              B1.tilde        = B1.tilde[,,(S1+1):S_total],
+              Sigma.posterior = Sigma.posterior[,,(S1+1):S_total],
+              h.posterior     = h.posterior[,(S1+2):(S_total+1)]
+  ))
+}
+```
+
+
+## Extended Model with Gamma Distribution and Heteroskedasticity
+
+Under both extension, the model is specified as:
+
+$$
+E|X\sim MN_{T\times N} (0_{T\times N} ,\Sigma ,\Omega)
+$$
+
+where $\Omega = diag(\boldsymbol\sigma^{2})$ and $\boldsymbol\sigma^2 = (\sigma_{1}^2, \sigma_{2}^2...\sigma_{T}^2)'$ follow Stochastic Volatility models. The hyper parameter $\underline{S}$ of the prior distribution for $\Sigma$ is now adjust as $\lambda I_{N}$, where the parameter $\lambda$ following gamma prior distribution, using a hierarchical model.
+
+$$
+p(A,\Sigma |Y,X) = L(A,\Sigma|Y,X,\lambda)p(\Sigma|Y,X,\lambda)p(\Omega|Y,X,\sigma^2,h)
+$$
+
+### Gibb Sampler using extension models
+
+Draw samples of sample $\Sigma ^{(s)}$ , $\lambda ^{(s)}$ , $\sigma ^{(s)}$ and $A ^{(s)}$ using posterior parameters.
+
+Initialized $\sigma ^{(s)}$ as $\sigma ^{(0)}$ and $\lambda ^{(s)}$ as $\lambda ^{(0)}$ = 2
+
+At each iteration $s$:
+
+1.  Draw $\Sigma^{(s)}$ from $\mathcal{IW}_{N}(\overline{S}, \overline{v})$, and using the initialized $\sigma ^{(0)}$ and $\lambda ^{(0)}$
+
+2.  Draw $\lambda ^{(s)}$ from $\lambda ^{(s)}$, by insert $\Sigma^{(s)}$
+
+3.  Draw $\sigma ^{(s)}$ from using Stochastic Volatility models
+
+4.  Draw $A^{(s)}$ from $\mathcal{MN}_{K\times N}(\overline{A}, \Sigma,\overline{V} )$ by insert $\Sigma^{(s)}$
+
+Repeat 1 and 2 $S_{1}+S_{2}$times.
+
+Discard the first $S_{1}$ draws that allows the algorithm to converge to the stationary posterior distribution.
+
+Output is the sample draws from the joint posterior distribution $\left\{ {A^{(s)}, \Sigma^{(s)}} ,\lambda ^{(s)},\sigma ^{(s)}\right\}^{S_{1}+S_{2}}_{s=S_{1}+1}$ .
+
+Function below is the `posterior.draws.extenhetero` for Gibb Sampler:
+
+
+```{r}
+
+#posterior parameters
+  posterior.draws.extenhetero = function(S1,S2,X,Y,A,V,nu){
+  
+  i_N <- diag(N)
+  nu_bar <- nrow(Y) + nu
+  S_total = S1+S2
+  
+  #posterior
+  A.posterior     <- array(NA,c(K,N,S_total))
+  h.posterior     <- array(NA,c(nrow(Y),S_total+1)) 
+  B0.tilde <- array(NA,c(N,N,S_total))
+  B1.tilde <- array(NA,c(N,K,S_total))
+  
+  Sigma.posterior <-array(NA,c(N,N,S_total))
+  lambda.posterior  = matrix(NA, S_total, 1)
+  
+  
+  #initialize 
+  h.posterior[,1] = matrix(1,nrow(Y),1) 
+  lambda.posterior[1] = 2
+  #define precision matrix H
+  HH                    <-  2*diag(nrow(Y))
+  mgcv::sdiag(HH,-1)    <-  -1
+  mgcv::sdiag(HH,1)     <-  -1
+  
+  # define priors for SV model
+  #   h0.v - a positive scalar
+  #   h0.m - a scalar
+  #   sigmav.s - a positive scalar
+  #   sigmav.nu - a positive scalar
+  #   HH - a TxT matrix
+  priors = list(HH       = HH,
+                h0.m     = 0,
+                h0.v     = 1,
+                sigmav.s = 1,
+                sigmav.nu= 1)
+  
+  
+  
+  
+  #Gibb Sampler
+  
+  
+  for (s in 1:S_total){
+    
+    #step 1
+    V_bar.inv <- t(X)%*%diag(1/h.posterior[,s])%*%X + solve(V)
+    V_bar <- solve(V_bar.inv)
+    L        <- t(chol(V_bar)) 
+    A_bar <- V_bar%*%(t(X)%*%diag(1/h.posterior[,s])%*%Y + solve(V)%*%A)
+    
+    A.posterior <- array(rnorm(prod(c(dim(A_bar),S_total))),c(dim(A_bar),S_total))
+    S_bar_ext   <- lambda.posterior[s]*i_N + t(Y)%*%diag(1/h.posterior[,s])%*%Y+ t(A)%*%solve(V)%*%A- t(A_bar)%*%V_bar.inv%*%A_bar
+
+    
+    Sigma.posterior_d      <- rWishart(n=1, df=nu_bar, Sigma=solve(S_bar_ext) )
+    Sigma.posterior_draw   <- apply(Sigma.posterior_d ,3,solve)            
+    Sigma.posterior[,,s]   <- Sigma.posterior_draw 
+    
+    s.posterior <- solve(0.5*sum(diag(solve(Sigma.posterior[,,s])))+(1/s_prior))
+    a.posterior <- a_prior+(nu_bar*N)/2
+    
+    
+    if (s!=S_total){
+      lambda.posterior[s+1] = rgamma(n=1, shape = s.posterior,  scale = a.posterior)
+    }
+    
+    
+    cholSigma.s      <- chol(Sigma.posterior[,,s])
+    B0.tilde[,,s] <- solve(t(cholSigma.s)) 
+    A.posterior[,,s] <- A_bar + L%*%A.posterior[,,s]%*%cholSigma.s 
+    B1.tilde[,,s]  <- B0.tilde[,,s]%*%t(A.posterior[,,s])
+    
+    #step 2
+    if (s==1){#initialise
+      aux = list( 
+        Y             = Y,
+        X             = X,
+        H             = matrix(1,nrow(Y),1),
+        h0            = 0,
+        sigma.v2      = 1,
+        s             = matrix(1,nrow(Y),1),
+        Sigma         = Sigma.posterior[,,s],
+        A             = A.posterior[,,s],
+        sigma2        = matrix(1,nrow(Y),1)
+      )}
+    else{# updating 
+      aux = list(
+        Y           = Y,
+        X           = X,
+        H           = tmp$H,
+        h0          = tmp$h0,
+        sigma.v2    = tmp$sigma.v2,
+        s           = tmp$s,
+        Sigma       = Sigma.posterior[,,s],
+        A           = A.posterior[,,s],
+        sigma2      = tmp$sigma2
+      )
+    }
+    tmp                     <- SVcommon.Gibbs.iteration(aux,priors)
+    h.posterior[,s+1]      <- as.matrix(tmp$sigma2)
+  }
+  
+  
+  
+  return(list(A.posterior     = A.posterior[,,(S1+1):S_total],
+              B0.tilde        = B0.tilde[,,(S1+1):S_total],
+              B1.tilde        = B1.tilde[,,(S1+1):S_total],
+              Sigma.posterior = Sigma.posterior[,,(S1+1):S_total],
+              h.posterior     = h.posterior[,(S1+2):(S_total+1)]
+  ))
+}
+```
+
+
+## Empirical Estimation Results
+
+
+```{r}
+#| echo: false
+#| message: false
+
+
+# definition
+p            = 4                            # number of lags, quaterly data
+Y            = df_num[(1+p):nrow(df_num),]
+X            = matrix(1,nrow(Y),1)
+S            =5000                          # number of iterations 
+N            = ncol(Y)                      # number of variables
+K            = N*p + 1                      # K = 1 + pN
+
+for (i in 1:p){
+  X     = cbind(X,df_num[((p+1):nrow(df_num))-i,])
+}
+
+#restrictions
+shock = c(0,-1,1,0,-1)
+
+
+# generate MLE of A and Sigma 
+A.hat        = solve(t(X)%*%X)%*%t(X)%*%Y                
+Sigma.hat    = t(Y-X%*%A.hat)%*%(Y-X%*%A.hat)/nrow(Y)   
+
+
+
+```
+
+
+## **Baseline Model**
+
+The [Table 12. Posterior Mean of A] and [Table 13. Posterior Mean of Sigma] presented the mean of posterior draws of A and $\Sigma$ matrices.
+
+
+```{r}
+#| echo: false
+#| message: false
+
+# get prior
+Prior_df = GetPrior.parameters(N=N,p=p,Sigma.hat=Sigma.hat)
+
+#baseline model
+#posterior
+posterior_pram_df = Posterior_parameters(X=X,Y=Y,A=Prior_df$A_prior,V=Prior_df$V_prior,
+                                      S=Prior_df$S_prior,nu=Prior_df$nu_prior)
+
+# Draw samples of A, sigma and SF parameters
+draws_df = posterior.draws(S = S, posterior_pram = posterior_pram_df)
+
+
+#the mean of posterior draws of A matrices
+mean_A <- round(apply(draws_df$A.posterior,1:2,mean),4)
+colnames(mean_A) <- colnames(df)
+knitr::kable(mean_A, caption = "Posterior Mean of A",index=TRUE)
+
+```
+
+
+###### Table 12. Posterior Mean of A
+
+
+```{r}
+
+#the mean of posterior draws of sigma matrices
+mean_sigma <- round(apply(draws_df$Sigma.posterior,1:2,mean),4)
+colnames(mean_sigma) <- colnames(df)
+knitr::kable(mean_sigma, caption = "Posterior Mean of Sigma",index=TRUE)
+```
+
+
+###### Table 13. Posterior Mean of Sigma
+
+[Figure 4 . trace plot of Basic model posterior draws] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A and $\Sigma$.
+
+
+```{r}
+par(mfrow=c(2,2),mar=c(2,2,2,2))
+plot(draws_df$A.posterior[2,1,],type='l',col="#660099",ylab="",xlab="",main=expression(A[21]), lwd = 0.1)
+plot(draws_df$A.posterior[3,1,],type='l',col="#CC66CC",ylab="",xlab="",main=expression(A[31]), lwd = 0.1)
+plot(draws_df$Sigma.posterior[3,2,],type='l',col="#6699CC",ylab="",xlab="",main=expression(Sigma[32]), lwd = 0.1)
+plot(draws_df$Sigma.posterior[4,1,],type='l',col="#0066CC",ylab="",xlab="",main=expression(Sigma[41]), lwd = 0.1)
+```
+
+
+###### Figure 4 . trace plot of Basic  model posterior draws
+
+
+```{r}
+#| echo: false
+#| message: false
+
+
+# new sign restriction on impulse response
+##################################################
+
+ImposeSignRestrictionIRF <- function (restrictions,N,p,S,posterior.draws){
+  
+  B0.draws      = array(NA,c(N,N,S))
+  B1.draws      = array(NA,c(N,(1+N*p),S))
+  IR0.draws     = array(NA,c(N,N,S))
+  IR1.draws     = array(NA,c(N,(1+N*p),S))
+  
+  B0.tilde = posterior.draws$B0.tilde
+  B1.tilde = posterior.draws$B1.tilde
+  R1 = restrictions
+  
+  i.vec = c()
+  S = S
+  for (s in 1:S){
+    B0.t    = B0.tilde[,,s]
+    B1.t    = B1.tilde[,,s]
+    sign.restrictions.do.not.hold = TRUE
+    i=1
+    while (sign.restrictions.do.not.hold){
+      Z           = matrix(rnorm(N*N),N,N)
+      QR          = qr(Z, tol = 1e-10)
+      Q           = qr.Q(QR,complete=TRUE)
+      R           = qr.R(QR,complete=TRUE)
+      Q           = t(Q %*% diag(sign(diag(R))))
+      B0          = Q%*%B0.t
+      B1          = Q%*%B1.t
+      B0.inv      = solve(B0)
+      #check       = prod(R1 %*%B0.inv%*% diag(N)[,1]  >= 0) #impulse response
+      check       = all(B0.inv[2,1]<0, B0.inv[3,1]>0, B0.inv[5,1]<0)
+      
+      if (check==1){sign.restrictions.do.not.hold=FALSE}
+      i=i+1
+    }
+    i.vec = c(i.vec,i) 
+    B0.draws[,,s] = B0
+    B1.draws[,,s] = B1
+    IR0.draws[,,s] =B0.inv
+    #IR1.draws[,,s] =B0.inv%*%B1%*%B0.inv
+  }
+  return (list(B0.draws = B0.draws,
+               B1.draws = B1.draws,
+               IR0.draws = IR0.draws,
+               #IR1.draws = IR1.draws,
+               i = i.vec))
+}
+
+
+sign_restrictions = shock
+
+R1_df            = diag(sign_restrictions)
+
+#Restriction_output_df = ImposeSignRestriction(restrictions = R1_df,N=N,p=p,S=S,posterior.draws=draws_df )
+
+#with impulse response 
+Restriction_output_df_IRF = ImposeSignRestrictionIRF(restrictions = R1_df,N=N,p=p,S=S,posterior.draws=draws_df )
+
+
+# Forecast Error Variance Decomposition with Impulse response restriction 
+
+B.posteriorIR       = array(NA,c(N,N,S))
+A.posteriorIR       = array(NA,c(N,K,S))
+for (s in 1:S){
+  B_IR               = solve(Restriction_output_df_IRF$B0.draws[,,s])
+  B.posteriorIR[,,s]= B_IR
+  A.posteriorIR[,,s]= B_IR %*% Restriction_output_df_IRF$B1.draws[,,s]
+}
+
+#define
+h       = 20  #8 = 2years, 20=5years
+library(HDInterval)
+
+```
+
+
+Applying the following Impuse Response Function.
+
+
+```{r echo=TRUE}
+
+IRF_function = function(S,h,N,B,p,A.posterior,B.posterior){
+  
+  IRF.posterior     = array(NA,c(N,N,h+1,S))
+  IRF.inf.posterior = array(NA,c(N,N,S))
+  FEVD.posterior    = array(NA,c(N,N,h+1,S))
+  J                 = cbind(diag(N),matrix(0,N,N*(p-1)))
+  
+  for (s in 1:S){
+    A.bold          = rbind(A.posterior[,2:(1+N*p),s],cbind(diag(N*(p-1)),matrix(0,N*(p-1),N)))
+    IRF.inf.posterior[,,s]          = J %*% solve(diag(N*p)-A.bold) %*% t(J) %*% B.posterior[,,s]
+    A.bold.power    = A.bold
+    for (i in 1:(h+1)){
+      if (i==1){
+        IRF.posterior[,,i,s]        = B.posterior[,,s]
+      } else {
+        IRF.posterior[,,i,s]        = J %*% A.bold.power %*% t(J) %*% B.posterior[,,s]
+        A.bold.power                = A.bold.power %*% A.bold
+      }
+      for (n in 1:N){
+        for (nn in 1:N){
+          FEVD.posterior[n,nn,i,s]  = sum(IRF.posterior[n,nn,1:i,s]^2)
+        }
+      }
+      FEVD.posterior[,,i,s]         = diag(1/apply(FEVD.posterior[,,i,s],1,sum))%*%FEVD.posterior[,,i,s]
+    }
+  }
+
+  
+  return(list(
+              FEVD.posterior    = FEVD.posterior,
+              IRF.posterior     = IRF.posterior,
+              A.bold.power      = A.bold.power ,
+              IRF.inf.posterior = IRF.inf.posterior,
+              A.bold            = A.bold))
+}
+
+
+
+```
+
+
+[Figure 5. Impulse Response Function of Basic Model] shows the Impulse Response Function of the baseline model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate, but the effect is not statistically significant in 68% confidence interval.
+
+
+```{r}
+#| echo: false
+#| message: false
+
+
+#adjust with impulse response
+IRF_df_IR = IRF_function(S=S,h=h,N=N,B=B,p=p,A.posterior=A.posteriorIR,B.posterior=B.posteriorIR)
+
+# plot IRFs and FEVDs
+
+IRF.posterior.mps = IRF_df_IR$IRF.posterior[,1,,]
+IRFs.k1           = apply(IRF.posterior.mps,1:2,median)
+IRFs.k1           = apply(IRF.posterior.mps,1:2,median)
+
+IRFs.inf.k1       = apply(IRF.posterior.mps,1,mean)
+rownames(IRFs.k1) = colnames(df_num)
+
+IRFs.k1.hdi    = apply(IRF.posterior.mps,1:2,hdi, credMass=0.68)
+hh          = 1:(h+1)
+
+
+
+# Define colors
+mcxs1  = "#05386B"
+mcxs2  = "#379683"
+mcxs3  = "#5CDB95"
+mcxs4  = "#8EE4AF"
+mcxs5  = "#EDF5E1"
+purple = "#b02442"
+
+mcxs1.rgb   = col2rgb(mcxs3)
+mcxs1.shade1= rgb(mcxs1.rgb[1],mcxs1.rgb[2],mcxs1.rgb[3], alpha=120, maxColorValue=255)
+mcxs2.rgb   = col2rgb(mcxs2)
+mcxs2.shade1= rgb(mcxs2.rgb[1],mcxs2.rgb[2],mcxs2.rgb[3], alpha=120, maxColorValue=255)
+
+
+
+#plot
+variable <- c('ERA', 'MB', 'Short_R','GDP', 'CPI')
+par(mfrow=c(4,2), mar=c(2,2,2,2),cex.axis=1, cex.lab=1)
+for (n in 1:N){
+  ylims     = range(IRFs.k1[n,hh],IRFs.k1.hdi[,n,1:(h+1)],0)
+  plot(hh,IRFs.k1[n,hh], type="l", ylim=ylims, axes=FALSE, xlab="", ylab=rownames(IRFs.k1)[n],main=variable[n])
+  axis(1,c(1,10,20),c("","10 quarters","20quarters"))
+  
+ 
+  axis(2,c(ylims[1],0,ylims[2]),round(c(ylims[1],0,ylims[2]),3))
+  polygon(c(hh,(h+1):1), c(IRFs.k1.hdi[1,n,hh],IRFs.k1.hdi[2,n,(h+1):1]), col=mcxs1.shade1,border=mcxs1.shade1)
+  abline(h=0)
+  lines(hh, IRFs.k1[n,hh],lwd=2,col=mcxs1)
+}
+
+```
+
+
+###### Figure 5. Impulse Response Function of Basic Model
+
+## **Extension Model With Gamma Distribution**
+
+The [Table 14. Posterior Mean of A in extension model] and [Table 15. Posterior Mean of Sigma in extension model] presented the mean of posterior draws of A and $\Sigma$ matrices for extension model.
+
+
+```{r}
+#| echo: false
+#| message: false
+
+
+# Extend model
+############################################################
+#gamma distribution of S
+#prior parameters
+a_prior = 2
+s_prior = 0.5
+
+S1 =5000
+S2 =5000
+
+draws_ext_df = posterior.draws.exten(S1 = S1, S2 = S2,X=X,Y=Y,A=Prior_df$A_prior,V=Prior_df$V_prior,nu=Prior_df$nu_prior)
+
+#restriction
+Restriction_output_ext= ImposeSignRestrictionIRF(restrictions = R1_df,N=N,p=p,S=S,posterior.draws=draws_ext_df)
+
+#the mean of posterior draws of A matrices
+mean_A_ext <- round(apply(draws_ext_df$A.posterior,1:2,mean),4)
+colnames(mean_A_ext) <- colnames(df)
+knitr::kable(mean_A_ext,  caption = "posterior mean of A",index=TRUE)
+
+```
+
+
+###### Table 14. Posterior Mean of A in extension model
+
+
+```{r}
+#the mean of posterior draws of sigma matrices
+mean_sigma_ext <- round(apply(draws_ext_df$Sigma.posterior,1:2,mean),4)
+colnames(mean_sigma_ext) <- colnames(df)
+knitr::kable(mean_sigma_ext,  caption = "posterior mean of Sigma",index=TRUE)
+```
+
+
+###### Table 15. Posterior Mean of Sigma in extension model
+
+[Figure 6 . trace plot of Extension Model posterior draws] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A and $\Sigma$, although contain some out-liners, it still have similar mean as baseline model.
+
+
+```{r}
+par(mfrow=c(2,2),mar=c(2,2,2,2))
+plot(draws_ext_df$A.posterior[2,1,],type='l',col="#660099",ylab="",xlab="",main=expression(A[21]), lwd = 0.1)
+plot(draws_ext_df$A.posterior[3,1,],type='l',col="#CC66CC",ylab="",xlab="",main=expression(A[31]), lwd = 0.1)
+plot(draws_ext_df$Sigma.posterior[3,2,],type='l',col="#6699CC",ylab="",xlab="",main=expression(Sigma[32]), lwd = 0.1)
+plot(draws_ext_df$Sigma.posterior[4,1,],type='l',col="#0066CC",ylab="",xlab="",main=expression(Sigma[41]), lwd = 0.1)
+```
+
+
+###### Figure 6 . trace plot of Extension Model posterior draws
+
+
+```{r}
+#| echo: false
+#| message: false
+# Impulse response functions
+# Forecast Error Variance Decomposition
+
+B.posterior_ext       = array(NA,c(N,N,S))
+A.posterior_ext       = array(NA,c(N,K,S))
+for (s in 1:S){
+  B_ext               = solve(Restriction_output_ext$B0.draws[,,s])
+  B.posterior_ext [,,s]= B_ext
+  A.posterior_ext [,,s]= B_ext %*% Restriction_output_ext$B1.draws[,,s]
+}
+
+
+IRF_ext = IRF_function(S=S,h=h,N=N,B=B_ext,p=p,A.posterior=A.posterior_ext,B.posterior=B.posterior_ext)
+
+# plot IRFs and FEVDs
+
+IRF.posterior.mps_ext = IRF_ext$IRF.posterior[,1,,]
+IRFs.k1_ext           = apply(IRF.posterior.mps_ext,1:2,median)
+#IRF.posterior.mps_ext = IRF.posterior.mps_ext*(0.25/IRFs.k1[4,1])
+IRFs.k1_ext            = apply(IRF.posterior.mps_ext,1:2,median)
+IRFs.inf.k1_ext       = apply(IRF.posterior.mps_ext,1,mean)
+rownames(IRFs.k1_ext ) = colnames(df_num)
+
+IRFs.k1.hdi_ext    = apply(IRF.posterior.mps_ext,1:2,hdi, credMass=0.68)
+hh          = 1:(h+1)
+
+
+```
+
+
+[Figure 7. Impulse Response Function Extension Model] shows the Impulse Response Function of the extension model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, we still can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate, but the effect is not statistically significant in 68% confidence interval .
+
+
+```{r}
+#| echo: false
+#| message: false
+
+
+# plot 
+par(mfrow=c(4,2), mar=c(2,2,2,2),cex.axis=1, cex.lab=1)
+
+for (n in 1:N){
+  ylims     = range(IRFs.k1_ext[n,hh],IRFs.k1.hdi_ext[,n,1:(h+1)],0)
+  plot(hh,IRFs.k1_ext[n,hh], type="l", ylim=ylims, axes=FALSE, xlab="", ylab=rownames(IRFs.k1_ext)[n],main=variable[n])
+  axis(1,c(1,10,20),c("","10 quarters","20quarters"))
+  
+  
+  axis(2,c(ylims[1],0,ylims[2]),round(c(ylims[1],0,ylims[2]),3))
+  polygon(c(hh,(h+1):1), c(IRFs.k1.hdi_ext[1,n,hh],IRFs.k1.hdi_ext[2,n,(h+1):1]), col=mcxs2.shade1,border=mcxs2.shade1)
+  abline(h=0)
+  lines(hh, IRFs.k1_ext[n,hh],lwd=2,col=mcxs1)
+}
+```
+
+
+###### Figure 7. Impulse Response Function Extension Model
+
+## **Extension Model With** Stochastic Volatility Heteroskedasticity
+
+The [Table 16. Posterior Mean of A in heteroskedasiticity model]and [Table 17. Posterior Mean of Sigma in heteroskedasiticity model]presented the mean of posterior draws of A and $\Sigma$ matrices for extension model.
+
+
+```{r}
+S1 =5000
+S2 =5000
+
+
+draws_hetero_df=posterior.draws.hetero(S1 = S1, S2 = S2,X=X,Y=Y,A=Prior_df$A_prior,V=Prior_df$V_prior,S =Prior_df$S_prior ,nu=Prior_df$nu_prior)
+
+#restriction
+Restriction_output_hetero= ImposeSignRestrictionIRF(restrictions = R1_df,N=N,p=p,S=S,posterior.draws=draws_hetero_df)
+
+#the mean of posterior draws of A matrices
+mean_A_ext <- round(apply(draws_hetero_df$A.posterior,1:2,mean),4)
+colnames(mean_A_ext) <- colnames(df)
+knitr::kable(mean_A_ext,  caption = "posterior mean of A",index=TRUE)
+
+
+
+```
+
+
+###### Table 16. Posterior Mean of A in heteroskedasiticity model
+
+
+```{r}
+#the mean of posterior draws of sigma matrices
+mean_sigma_ext <- round(apply(draws_hetero_df$Sigma.posterior,1:2,mean),4)
+colnames(mean_sigma_ext) <- colnames(df)
+knitr::kable(mean_sigma_ext,  caption = "posterior mean of Sigma",index=TRUE)
+```
+
+
+###### Table 17. Posterior Mean of Sigma in heteroskedasiticity model
+
+[Figure 8. trace plot of heteroskedasiticity model posterior draws] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A and $\Sigma$. Unlike the baseline model, with Stochastic Volatility Heteroskedasticity, the posterior draws for A seems to be varying between 2 and -2, but still stationary.
+
+
+```{r}
+par(mfrow=c(2,2),mar=c(2,2,2,2))
+plot(draws_hetero_df$A.posterior[2,1,],type='l',col="#660099",ylab="",xlab="",main=expression(A[21]), lwd = 0.1)
+plot(draws_hetero_df$A.posterior[3,1,],type='l',col="#CC66CC",ylab="",xlab="",main=expression(A[31]), lwd = 0.1)
+plot(draws_hetero_df$Sigma.posterior[3,2,],type='l',col="#6699CC",ylab="",xlab="",main=expression(Sigma[32]), lwd = 0.1)
+plot(draws_hetero_df$Sigma.posterior[4,1,],type='l',col="#0066CC",ylab="",xlab="",main=expression(Sigma[41]), lwd = 0.1)
+```
+
+
+###### Figure 8. trace plot of  heteroskedasiticity model posterior draws
+
+[Figure 9. Impulse response result using heteroskedasiticity model] shows the Impulse Response Function of the heteroskedasticity model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, the results is similar using baseline model, as the estimated posterior mean of A and $\Sigma$ are similar.
+
+However, we still can not observe significant effect in exchange rate.There are slightly negative effect on GDP and slightly positive effect on exchange rate, but the effect is not statistically significant in 68% confidence interval. By using Stochastic Volatility heteroskedasticity , the resulting plot is flatter and confidence interval is wider compared to baseline model. This can be explained as to capture strong heteroskedasticity in forecasting usually required a large sample, but the sample we used in this paper only has 132 lags, which is not sufficient enough to produce better result using Stochastic Volatility heteroskedasticity model.
+
+
+```{r}
+# Impulse response functions
+# Forecast Error Variance Decomposition
+
+B.posterior_ext       = array(NA,c(N,N,S))
+A.posterior_ext       = array(NA,c(N,K,S))
+for (s in 1:S){
+  B_ext               = solve(Restriction_output_hetero$B0.draws[,,s])
+  B.posterior_ext [,,s]= B_ext
+  A.posterior_ext [,,s]= B_ext %*% Restriction_output_hetero$B1.draws[,,s]
+}
+
+
+IRF_ext = IRF_function(S=S,h=h,N=N,B=B_ext,p=p,A.posterior=A.posterior_ext,B.posterior=B.posterior_ext)
+
+# plot IRFs and FEVDs
+
+IRF.posterior.mps_ext = IRF_ext$IRF.posterior[,1,,]
+IRFs.k1_ext           = apply(IRF.posterior.mps_ext,1:2,median)
+#IRF.posterior.mps_ext = IRF.posterior.mps_ext*(0.25/IRFs.k1[4,1])
+IRFs.k1_ext            = apply(IRF.posterior.mps_ext,1:2,median)
+IRFs.inf.k1_ext       = apply(IRF.posterior.mps_ext,1,mean)
+rownames(IRFs.k1_ext ) = colnames(df_num)
+
+IRFs.k1.hdi_ext    = apply(IRF.posterior.mps_ext,1:2,hdi, credMass=0.68)
+hh          = 1:(h+1)
+
+# plot 
+par(mfrow=c(4,2), mar=c(2,2,2,2),cex.axis=1, cex.lab=1)
+
+for (n in 1:N){
+  ylims     = range(IRFs.k1_ext[n,hh],IRFs.k1.hdi_ext[,n,1:(h+1)],0)
+  plot(hh,IRFs.k1_ext[n,hh], type="l", ylim=ylims, axes=FALSE, xlab="", ylab=rownames(IRFs.k1_ext)[n],main=variable[n])
+  axis(1,c(1,10,20),c("","10 quarters","20quarters"))
+  
+  
+  axis(2,c(ylims[1],0,ylims[2]),round(c(ylims[1],0,ylims[2]),3))
+  polygon(c(hh,(h+1):1), c(IRFs.k1.hdi_ext[1,n,hh],IRFs.k1.hdi_ext[2,n,(h+1):1]), col=mcxs2.shade1,border=mcxs2.shade1)
+  abline(h=0)
+  lines(hh, IRFs.k1_ext[n,hh],lwd=2,col=mcxs1)
+}
+```
+
+
+###### Figure 9. Impulse response result using heteroskedasiticity model
+
+## Extended Model with Gamma Distribution and Heteroskedasticity
+
+The [Table 18. Posterior Mean of A in extended model] and [Table 19. Posterior Mean of Sigma in extended model] presented the mean of posterior draws of A and $\Sigma$ matrices for extension model.
+
+
+```{r}
+S1 =5000
+S2 =5000
+
+
+draws_extend_df=posterior.draws.extenhetero(S1 = S1, S2 = S2,X=X,Y=Y,A=Prior_df$A_prior,V=Prior_df$V_prior ,nu=Prior_df$nu_prior)
+
+#restriction
+Restriction_output_extend_hetero= ImposeSignRestrictionIRF(restrictions = R1_df,N=N,p=p,S=S,posterior.draws=draws_extend_df)
+
+#the mean of posterior draws of A matrices
+mean_A_ext <- round(apply(draws_extend_df$A.posterior,1:2,mean),4)
+colnames(mean_A_ext) <- colnames(df)
+knitr::kable(mean_A_ext,  caption = "posterior mean of A",index=TRUE)
+
+
+
+```
+
+
+###### Table 18.  Posterior Mean of A in extended model
+
+
+```{r}
+#the mean of posterior draws of sigma matrices
+mean_sigma_ext <- round(apply(draws_extend_df$Sigma.posterior,1:2,mean),4)
+colnames(mean_sigma_ext) <- colnames(df)
+knitr::kable(mean_sigma_ext,  caption = "posterior mean of Sigma",index=TRUE)
+```
+
+
+###### Table 19.  Posterior Mean of Sigma in extended model
+
+[Table 19. Posterior Mean of Sigma in extended model] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A and $\Sigma$. Although with some out-liners, the draws of $\Sigma$ are still similar to the results in extension model. However, with heteroskedasticity, draws A fluctuate around -3 to 3 which is wider range than the normal extension model.
+
+
+```{r}
+par(mfrow=c(2,2),mar=c(2,2,2,2))
+plot(draws_extend_df$A.posterior[2,1,],type='l',col="#660099",ylab="",xlab="",main=expression(A[21]), lwd = 0.1)
+plot(draws_extend_df$A.posterior[3,1,],type='l',col="#CC66CC",ylab="",xlab="",main=expression(A[31]), lwd = 0.1)
+plot(draws_extend_df$Sigma.posterior[3,2,],type='l',col="#6699CC",ylab="",xlab="",main=expression(Sigma[32]), lwd = 0.1)
+plot(draws_extend_df$Sigma.posterior[4,1,],type='l',col="#0066CC",ylab="",xlab="",main=expression(Sigma[41]), lwd = 0.1)
+```
+
+
+###### Figure 10. trace plot of extended model posterior draws
+
+[Figure 11. Impulse response result using extended model] shows the Impulse Response Function of the heteroskedasticity model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, the results is similar using baseline model, as the estimated posterior mean of A and $\Sigma$ are similar.
+
+However, we still can not observe significant effect in exchange rate for statistically significant in 68% confidence interval. By using Stochastic Volatility heteroskedasticity with extension with Gamma distribution, the resulting plot is flatter and confidence interval is wider compared to initial extension model. The reason behind the result could be explained, to capture strong heteroskedasticity in forecasting usually required a large sample, but the sample we used in this paper only has 132 lags, which is not sufficient enough to produce better result using Stochastic Volatility heteroskedasticity model. Futhermore, potential other correlation with Stochastic Volatility heteroskedasticity and the extension with Gamma distribution that has not observed in the analysis.
+
+
+```{r}
+
+# Impulse response functions
+# Forecast Error Variance Decomposition
+
+B.posterior_ext       = array(NA,c(N,N,S))
+A.posterior_ext       = array(NA,c(N,K,S))
+for (s in 1:S){
+  B_ext               = solve(Restriction_output_extend_hetero$B0.draws[,,s])
+  B.posterior_ext [,,s]= B_ext
+  A.posterior_ext [,,s]= B_ext %*% Restriction_output_extend_hetero$B1.draws[,,s]
+}
+
+
+IRF_ext = IRF_function(S=S,h=h,N=N,B=B_ext,p=p,A.posterior=A.posterior_ext,B.posterior=B.posterior_ext)
+
+# plot IRFs and FEVDs
+
+IRF.posterior.mps_ext = IRF_ext$IRF.posterior[,1,,]
+IRFs.k1_ext           = apply(IRF.posterior.mps_ext,1:2,median)
+#IRF.posterior.mps_ext = IRF.posterior.mps_ext*(0.25/IRFs.k1[4,1])
+IRFs.k1_ext            = apply(IRF.posterior.mps_ext,1:2,median)
+IRFs.inf.k1_ext       = apply(IRF.posterior.mps_ext,1,mean)
+rownames(IRFs.k1_ext ) = colnames(df_num)
+
+IRFs.k1.hdi_ext    = apply(IRF.posterior.mps_ext,1:2,hdi, credMass=0.68)
+hh          = 1:(h+1)
+
+# plot 
+par(mfrow=c(4,2), mar=c(2,2,2,2),cex.axis=1, cex.lab=1)
+
+for (n in 1:N){
+  ylims     = range(IRFs.k1_ext[n,hh],IRFs.k1.hdi_ext[,n,1:(h+1)],0)
+  plot(hh,IRFs.k1_ext[n,hh], type="l", ylim=ylims, axes=FALSE, xlab="", ylab=rownames(IRFs.k1_ext)[n],main=variable[n])
+  axis(1,c(1,10,20),c("","10 quarters","20quarters"))
+  
+  
+  axis(2,c(ylims[1],0,ylims[2]),round(c(ylims[1],0,ylims[2]),3))
+  polygon(c(hh,(h+1):1), c(IRFs.k1.hdi_ext[1,n,hh],IRFs.k1.hdi_ext[2,n,(h+1):1]), col=mcxs2.shade1,border=mcxs2.shade1)
+  abline(h=0)
+  lines(hh, IRFs.k1_ext[n,hh],lwd=2,col=mcxs1)
+}
+```
+
+
+###### Figure 11. Impulse response result using extended model
+
+## Conclusion
+
+In this research report, Bayesian Structural Vector Auto-regression (SVAR) model with sign restriction is applied to investigate the influence of contractionary monetary policy shocks on exchange rate in Australia. Stochastic Volatility Heteroskedasticity and gamma distribution on hyper parameter also applied. From the Impulse response results plots, we conclude that we can not observe significant effect in exchange rate under the contractionary monetary policy shocks sign restriction according to the current Australian data. We did not observed the same finding as the recent study in @kim2018, and this can argued as we employed only sign restriction on the first lag of impulse response where the recent studies following [@scholl2008a] imposed further restrictions on the impulse responses for the first 12 months after a shock. Recent studies also take into account of the factors of foreign economy on domestic exchange rate, which is not included in the analysis in this paper. Moreover, the real data used in the paper has a short lags which is not sufficient enough to produce better result using Stochastic Volatility heteroskedasticity model.
+
+	
+
+				
+
+			
+
+		
+
+	
+
+## References
+

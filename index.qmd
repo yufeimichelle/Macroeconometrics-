@@ -2004,4 +2004,16 @@ for (n in 1:N){
 
 ## Conclusion
 
+In this research report, Bayesian Structural Vector Auto-regression (SVAR) model with sign restriction is applied to investigate the influence of contractionary monetary policy shocks on exchange rate in Australia. Stochastic Volatility Heteroskedasticity and gamma distribution on hyper parameter also applied. From the Impulse response results plots, we conclude that we can not observe significant effect in exchange rate under the contractionary monetary policy shocks sign restriction according to the current Australian data. We did not observed the same finding as the recent study in @kim2018, and this can argued as we employed only sign restriction on the first lag of impulse response where the recent studies following [@scholl2008a] imposed further restrictions on the impulse responses for the first 12 months after a shock. Recent studies also take into account of the factors of foreign economy on domestic exchange rate, which is not included in the analysis in this paper. Moreover, the real data used in the paper has a short lags which is not sufficient enough to produce better result using Stochastic Volatility heteroskedasticity model.
+
+	
+
+				
+
+			
+
+		
+
+	
+
 ## References

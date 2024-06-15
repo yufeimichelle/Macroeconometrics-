@@ -1515,7 +1515,7 @@ plot(draws_df$Sigma.posterior[3,2,],type='l',col="#6699CC",ylab="",xlab="",main=
 plot(draws_df$Sigma.posterior[4,1,],type='l',col="#0066CC",ylab="",xlab="",main=expression(Sigma[41]), lwd = 0.1)
 ```
 
-###### Figure 4 . trace plot of Basic  model posterior draws
+###### Figure 4 . trace plot of Basic model posterior draws
 
 ```{r}
 #| echo: false
@@ -1855,7 +1855,7 @@ plot(draws_hetero_df$Sigma.posterior[3,2,],type='l',col="#6699CC",ylab="",xlab="
 plot(draws_hetero_df$Sigma.posterior[4,1,],type='l',col="#0066CC",ylab="",xlab="",main=expression(Sigma[41]), lwd = 0.1)
 ```
 
-###### Figure 8. trace plot of  heteroskedasiticity model posterior draws
+###### Figure 8. trace plot of heteroskedasiticity model posterior draws
 
 [Figure 9. Impulse response result using heteroskedasiticity model] shows the Impulse Response Function of the heteroskedasticity model. With the positive restriction on short term interest rate and negative restriction on CPI and monetary base, the results is similar using baseline model, as the estimated posterior mean of A and $\Sigma$ are similar.
 
@@ -1929,7 +1929,7 @@ knitr::kable(mean_A_ext,  caption = "posterior mean of A",index=TRUE)
 
 ```
 
-###### Table 18.  Posterior Mean of A in extended model
+###### Table 18. Posterior Mean of A in extended model
 
 ```{r}
 #the mean of posterior draws of sigma matrices
@@ -1938,7 +1938,7 @@ colnames(mean_sigma_ext) <- colnames(df)
 knitr::kable(mean_sigma_ext,  caption = "posterior mean of Sigma",index=TRUE)
 ```
 
-###### Table 19.  Posterior Mean of Sigma in extended model
+###### Table 19. Posterior Mean of Sigma in extended model
 
 [Table 19. Posterior Mean of Sigma in extended model] plots the posterior draws of the extend model selected parameters, and it shown to be stationary for A and $\Sigma$. Although with some out-liners, the draws of $\Sigma$ are still similar to the results in extension model. However, with heteroskedasticity, draws A fluctuate around -3 to 3 which is wider range than the normal extension model.
 
@@ -2005,15 +2005,5 @@ for (n in 1:N){
 ## Conclusion
 
 In this research report, Bayesian Structural Vector Auto-regression (SVAR) model with sign restriction is applied to investigate the influence of contractionary monetary policy shocks on exchange rate in Australia. Stochastic Volatility Heteroskedasticity and gamma distribution on hyper parameter also applied. From the Impulse response results plots, we conclude that we can not observe significant effect in exchange rate under the contractionary monetary policy shocks sign restriction according to the current Australian data. We did not observed the same finding as the recent study in @kim2018, and this can argued as we employed only sign restriction on the first lag of impulse response where the recent studies following [@scholl2008a] imposed further restrictions on the impulse responses for the first 12 months after a shock. Recent studies also take into account of the factors of foreign economy on domestic exchange rate, which is not included in the analysis in this paper. Moreover, the real data used in the paper has a short lags which is not sufficient enough to produce better result using Stochastic Volatility heteroskedasticity model.
-
-	
-
-				
-
-			
-
-		
-
-	
 
 ## References
